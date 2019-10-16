@@ -1,0 +1,23 @@
+{
+  "name": "Voice Game",
+  "description": "Web Speech API Game",
+  "type": "privileged",
+  "launch_path": "/index.html",
+  "icons": [
+    {"512": "/img/ws512.png"},
+    {"128": "/img/ws128.png"}
+  ],
+  "developer": {
+    "name": "Cheuk-Ming Tang",
+    "url": "https://cheuk.online/lab/voice-game"
+  },
+  "default_locale": "nl-NL",
+  "permissions": {
+    "audio-capture" : {
+      "description" : "Audio capture"
+    },
+    "speech-recognition" : {
+      "description" : "Speech recognition"
+    }
+  }
+}
