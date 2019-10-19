@@ -1,5 +1,6 @@
 import Vuex from 'vuex';
 import Vue from 'vue';
+
 import players from './modules/players.store';
 
 // Load Vuex
