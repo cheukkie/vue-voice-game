@@ -1,6 +1,9 @@
 <template>
     <ul>
-        <li v-for="player in allPlayers" :key="player.name">naam: {{ player.name }} - score: {{ player.score }}</li>
+        <li v-for="(player,index) in allPlayers" :key="`player-${index}`">
+            <div><strong>Naam: {{ player.name }}</strong></div>
+            <div>Score: {{ player.score }}</div>
+        </li>
     </ul>
 </template>
 
@@ -13,5 +16,17 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss" scoped>
+    ul{
+        text-align: center;
+        list-style: none;
+        li{
+            background-color: #ccc;
+            display: inline-block;
+            border-radius: 5px;
+            margin: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+    }
 </style>

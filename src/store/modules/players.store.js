@@ -1,23 +1,34 @@
 //import axios from 'axios';
 
 const state = {
-    players: []
+    players: [],
+    gameRound: 1,
+    gameCurPlayerIndex: 0,
 };
 
 const getters = {
-    allPlayers: state => state.players
+    allPlayers: state => state.players,
+    curPlayer: state => state.gameCurPlayerIndex,
+    curRound: state => state.gameRound,
 };
 
 const actions = {
 
-    addPlayer({
-        commit
-    }, player) {
+    addPlayer({ commit }, player) {
         commit('newPlayer', {
             name: player,
             score: 0
         });
     },
+
+    nextPlayer({commit}){
+        if( (state.gameCurPlayerIndex+1) < state.players.length ){
+            commit('selectNextPlayer');
+        }else{
+            commit('selectFirstPlayer');
+            commit('addRound');
+        }
+    }
 
     // async fetchTodos({
     //     commit
@@ -78,6 +89,9 @@ const actions = {
 const mutations = {
     // setTodos: (state, todos) => (state.todos = todos),
     newPlayer: (state, player) => state.players.unshift(player),
+    selectFirstPlayer: () => state.gameCurPlayerIndex = 0,
+    selectNextPlayer: () => state.gameCurPlayerIndex++,
+    addRound: () => state.gameRound++,
     // removeTodo: (state, id) =>
     //     (state.todos = state.todos.filter(todo => todo.id !== id)),
     // updateTodo: (state, updTodo) => {
