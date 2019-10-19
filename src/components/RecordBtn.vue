@@ -13,13 +13,13 @@
         <div>
             <span v-if="word">Lees op: {{ word }}</span> <span v-if="output"> - Output: {{ output }}</span>
         </div>
-        <button v-if="recordingDone" @click="nextPlayer">Next player</button>
+        <button v-if="recordingDone" @click="selectNextPlayer">Next player</button>
     </div>
 </template>
 
 <script>
     import { getRandomInt } from '@/utils';
-    import { mapActions } from 'vuex';
+    import { mapActions, mapGetters } from 'vuex';
 
     export default {
         name: 'RecordBtn',
@@ -78,7 +78,14 @@
             this.recognition.lang = 'nl-NL';
         },
         methods: {
-            ...mapActions(['nextPlayer']),
+            ...mapGetters(['curPlayer']),
+            ...mapActions(['nextPlayer','addPoint','removePoint']),
+            selectNextPlayer(){
+                this.nextPlayer();
+                this.recordingDone = false;
+                this.output = '';
+                this.word = '';
+            },
             resetRound() {
                 this.output = '';
                 this.error = '';
@@ -137,13 +144,15 @@
                         vm.output.toLowerCase() === vm.word.toLowerCase() ||
                         vm.output.toLowerCase().replace(' ', '') === vm.word.toLowerCase()
                     ) {
-                        vm.score++;
+                        //vm.score++;
+                        vm.addPoint();
                     }
                     if (
                         vm.output.toLowerCase() !== vm.word.toLowerCase() &&
-                        vm.score >= 1
+                        vm.curPlayer().score >= 1
                     ) {
-                        vm.score--;
+                        //vm.score--;
+                        vm.removePoint();
                     }
                     vm.recording = false;
                 };

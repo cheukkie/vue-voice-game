@@ -8,7 +8,7 @@ const state = {
 
 const getters = {
     allPlayers: state => state.players,
-    curPlayer: state => state.gameCurPlayerIndex,
+    curPlayer: state => state.players[state.gameCurPlayerIndex],
     curRound: state => state.gameRound,
 };
 
@@ -28,6 +28,14 @@ const actions = {
             commit('selectFirstPlayer');
             commit('addRound');
         }
+    },
+
+    addPoint({commit}){
+        commit('addPoint');
+    },
+
+    removePoint({commit}){
+        commit('removePoint');
     }
 
     // async fetchTodos({
@@ -92,6 +100,10 @@ const mutations = {
     selectFirstPlayer: () => state.gameCurPlayerIndex = 0,
     selectNextPlayer: () => state.gameCurPlayerIndex++,
     addRound: () => state.gameRound++,
+
+    addPoint: () => state.players[state.gameCurPlayerIndex].score++,
+    removePoint: () => state.players[state.gameCurPlayerIndex].score--,
+    
     // removeTodo: (state, id) =>
     //     (state.todos = state.todos.filter(todo => todo.id !== id)),
     // updateTodo: (state, updTodo) => {

@@ -72,7 +72,7 @@
         return this.allPlayers().length;
       },
       playerCurrent() {
-        return this.allPlayers()[this.curPlayer()];
+        return this.curPlayer();
       },
       curGameRound(){
         return this.curRound();
