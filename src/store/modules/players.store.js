@@ -28,7 +28,9 @@ const actions = {
     },
 
     removePlayer({commit},player){
-        
+        //test
+        console.log(commit);
+        console.log(player);
     },
 
     addPlayer({ commit }, player) {
