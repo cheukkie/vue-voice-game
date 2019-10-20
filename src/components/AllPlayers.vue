@@ -2,11 +2,10 @@
     <ul>
         <li v-for="(player,index) in allPlayers" :key="`player-${index}`">
             <div v-if="player.winner">
-                Winnaar!
+                <strong>Winnaar!</strong>
             </div>
-            <div><strong>Naam: {{ player.name }}</strong></div>
-            <div>Score: {{ player.score }}</div>
-            <button>Delete player</button>
+            <div>Naam: {{ player.name }} - Score: {{ player.score }}</div>
+            <button v-if="!gameSettingsStatus">Delete player</button>
         </li>
     </ul>
 </template>
@@ -16,7 +15,7 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: 'AllPlayers',
-  computed: mapGetters(['allPlayers'])
+  computed: mapGetters(['allPlayers','gameSettingsStatus'])
 };
 </script>
 

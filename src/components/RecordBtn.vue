@@ -1,5 +1,8 @@
 <template>
     <div>
+        <div>
+            {{ player.name }} is aan de beurt! <br><br>
+        </div>
         <button v-if="!recordingDone" @click="startDictation" :disabled="recording">
             <span v-if="!retry">Opnemen</span>
             <span v-else>Opnieuw opnemen</span>
@@ -75,7 +78,6 @@
             this.recognition.lang = 'nl-NL';
         },
         methods: {
-            ...mapGetters(['curPlayer']),
             ...mapActions(['nextPlayer','addPoint','removePoint']),
             selectNextPlayer(){
                 this.nextPlayer();
@@ -141,7 +143,7 @@
                     }
                     if (
                         vm.output.toLowerCase() !== vm.word.toLowerCase() &&
-                        vm.curPlayer().score >= 1
+                        vm.player.score >= 1
                     ) {
                         vm.removePoint();
                     }

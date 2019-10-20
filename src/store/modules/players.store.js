@@ -5,17 +5,23 @@ const state = {
     gameRound: 1,
     gameCurPlayerIndex: 0,
     gameWinningScore: 5,
-    gameOver: false
+    gameOver: false,
+    gameSettingsSet: false
 };
 
 const getters = {
     allPlayers: state => state.players,
     curPlayer: state => state.players[state.gameCurPlayerIndex],
     curRound: state => state.gameRound,
-    gameOver: state => state.gameOver
+    gameOverStatus: state => state.gameOver,
+    gameSettingsStatus: state => state.gameSettingsSet
 };
 
 const actions = {
+
+    settingsSet({commit}){
+        commit('settingsSet');
+    },
 
     resetGame({commit}){
         commit('resetGame');
@@ -49,7 +55,6 @@ const actions = {
     addPoint({commit}){
         commit('addPoint');
         if( state.players[state.gameCurPlayerIndex].score >= state.gameWinningScore ){
-            state.gameOver = true;
             commit('setWinningPlayer');
         }
     },
@@ -60,7 +65,7 @@ const actions = {
 
     setWinningScore({commit},score){
         commit('setWinningScore',score);
-    }
+    },
 
     // async fetchTodos({
     //     commit
@@ -122,11 +127,14 @@ const mutations = {
     newPlayer: (state, player) => state.players.unshift(player),
     selectFirstPlayer: () => state.gameCurPlayerIndex = 0,
     selectNextPlayer: () => state.gameCurPlayerIndex++,
+
+    settingsSet: () => state.gameSettingsSet = true,
     resetGame: () => {
         state.gameOver = false;
         state.gameRound = 1;
         state.gameWinningScore = 5;
         state.gameCurPlayerIndex = 0;
+        state.gameSettingsSet = false;
 
         if( state.players.length > 0 ){
             for (let i = 0; i < state.players.length; i++) {
@@ -136,7 +144,10 @@ const mutations = {
         }
     },
     
-    setWinningPlayer: () => state.players[state.gameCurPlayerIndex].winner = true,
+    setWinningPlayer: () => {
+        state.players[state.gameCurPlayerIndex].winner = true;
+        state.gameOver = true;
+    },
 
     addRound: () => state.gameRound++,
     addPoint: () => state.players[state.gameCurPlayerIndex].score++,

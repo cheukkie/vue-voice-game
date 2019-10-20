@@ -2,7 +2,7 @@
   <div id="app">
     <h1>VOICE GAME</h1>
     <div v-if="webSpeech">
-      <div v-if="!gameModeSettings.setMaxPlayers">
+      <div v-if="!gameSettingsStatus">
         <div>
           <label for="setPlayers">
             Aantal spelers:
@@ -17,18 +17,18 @@
             {{ gameModeSettings.targetScore }}
           </label>
         </div>
-        <button v-if="!gameModeSettings.setMaxPlayers" @click="saveGameSettings">Opslaan</button>
+        <button v-if="!gameSettingsStatus" @click="saveGameSettings">Opslaan</button>
       </div>
 
       <AllPlayers />
-      <AddPlayer v-if="gameModeSettings.setMaxPlayers && allPlayers.length < gameModeSettings.maxPlayers" />
-      <button v-if="allPlayers.length >= gameModeSettings.maxPlayers && !gameRunning" @click="startGame">Play</button>
+      <AddPlayer v-if="gameSettingsStatus && allPlayers.length < gameModeSettings.maxPlayers" />
+      <!-- <button v-if="allPlayers.length >= gameModeSettings.maxPlayers" @click="startGame">Play</button> -->
 
-      <div v-if="gameRunning && !gameOver">
+      <div v-if="allPlayers.length >= gameModeSettings.maxPlayers && gameSettingsStatus && !gameOverStatus">
         Ronde {{ curRound }}
         <RecordBtn :player="curPlayer" />
       </div>
-      <div v-if="gameOver">
+      <div v-if="gameOverStatus">
         <button @click="resetGame">Reset</button>
       </div>
     </div>
@@ -51,29 +51,29 @@
     data: function () {
       return {
         webSpeech: false,
-        gameRunning: false,
+        //gameRunning: false,
 
         gameModeSettings: {
           maxPlayers: 2,
-          setMaxPlayers: false,
           targetScore: 5,
         }
       };
     },
     methods: {
-      ...mapActions(['setWinningScore','resetGame']),
+      ...mapActions(['setWinningScore','resetGame','settingsSet']),
       startGame() {
-        this.gameRunning = true;
+        //this.gameRunning = true;
+        this.settingsSet();
       },
       saveGameSettings(){
-        this.gameModeSettings.setMaxPlayers = true;
+        this.settingsSet();
         
         const winningScore = parseInt(this.gameModeSettings.targetScore);
         this.setWinningScore(winningScore);
       }
     },
     computed: {
-      ...mapGetters(['allPlayers','curPlayer','curRound','gameOver']),
+      ...mapGetters(['allPlayers','curPlayer','curRound','gameOverStatus','gameSettingsStatus']),
     },
     mounted: function () {
       window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
