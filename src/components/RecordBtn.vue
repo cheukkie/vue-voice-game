@@ -1,8 +1,5 @@
 <template>
     <div>
-        <div>
-            {{ this.player.name }}:{{ this.player.score }}
-        </div>
         <button v-if="!recordingDone" @click="startDictation" :disabled="recording">
             <span v-if="!retry">Opnemen</span>
             <span v-else>Opnieuw opnemen</span>
@@ -11,7 +8,7 @@
             {{ error }}
         </div>
         <div>
-            <span v-if="word">Lees op: {{ word }}</span> <span v-if="output"> - Output: {{ output }}</span>
+            <span v-if="word">Lees op: {{ word }}</span><br><span v-if="output"> Output: {{ output }}</span>
         </div>
         <button v-if="recordingDone" @click="selectNextPlayer">Next player</button>
     </div>
@@ -36,36 +33,36 @@
                 error: '',
 
                 list: [
-                    'Watergebrek',
                     'Don',
-                    'Flexiemorfeem',
-                    'Hemelhoog',
-                    'Aansprakelijkheidsverzekeraar',
-                    'Snoeperij',
-                    'Warmvoelend',
-                    'Leningenportefeuille',
                     'Inhoud',
-                    'Caracole',
                     'Sensor',
                     'Obligaat',
-                    'Spiraallijn',
-                    'Wintergoed',
+                    'Wipperig',
+                    'Caracole',
+                    'Snoeperij',
+                    'Indiaanse',
+                    'Hemelhoog',
                     'Enquêteur',
                     'Begintune',
-                    'Voortrekker',
-                    'Reaffectatie',
-                    'Avonturenverhaal',
-                    'Wipperig',
-                    'Dopinggebruik',
                     'Wonderblad',
-                    'Burgemeestersbenoeming',
-                    'Leeftijdsgroep',
-                    'Olieproducent',
+                    'Wintergoed',
                     'Winterpeen',
-                    'Nietradioactief',
-                    'Indiaanse',
+                    'Voortrekker',
                     'Informatica',
-                    'Onopvallend'
+                    'Spiraallijn',
+                    'Warmvoelend',
+                    'Onopvallend',
+                    'Watergebrek',
+                    'Reaffectatie',
+                    'Dopinggebruik',
+                    'Olieproducent',
+                    'Flexiemorfeem',
+                    'Leeftijdsgroep',
+                    'Nietradioactief',
+                    'Avonturenverhaal',
+                    'Leningenportefeuille',
+                    'Burgemeestersbenoeming',
+                    'Aansprakelijkheidsverzekeraar',
                 ],
                 word: ''
             };
@@ -135,23 +132,17 @@
                 //8.
                 this.recognition.onend = function (e) {
                     console.log('on end');
-                    //console.log(vm.output);
                     if (vm.output === '') {
                         console.log('Je moet wel iets zeggen ');
                         vm.retry = true;
                     }
-                    if (
-                        vm.output.toLowerCase() === vm.word.toLowerCase() ||
-                        vm.output.toLowerCase().replace(' ', '') === vm.word.toLowerCase()
-                    ) {
-                        //vm.score++;
+                    if ( vm.output.toLowerCase() === vm.word.toLowerCase() ) {
                         vm.addPoint();
                     }
                     if (
                         vm.output.toLowerCase() !== vm.word.toLowerCase() &&
                         vm.curPlayer().score >= 1
                     ) {
-                        //vm.score--;
                         vm.removePoint();
                     }
                     vm.recording = false;
@@ -175,7 +166,7 @@
                     console.log(altArray);
                     console.log(`resultaat: ${e.results[0][0].transcript}`);
 
-                    vm.output = e.results[0][0].transcript;
+                    vm.output = e.results[0][0].transcript.replace(' ', '');
                     vm.recordingDone = true;
                 };
 

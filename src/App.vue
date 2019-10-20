@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <h1>VOICE GAME</h1>
-    <!-- <HelloWorld msg="Welcome to Your Vue.js App"/> -->
     <div v-if="webSpeech">
-
       <div v-if="!gameModeSettings.setMaxPlayers">
         <div>
           <label for="setPlayers">
@@ -19,18 +17,22 @@
             {{ gameModeSettings.targetScore }}
           </label>
         </div>
-        <button v-if="!gameModeSettings.setMaxPlayers" @click="gameModeSettings.setMaxPlayers = true">Opslaan</button>
+        <button v-if="!gameModeSettings.setMaxPlayers" @click="saveGameSettings">Opslaan</button>
       </div>
 
       <AllPlayers />
-      <AddPlayer v-if="gameModeSettings.setMaxPlayers && playersTotal < gameModeSettings.maxPlayers" />
-      <button v-if="playersTotal >= gameModeSettings.maxPlayers && !gameRunning" @click="startGame">Play</button>
+      <AddPlayer v-if="gameModeSettings.setMaxPlayers && allPlayers.length < gameModeSettings.maxPlayers" />
+      <button v-if="allPlayers.length >= gameModeSettings.maxPlayers && !gameRunning" @click="startGame">Play</button>
 
-      <div v-if="gameRunning">
-        Ronde {{ curGameRound }}
-        <RecordBtn :player="playerCurrent" />
+      <div v-if="gameRunning && !gameOver">
+        Ronde {{ curRound }}
+        <RecordBtn :player="curPlayer" />
+      </div>
+      <div v-if="gameOver">
+        <button @click="resetGame">Reset</button>
       </div>
     </div>
+    
     <div v-else>
       <p>This is an experiment with Web Speech API</p>
       <p>To play this game please use a Chrome browser.</p>
@@ -39,9 +41,7 @@
 </template>
 
 <script>
-  import {
-    mapGetters
-  } from 'vuex';
+  import { mapGetters, mapActions } from 'vuex';
   import AllPlayers from './components/AllPlayers.vue';
   import AddPlayer from './components/AddPlayer.vue';
   import RecordBtn from './components/RecordBtn.vue';
@@ -51,7 +51,6 @@
     data: function () {
       return {
         webSpeech: false,
-        gameRound: 1,
         gameRunning: false,
 
         gameModeSettings: {
@@ -62,21 +61,19 @@
       };
     },
     methods: {
-      ...mapGetters(['allPlayers','curPlayer','curRound']),
+      ...mapActions(['setWinningScore','resetGame']),
       startGame() {
         this.gameRunning = true;
       },
+      saveGameSettings(){
+        this.gameModeSettings.setMaxPlayers = true;
+        
+        const winningScore = parseInt(this.gameModeSettings.targetScore);
+        this.setWinningScore(winningScore);
+      }
     },
     computed: {
-      playersTotal() {
-        return this.allPlayers().length;
-      },
-      playerCurrent() {
-        return this.curPlayer();
-      },
-      curGameRound(){
-        return this.curRound();
-      }
+      ...mapGetters(['allPlayers','curPlayer','curRound','gameOver']),
     },
     mounted: function () {
       window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;

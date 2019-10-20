@@ -4,20 +4,32 @@ const state = {
     players: [],
     gameRound: 1,
     gameCurPlayerIndex: 0,
+    gameWinningScore: 5,
+    gameOver: false
 };
 
 const getters = {
     allPlayers: state => state.players,
     curPlayer: state => state.players[state.gameCurPlayerIndex],
     curRound: state => state.gameRound,
+    gameOver: state => state.gameOver
 };
 
 const actions = {
 
+    resetGame({commit}){
+        commit('resetGame');
+    },
+
+    removePlayer({commit},player){
+        
+    },
+
     addPlayer({ commit }, player) {
         commit('newPlayer', {
             name: player,
-            score: 0
+            score: 0,
+            winner: false
         });
     },
 
@@ -25,6 +37,10 @@ const actions = {
         if( (state.gameCurPlayerIndex+1) < state.players.length ){
             commit('selectNextPlayer');
         }else{
+            // const reachedScore = state.players.filter(player=>{
+            //     return player.score >= state.gameWinningScore;
+            // });
+            // console.log( reachedScore );
             commit('selectFirstPlayer');
             commit('addRound');
         }
@@ -32,10 +48,18 @@ const actions = {
 
     addPoint({commit}){
         commit('addPoint');
+        if( state.players[state.gameCurPlayerIndex].score >= state.gameWinningScore ){
+            state.gameOver = true;
+            commit('setWinningPlayer');
+        }
     },
 
     removePoint({commit}){
         commit('removePoint');
+    },
+
+    setWinningScore({commit},score){
+        commit('setWinningScore',score);
     }
 
     // async fetchTodos({
@@ -95,15 +119,31 @@ const actions = {
 };
 
 const mutations = {
-    // setTodos: (state, todos) => (state.todos = todos),
     newPlayer: (state, player) => state.players.unshift(player),
     selectFirstPlayer: () => state.gameCurPlayerIndex = 0,
     selectNextPlayer: () => state.gameCurPlayerIndex++,
-    addRound: () => state.gameRound++,
+    resetGame: () => {
+        state.gameOver = false;
+        state.gameRound = 1;
+        state.gameWinningScore = 5;
+        state.gameCurPlayerIndex = 0;
 
+        if( state.players.length > 0 ){
+            for (let i = 0; i < state.players.length; i++) {
+                state.players[i].score = 0;
+                state.players[i].winner = false;
+            }
+        }
+    },
+    
+    setWinningPlayer: () => state.players[state.gameCurPlayerIndex].winner = true,
+
+    addRound: () => state.gameRound++,
     addPoint: () => state.players[state.gameCurPlayerIndex].score++,
     removePoint: () => state.players[state.gameCurPlayerIndex].score--,
+    setWinningScore: (state,score) => (state.gameWinningScore = score),
     
+    // setTodos: (state, todos) => (state.todos = todos),
     // removeTodo: (state, id) =>
     //     (state.todos = state.todos.filter(todo => todo.id !== id)),
     // updateTodo: (state, updTodo) => {

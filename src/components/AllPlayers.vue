@@ -1,8 +1,12 @@
 <template>
     <ul>
         <li v-for="(player,index) in allPlayers" :key="`player-${index}`">
+            <div v-if="player.winner">
+                Winnaar!
+            </div>
             <div><strong>Naam: {{ player.name }}</strong></div>
             <div>Score: {{ player.score }}</div>
+            <button>Delete player</button>
         </li>
     </ul>
 </template>
