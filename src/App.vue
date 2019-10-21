@@ -20,8 +20,9 @@
         <button v-if="!gameSettingsStatus" @click="saveGameSettings">Opslaan</button>
       </div>
 
-      <AllPlayers />
+      
       <AddPlayer v-if="gameSettingsStatus && allPlayers.length < gameModeSettings.maxPlayers" />
+      <AllPlayers />
       <!-- <button v-if="allPlayers.length >= gameModeSettings.maxPlayers" @click="startGame">Play</button> -->
 
       <div v-if="allPlayers.length >= gameModeSettings.maxPlayers && gameSettingsStatus && !gameOverStatus">

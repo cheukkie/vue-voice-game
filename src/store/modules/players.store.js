@@ -20,21 +20,22 @@ const getters = {
 const actions = {
 
     settingsSet({commit}){
-        commit('settingsSet');
+        commit('SETTINGS_SET');
     },
 
     resetGame({commit}){
-        commit('resetGame');
+        commit('RESET_GAME');
     },
 
     removePlayer({commit},player){
         //test
+        commit('DELETE_PLAYER', player);
         console.log(commit);
         console.log(player);
     },
 
     addPlayer({ commit }, player) {
-        commit('newPlayer', {
+        commit('NEW_PLAYER', {
             name: player,
             score: 0,
             winner: false
@@ -43,30 +44,30 @@ const actions = {
 
     nextPlayer({commit}){
         if( (state.gameCurPlayerIndex+1) < state.players.length ){
-            commit('selectNextPlayer');
+            commit('SELECT_NEXT_PLAYER');
         }else{
             // const reachedScore = state.players.filter(player=>{
             //     return player.score >= state.gameWinningScore;
             // });
             // console.log( reachedScore );
-            commit('selectFirstPlayer');
-            commit('addRound');
+            commit('SELECT_FIRST_PLAYER');
+            commit('ADD_ROUND');
         }
     },
 
     addPoint({commit}){
-        commit('addPoint');
+        commit('ADD_POINT');
         if( state.players[state.gameCurPlayerIndex].score >= state.gameWinningScore ){
-            commit('setWinningPlayer');
+            commit('SET_WINNING_PLAYER');
         }
     },
 
     removePoint({commit}){
-        commit('removePoint');
+        commit('REMOVE_POINT');
     },
 
     setWinningScore({commit},score){
-        commit('setWinningScore',score);
+        commit('SET_WINNING_SCORE',score);
     },
 
     // async fetchTodos({
@@ -126,12 +127,14 @@ const actions = {
 };
 
 const mutations = {
-    newPlayer: (state, player) => state.players.unshift(player),
-    selectFirstPlayer: () => state.gameCurPlayerIndex = 0,
-    selectNextPlayer: () => state.gameCurPlayerIndex++,
+    //MAKE MUTATIONS ALL CAPS
+    NEW_PLAYER: (state, player) => state.players.unshift(player),
+    DELETE_PLAYER: (state,player )=> state.players.splice(player,1),
+    SELECT_FIRST_PLAYER: () => state.gameCurPlayerIndex = 0,
+    SELECT_NEXT_PLAYER: () => state.gameCurPlayerIndex++,
 
-    settingsSet: () => state.gameSettingsSet = true,
-    resetGame: () => {
+    SETTINGS_SET: () => state.gameSettingsSet = true,
+    RESET_GAME: () => {
         state.gameOver = false;
         state.gameRound = 1;
         state.gameWinningScore = 5;
@@ -146,15 +149,15 @@ const mutations = {
         }
     },
     
-    setWinningPlayer: () => {
+    SET_WINNING_PLAYER: () => {
         state.players[state.gameCurPlayerIndex].winner = true;
         state.gameOver = true;
     },
 
-    addRound: () => state.gameRound++,
-    addPoint: () => state.players[state.gameCurPlayerIndex].score++,
-    removePoint: () => state.players[state.gameCurPlayerIndex].score--,
-    setWinningScore: (state,score) => (state.gameWinningScore = score),
+    ADD_ROUND: () => state.gameRound++,
+    ADD_POINT: () => state.players[state.gameCurPlayerIndex].score++,
+    REMOVE_POINT: () => state.players[state.gameCurPlayerIndex].score--,
+    SET_WINNING_SCORE: (state,score) => (state.gameWinningScore = score),
     
     // setTodos: (state, todos) => (state.todos = todos),
     // removeTodo: (state, id) =>
