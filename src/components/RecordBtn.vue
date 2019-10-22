@@ -207,7 +207,7 @@
         margin: auto;
         -webkit-appearance: none;
         border-radius: 100%;
-        background-color: rgba(230, 68, 68,1);
+        background-color: rgba(219,68,55,1);
         text-align: center;
         box-shadow: 0 15px 20px 0 rgba(0,0,0,0.25);
         border: solid 10px #ffffff;
@@ -215,7 +215,7 @@
         transition: all .25s ease;
         outline:0;
         &:disabled,&:disabled:hover{
-            background-color: rgba(230, 68, 68,1);
+            background-color: rgba(219,68,55,1);
             box-shadow: 0 0px 5px 0 rgba(0,0,0,0.15);
             cursor: not-allowed;
         }

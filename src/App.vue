@@ -33,11 +33,11 @@
         <button @click="resetGame">Reset</button>
       </div>
     </div>
-    
     <div v-else>
       <p>This is an experiment with Web Speech API</p>
       <p>To play this game please use a Chrome browser.</p>
     </div>
+    <AudioWave />
   </div>
 </template>
 
@@ -46,6 +46,7 @@
   import AllPlayers from './components/AllPlayers.vue';
   import AddPlayer from './components/AddPlayer.vue';
   import RecordBtn from './components/RecordBtn.vue';
+  import AudioWave from './components/AudioWave.vue';
 
   export default {
     name: 'app',
@@ -88,7 +89,8 @@
     components: {
       AddPlayer,
       AllPlayers,
-      RecordBtn
+      RecordBtn,
+      AudioWave
     }
   };
 </script>
@@ -101,5 +103,8 @@
     text-align: center;
     color: #2c3e50;
     margin-top: 60px;
+  }
+  h1{
+    color: #0F9D58;
   }
 </style>
