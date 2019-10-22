@@ -4,7 +4,7 @@
             <div v-if="player.winner">
                 <strong>Winnaar!</strong>
             </div>
-            <div>Naam: {{ player.name }} - Score: {{ player.score }}</div>
+            <div>{{ player.name }}: {{ player.score }}</div>
             <button v-if="!gameSettingsStatus" @click="removePlayer(index)">Delete player</button>
         </li>
     </ul>
@@ -24,6 +24,8 @@ export default {
 
 <style lang="scss" scoped>
     ul{
+        margin: auto;
+        padding: 0;
         text-align: center;
         list-style: none;
         li{
