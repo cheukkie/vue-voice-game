@@ -1,6 +1,7 @@
 <template>
     <div>
-        <canvas id="canvas"></canvas>
+        <canvas id="audiowave"></canvas>
+        <button class="btn" v-if="!volumeMeter" @click="beginDetect">Detect</button>
         <div id="settings" class="hide">
             <div style="position: relative;">
                 <!-- <input type="range" id="spacing" name="spacing" min="0" max="1" step="0.0001" /> -->
@@ -26,10 +27,84 @@
         name: 'AudioWave',
         data: function () {
             return {
-
+                audioContext: '',
+                mediaStreamSource: null,
+                meter: null,
+                volumeMeter: 0
             };
         },
+        methods: {
+            beginDetect() {
+                this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
+                        this.mediaStreamSource = this.audioContext.createMediaStreamSource(stream);
+                        this.meter = this.createAudioMeter(this.audioContext);
+                        this.mediaStreamSource.connect(this.meter);
+                    })
+                }
+            },
+            createAudioMeter(audioContext, clipLevel, averaging, clipLag) {
+                const processor = audioContext.createScriptProcessor(512);
+                processor.onaudioprocess = this.volumeAudioProcess;
+                processor.clipping = false;
+                processor.lastClip = 0;
+                processor.volume = 0;
+                processor.clipLevel = clipLevel || 0.98;
+                processor.averaging = averaging || 0.95;
+                processor.clipLag = clipLag || 750;
+
+                // this will have no effect, since we don't copy the input to the output,
+                // but works around a current Chrome bug.
+                processor.connect(this.audioContext.destination);
+
+                processor.checkClipping = function () {
+                    if (!this.clipping) {
+                        return false
+                    }
+                    if ((this.lastClip + this.clipLag) < window.performance.now()) {
+                    this.clipping = false
+                    }
+                    return this.clipping
+                }
+
+                processor.shutdown = function () {
+                    this.disconnect()
+                    this.onaudioprocess = null
+                }
+
+                return processor;
+            },
+            volumeAudioProcess(event) {
+                const buf = event.inputBuffer.getChannelData(0);
+                const bufLength = buf.length;
+                let sum = 0;
+                let x;
+
+                // Do a root-mean-square on the samples: sum up the squares...
+                for (var i = 0; i < bufLength; i++) {
+                    x = buf[i];
+                    if (Math.abs(x) >= this.clipLevel) {
+                        this.clipping = true;
+                        this.lastClip = window.performance.now();
+                    }
+                    sum += x * x;
+                }
+
+                // ... then take the square root of the sum.
+                const rms = Math.sqrt(sum / bufLength);
+
+                // Now smooth this out with the averaging factor applied
+                // to the previous sample - take the max here because we
+                // want "fast attack, slow release."
+                this.volume = Math.max(rms, this.volume * this.averaging);
+                //document.getElementById('audio-value').innerHTML = this.volume;
+
+                this.volumeMeter = rms;
+            }
+        },
         mounted: function () {
+            const vm = this;
             let Sine = (function () {
                 let canvas, ctx;
                 let width, height;
@@ -121,12 +196,12 @@
                     let pointList = [];
 
                     for (let i = 0; i < width / 2; i++) {
-                        pointList[loopNum] = [loopNum, Math.sin(loopNum * spacing) * (i * h) + height / 2];
+                        pointList[loopNum] = [loopNum, Math.sin(loopNum * vm.volumeMeter) * (i * h) + height / 2];
                         loopNum++;
                     }
 
                     for (let i = width / 2; i > 0; i--) {
-                        pointList[loopNum] = [loopNum, Math.sin(loopNum * spacing) * (i * h) + height / 2];
+                        pointList[loopNum] = [loopNum, Math.sin(loopNum * vm.volumeMeter) * (i * h) + height / 2];
                         loopNum++;
                     }
                     return pointList;
@@ -138,7 +213,7 @@
             })();
 
             Sine.init({
-                canvas: "canvas",
+                canvas: "audiowave",
                 w: window.innerWidth,
                 h: window.innerHeight
             });
@@ -150,13 +225,13 @@
     .hide{
         display: none;
     }
-    #canvas {
+    #audiowave {
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
         z-index: -1;
-        opacity: 0.3;
+        opacity: 0.7;
     }
 </style>

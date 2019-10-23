@@ -7,13 +7,13 @@
             {{ error }}
         </div>
         <div>
-            <span v-if="word">Lees op: {{ word }}</span> <span v-if="output">- Output: {{ output }}</span>
+            <span v-if="word">Lees op: {{ word }}</span> <span v-if="output"> - Output: {{ output }}</span>
         </div>
         <button v-if="!recordingDone" @click="startDictation" :disabled="recording">
             <span v-if="!retry && !recording" title="Record">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M16 10c0 2.209-1.791 4-4 4s-4-1.791-4-4v-6c0-2.209 1.791-4 4-4s4 1.791 4 4v6zm4-2v2c0 4.418-3.582 8-8 8s-8-3.582-8-8v-2h2v2c0 3.309 2.691 6 6 6s6-2.691 6-6v-2h2zm-7 13.03v-2.03h-2v2.03c-2.282.139-4 .744-4 1.47 0 .829 2.238 1.5 5 1.5s5-.671 5-1.5c0-.726-1.718-1.331-4-1.47z"/></svg>
             </span>
-            <span v-else-if="recording" title="Recording">
+            <span v-else-if="recording" title="Recording...">
                 <svg id="wave" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 38.05">
                     <path id="line_1" data-name="Line 1" d="M0.91,15L0.78,15A1,1,0,0,0,0,16v6a1,1,0,1,0,2,0s0,0,0,0V16a1,1,0,0,0-1-1H0.91Z"/>
                     <path id="line_2" data-name="Line 2" d="M6.91,9L6.78,9A1,1,0,0,0,6,10V28a1,1,0,1,0,2,0s0,0,0,0V10A1,1,0,0,0,7,9H6.91Z"/>
@@ -201,10 +201,10 @@
 <style lang="scss" scoped>
     button{
         display: block;
-        width: 120px;
-        height: 120px;
+        width: 100px;
+        height: 100px;
         padding: 20px;
-        margin: auto;
+        margin: 10px auto;
         -webkit-appearance: none;
         border-radius: 100%;
         background-color: rgba(219,68,55,1);
@@ -214,6 +214,8 @@
         cursor: pointer;
         transition: all .25s ease;
         outline:0;
+        
+
         &:disabled,&:disabled:hover{
             background-color: rgba(219,68,55,1);
             box-shadow: 0 0px 5px 0 rgba(0,0,0,0.15);

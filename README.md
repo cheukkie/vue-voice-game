@@ -1,4 +1,7 @@
 # vue-voice-game
+This is a (small) Web App I created based on the Web Speech API. I'm using VueX to learn more about state management and all the crazy little things that goes with it...
+
+Check out the project live here: https://cheuk.online/lab/voice-game
 
 ## Project setup
 ```
