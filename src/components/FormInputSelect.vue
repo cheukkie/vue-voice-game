@@ -2,8 +2,8 @@
     <div>
         <select class="btn" @change="select" v-model="selectValue">
             <option disabled value="">{{placeholder}}</option>
-            <option v-for="(option,index) in options" :value="option" :key="index">
-                {{ option }}
+            <option v-for="(option,index) in options" :value="option.value" :key="index">
+                {{ option.label }}
             </option>
         </select>
     </div>
