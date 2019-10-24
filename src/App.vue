@@ -3,14 +3,17 @@
     <div class="container">
       <h1>
         <span>
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M15.526 11.409c-1.052.842-7.941 6.358-9.536 7.636l-2.697-2.697 7.668-9.504 4.565 4.565zm5.309-9.867c-2.055-2.055-5.388-2.055-7.443 0-1.355 1.356-1.47 2.842-1.536 3.369l5.61 5.61c.484-.054 2.002-.169 3.369-1.536 2.056-2.055 2.056-5.388 0-7.443zm-9.834 17.94c-2.292 0-3.339 1.427-4.816 2.355-1.046.656-2.036.323-2.512-.266-.173-.211-.667-.971.174-1.842l-.125-.125-1.126-1.091c-1.372 1.416-1.129 3.108-.279 4.157.975 1.204 2.936 1.812 4.795.645 1.585-.995 2.287-2.088 3.889-2.088 1.036 0 1.98.464 3.485 2.773l1.461-.952c-1.393-2.14-2.768-3.566-4.946-3.566z"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+            <path
+              d="M15.526 11.409c-1.052.842-7.941 6.358-9.536 7.636l-2.697-2.697 7.668-9.504 4.565 4.565zm5.309-9.867c-2.055-2.055-5.388-2.055-7.443 0-1.355 1.356-1.47 2.842-1.536 3.369l5.61 5.61c.484-.054 2.002-.169 3.369-1.536 2.056-2.055 2.056-5.388 0-7.443zm-9.834 17.94c-2.292 0-3.339 1.427-4.816 2.355-1.046.656-2.036.323-2.512-.266-.173-.211-.667-.971.174-1.842l-.125-.125-1.126-1.091c-1.372 1.416-1.129 3.108-.279 4.157.975 1.204 2.936 1.812 4.795.645 1.585-.995 2.287-2.088 3.889-2.088 1.036 0 1.98.464 3.485 2.773l1.461-.952c-1.393-2.14-2.768-3.566-4.946-3.566z" />
+            </svg>
         </span>
-          Voice Game
+        Voice Game
       </h1>
       <div v-if="webSpeech">
         <div v-if="!gameSettingsStatus">
           <FormInputRange v-model="gameModeSettings.maxPlayers" :min="2" :max="8" label="Spelers" />
-          <FormInputSelect v-model="gameModeSettings.targetScore" placeholder="Selecteer een win score" :options="[5,10,15,20,30]" />
+          <FormInputSelect v-model="gameModeSettings.targetScore" placeholder="Selecteer een win score" :options="gameModeSettings.winOptions" />
           <br>
           <button class="btn" v-if="!gameSettingsStatus" @click="saveGameSettings">Opslaan</button>
         </div>
@@ -37,7 +40,10 @@
 </template>
 
 <script>
-  import { mapGetters, mapActions } from 'vuex';
+  import {
+    mapGetters,
+    mapActions
+  } from 'vuex';
   import AllPlayers from './components/AllPlayers.vue';
   import AddPlayer from './components/AddPlayer.vue';
   import RecordBtn from './components/RecordBtn.vue';
@@ -55,25 +61,40 @@
         gameModeSettings: {
           maxPlayers: 2,
           targetScore: 5,
+          winOptions: [{
+            value: 5,
+            label: 'Winscore: 5'
+          }, {
+            value: 10,
+            label: 'Winscore: 10'
+          }, {
+            value: 15,
+            label: 'Winscore: 15'
+          }, {
+            value: 20,
+            label: 'Winscore: 20'
+          }, {
+            value: 30,
+            label: 'Winscore: 30'
+          }]
         }
       };
     },
     methods: {
-      ...mapActions(['setWinningScore','resetGame','settingsSet']),
+      ...mapActions(['setWinningScore', 'resetGame', 'settingsSet']),
       // startGame() {
       //   //this.gameRunning = true;
       //   this.settingsSet();
       // },
-      saveGameSettings(){
+      saveGameSettings() {
         this.settingsSet();
-        
+
         const winningScore = parseInt(this.gameModeSettings.targetScore);
-        console.log(winningScore);
         this.setWinningScore(winningScore);
       }
     },
     computed: {
-      ...mapGetters(['allPlayers','curPlayer','curRound','gameOverStatus','gameSettingsStatus']),
+      ...mapGetters(['allPlayers', 'curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus']),
     },
     mounted: function () {
       window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
@@ -99,13 +120,18 @@
   html {
     box-sizing: border-box;
   }
-  *, *:before, *:after {
+
+  *,
+  *:before,
+  *:after {
     box-sizing: inherit;
   }
-  body{
+
+  body {
     background-color: #f4f4f4;
     margin: 0;
   }
+
   #app {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -114,21 +140,24 @@
     color: #2c3e50;
     height: 100vh;
     width: 100vw;
-    display:flex;
+    display: flex;
     justify-content: center;
   }
-  .container{
-    background-color: rgba(255,255,255,0.95);
+
+  .container {
+    background-color: rgba(255, 255, 255, 0.95);
     border-radius: 15px;
     padding: 20px;
     max-width: 320px;
     margin: auto;
-    box-shadow: 0 20px 15px rgba(0,0,0,0.15);
+    box-shadow: 0 20px 15px rgba(0, 0, 0, 0.15);
   }
-  h1{
+
+  h1 {
     color: #0F9D58;
     margin: 0 0 10px 0;
-    span{
+
+    span {
       display: inline-flex;
       vertical-align: middle;
       justify-content: center;
@@ -140,30 +169,34 @@
       text-align: center;
       vertical-align: middle;
     }
-    svg{
+
+    svg {
       display: inline-block;
-      path{
+
+      path {
         fill: #0F9D58;
       }
     }
   }
-  .btn{
+
+  .btn {
     display: block;
     border-radius: 25px;
     border: none;
     -webkit-appearance: none;
-    color: rgba(244,160,0,1);
+    color: rgba(244, 160, 0, 1);
     background-color: #ffffff;
     font-weight: bold;
     width: 100%;
     font-size: 16px;
     padding: 10px 15px;
     margin: 10px 0;
-    box-shadow: 0 5px 10px 0 rgba(0,0,0,0.15);
+    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
     outline: 0;
-    &:hover{
+
+    &:hover {
       cursor: pointer;
-      background-color: rgba(244,160,0,1);
+      background-color: rgba(244, 160, 0, 1);
       color: #ffffff;
     }
   }
