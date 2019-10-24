@@ -1,7 +1,7 @@
 <template>
     <div>
         <canvas id="audiowave"></canvas>
-        <button class="btn" v-if="!volumeMeter" @click="beginDetect">Detect</button>
+        <button class="btn" v-if="!volumeMeter" @click="beginDetect">Audiowave aan</button>
         <div id="settings" class="hide">
             <div style="position: relative;">
                 <!-- <input type="range" id="spacing" name="spacing" min="0" max="1" step="0.0001" /> -->
@@ -23,6 +23,11 @@
 </template>
 
 <script>
+    //https://codepen.io/djoga98/pen/rqjPao
+    //https://codepen.io/huooo/pen/xJNPOL
+    //https://github.com/cwilso/volume-meter/
+    //https://medium.com/@radarboy3000
+
     export default {
         name: 'AudioWave',
         data: function () {
@@ -116,6 +121,14 @@
                     a = 0.1924,
                     speed = 0.0055;
 
+                let spacing2 = 0.8292,
+                    a2 = 0.0393,
+                    speed2 = 0.0158;
+
+                let spacing3 = 0.4411,
+                    a3 = 0.3799,
+                    speed3 = 0.0096;
+
                 function init(options) {
                     canvas = document.getElementById(options.canvas);
                     canvas.width = options.w;
@@ -168,8 +181,9 @@
 
                 function draw() {
                     // console.log("draw");
+                    //line 1 - blue
                     ctx.beginPath();
-                    ctx.lineWidth = 3;
+                    ctx.lineWidth = 1;
                     ctx.strokeStyle = "rgb(66,133,244)";
 
                     let h = Math.sin(runTime * speed) * a;
@@ -183,6 +197,58 @@
                         }
                     }
                     ctx.stroke();
+
+                    //line 2 - red
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = "red";
+
+                    let h2 = Math.sin(runTime * speed2) * a2;
+                    let pointList2 = getPath(h2);
+
+                    for (let i = 0; i < width; i++) {
+                        if (i === 0) {
+                            ctx.moveTo(pointList2[0][0], pointList2[0][1]);
+                        } else {
+                            ctx.lineTo(pointList2[i][0], pointList2[i][1]);
+                        }
+                    }
+                    ctx.stroke();
+
+                    //line 3 - green
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = "green";
+
+                    let h3 = Math.sin(runTime * speed3) * a3;
+                    let pointList3 = getPath(h3);
+
+                    for (let i = 0; i < width; i++) {
+                        if (i === 0) {
+                            ctx.moveTo(pointList3[0][0], pointList3[0][1]);
+                        } else {
+                            ctx.lineTo(pointList3[i][0], pointList3[i][1]);
+                        }
+                    }
+                    ctx.stroke();
+
+                    //line 4 - yellow
+                    ctx.beginPath();
+                    ctx.lineWidth = 1;
+                    ctx.strokeStyle = "yellow";
+
+                    let h4 = Math.sin(runTime * 0) * 0;
+                    let pointList4 = getPath(h4);
+
+                    for (let i = 0; i < width; i++) {
+                        if (i === 0) {
+                            ctx.moveTo(pointList4[0][0], pointList4[0][1]);
+                        } else {
+                            ctx.lineTo(pointList4[i][0], pointList4[i][1]);
+                        }
+                    }
+                    ctx.stroke();
+                    
                 }
 
                 function update() {
@@ -215,8 +281,9 @@
             Sine.init({
                 canvas: "audiowave",
                 w: window.innerWidth,
-                h: window.innerHeight
+                h: window.innerHeight,
             });
+                
         }
     }
 </script>
@@ -232,6 +299,6 @@
         width: 100%;
         height: 100%;
         z-index: -1;
-        opacity: 0.7;
+        /* opacity: 0.7; */
     }
 </style>
