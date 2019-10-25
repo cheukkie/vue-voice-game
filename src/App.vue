@@ -19,10 +19,10 @@
         </div>
 
         <AllPlayers />
-        <AddPlayer v-if="gameSettingsStatus && allPlayers.length < gameModeSettings.maxPlayers" />
-        <!-- <button class="btn" v-if="allPlayers.length >= gameModeSettings.maxPlayers" @click="startGame">Play</button> -->
+        <AddPlayer v-if="!gameStarted && gameSettingsStatus && allPlayers.length < gameModeSettings.maxPlayers" />
+        <button class="btn" v-if="allPlayers.length >= gameModeSettings.maxPlayers && !gameStarted" @click="beginGame">Start game</button>
 
-        <div v-if="allPlayers.length >= gameModeSettings.maxPlayers && gameSettingsStatus && !gameOverStatus">
+        <div v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
           Ronde {{ curRound }}
           <RecordBtn :player="curPlayer" />
         </div>
@@ -56,8 +56,7 @@
     data: function () {
       return {
         webSpeech: false,
-        //gameRunning: false,
-
+        
         gameModeSettings: {
           maxPlayers: 2,
           targetScore: 5,
@@ -81,20 +80,19 @@
       };
     },
     methods: {
-      ...mapActions(['setWinningScore', 'resetGame', 'settingsSet']),
-      // startGame() {
-      //   //this.gameRunning = true;
-      //   this.settingsSet();
-      // },
+      ...mapActions(['setWinningScore', 'resetGame', 'settingsSet','startGame']),
+      beginGame() {
+        //this.settingsSet();
+        this.startGame();
+      },
       saveGameSettings() {
-        this.settingsSet();
-
         const winningScore = parseInt(this.gameModeSettings.targetScore);
         this.setWinningScore(winningScore);
+        this.settingsSet();
       }
     },
     computed: {
-      ...mapGetters(['allPlayers', 'curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus']),
+      ...mapGetters(['allPlayers', 'curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus','gameStarted']),
     },
     mounted: function () {
       window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;

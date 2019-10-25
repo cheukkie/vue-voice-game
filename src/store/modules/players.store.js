@@ -1,7 +1,9 @@
 //import axios from 'axios';
+import {shuffleArray} from '@/utils.js';
 
 const state = {
     players: [],
+    gameStarted: false,
     gameRound: 1,
     gameCurPlayerIndex: 0,
     gameWinningScore: 5,
@@ -14,10 +16,16 @@ const getters = {
     curPlayer: state => state.players[state.gameCurPlayerIndex],
     curRound: state => state.gameRound,
     gameOverStatus: state => state.gameOver,
-    gameSettingsStatus: state => state.gameSettingsSet
+    gameSettingsStatus: state => state.gameSettingsSet,
+    gameStarted: state => state.gameStarted
 };
 
 const actions = {
+
+    startGame({commit}){
+        commit('START_GAME');
+        commit('SHUFFLE_PLAYERS');
+    },
 
     settingsSet({commit}){
         commit('SETTINGS_SET');
@@ -75,9 +83,14 @@ const mutations = {
     DELETE_PLAYER: (state,player )=> state.players.splice(player,1),
     SELECT_FIRST_PLAYER: () => state.gameCurPlayerIndex = 0,
     SELECT_NEXT_PLAYER: () => state.gameCurPlayerIndex++,
+    SHUFFLE_PLAYERS: () => state.players = shuffleArray(state.players),
 
     SETTINGS_SET: () => state.gameSettingsSet = true,
+    START_GAME: () => {
+        state.gameStarted = true;
+    },
     RESET_GAME: () => {
+        state.gameStarted = false;
         state.gameOver = false;
         state.gameRound = 1;
         state.gameWinningScore = 5;
@@ -91,6 +104,8 @@ const mutations = {
             }
         }
     },
+
+
     
     SET_WINNING_PLAYER: () => {
         state.players[state.gameCurPlayerIndex].winner = true;
