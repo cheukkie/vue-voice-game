@@ -1,5 +1,5 @@
 //import axios from 'axios';
-import {shuffleArray} from '@/utils.js';
+import { shuffleArray } from '@/utils/utils.js';
 
 const state = {
     players: [],
@@ -104,8 +104,6 @@ const mutations = {
             }
         }
     },
-
-
     
     SET_WINNING_PLAYER: () => {
         state.players[state.gameCurPlayerIndex].winner = true;
@@ -117,15 +115,6 @@ const mutations = {
     REMOVE_POINT: () => state.players[state.gameCurPlayerIndex].score--,
     SET_WINNING_SCORE: (state,score) => (state.gameWinningScore = score),
     
-    // setTodos: (state, todos) => (state.todos = todos),
-    // removeTodo: (state, id) =>
-    //     (state.todos = state.todos.filter(todo => todo.id !== id)),
-    // updateTodo: (state, updTodo) => {
-    //     const index = state.todos.findIndex(todo => todo.id === updTodo.id);
-    //     if (index !== -1) {
-    //         state.todos.splice(index, 1, updTodo);
-    //     }
-    // }
 };
 
 export default {

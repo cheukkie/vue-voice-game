@@ -1,7 +1,7 @@
 <template>
     <div>
         <canvas id="audiowave"></canvas>
-        <button class="btn" v-if="!volumeMeter" @click="beginDetect">Audiowave aan</button>
+        <!-- <button class="btn" v-if="!volumeMeter" @click="beginDetect">Audiowave aan</button> -->
         <div id="settings" class="hide">
             <div style="position: relative;">
                 <!-- <input type="range" id="spacing" name="spacing" min="0" max="1" step="0.0001" /> -->
@@ -30,6 +30,9 @@
 
     export default {
         name: 'AudioWave',
+        props:{
+            animate: false
+        },
         data: function () {
             return {
                 audioContext: '',
@@ -284,7 +287,13 @@
                 h: window.innerHeight,
             });
                 
+        },
+        watch:{
+            animate: function(){
+                this.beginDetect();
+            }
         }
+
     }
 </script>
 

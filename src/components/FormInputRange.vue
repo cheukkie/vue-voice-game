@@ -63,8 +63,4 @@
             margin: 0 5px;
         }
     }
-    // button{
-    //     -webkit-appearance: none;
-    //     border: none;
-    // }
 </style>

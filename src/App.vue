@@ -6,25 +6,27 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
             <path
               d="M15.526 11.409c-1.052.842-7.941 6.358-9.536 7.636l-2.697-2.697 7.668-9.504 4.565 4.565zm5.309-9.867c-2.055-2.055-5.388-2.055-7.443 0-1.355 1.356-1.47 2.842-1.536 3.369l5.61 5.61c.484-.054 2.002-.169 3.369-1.536 2.056-2.055 2.056-5.388 0-7.443zm-9.834 17.94c-2.292 0-3.339 1.427-4.816 2.355-1.046.656-2.036.323-2.512-.266-.173-.211-.667-.971.174-1.842l-.125-.125-1.126-1.091c-1.372 1.416-1.129 3.108-.279 4.157.975 1.204 2.936 1.812 4.795.645 1.585-.995 2.287-2.088 3.889-2.088 1.036 0 1.98.464 3.485 2.773l1.461-.952c-1.393-2.14-2.768-3.566-4.946-3.566z" />
-            </svg>
+          </svg>
         </span>
         Voice Game
       </h1>
       <div v-if="webSpeech">
         <div v-if="!gameSettingsStatus">
           <FormInputRange v-model="gameModeSettings.maxPlayers" :min="2" :max="8" label="Spelers" />
-          <FormInputSelect v-model="gameModeSettings.targetScore" placeholder="Selecteer een win score" :options="gameModeSettings.winOptions" />
+          <FormInputSelect v-model="gameModeSettings.targetScore" placeholder="Selecteer een win score"
+            :options="gameModeSettings.winOptions" />
           <br>
           <button class="btn" v-if="!gameSettingsStatus" @click="saveGameSettings">Opslaan</button>
         </div>
 
         <AllPlayers />
         <AddPlayer v-if="!gameStarted && gameSettingsStatus && allPlayers.length < gameModeSettings.maxPlayers" />
-        <button class="btn" v-if="allPlayers.length >= gameModeSettings.maxPlayers && !gameStarted" @click="beginGame">Start game</button>
+        <button class="btn" v-if="allPlayers.length >= gameModeSettings.maxPlayers && !gameStarted"
+          @click="beginGame">Start game</button>
 
         <div v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
           Ronde {{ curRound }}
-          <RecordBtn :player="curPlayer" />
+          <RecordPanel :player="curPlayer" />
         </div>
         <div v-if="gameOverStatus">
           <button class="btn" @click="resetGame">Reset</button>
@@ -34,7 +36,9 @@
         <p>This is an experiment with Web Speech API</p>
         <p>To play this game please use a Chrome browser.</p>
       </div>
-      <AudioWave />
+      <AudioWave :animate="waveAnimation" />
+
+
     </div>
   </div>
 </template>
@@ -46,7 +50,7 @@
   } from 'vuex';
   import AllPlayers from './components/AllPlayers.vue';
   import AddPlayer from './components/AddPlayer.vue';
-  import RecordBtn from './components/RecordBtn.vue';
+  import RecordPanel from './components/RecordPanel.vue';
   import AudioWave from './components/AudioWave.vue';
   import FormInputRange from './components/FormInputRange.vue';
   import FormInputSelect from './components/FormInputSelect.vue';
@@ -56,7 +60,7 @@
     data: function () {
       return {
         webSpeech: false,
-        
+        waveAnimation: false,
         gameModeSettings: {
           maxPlayers: 2,
           targetScore: 5,
@@ -80,10 +84,11 @@
       };
     },
     methods: {
-      ...mapActions(['setWinningScore', 'resetGame', 'settingsSet','startGame']),
+      ...mapActions(['setWinningScore', 'resetGame', 'settingsSet', 'startGame']),
       beginGame() {
         //this.settingsSet();
         this.startGame();
+        this.waveAnimation = true;
       },
       saveGameSettings() {
         const winningScore = parseInt(this.gameModeSettings.targetScore);
@@ -92,21 +97,19 @@
       }
     },
     computed: {
-      ...mapGetters(['allPlayers', 'curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus','gameStarted']),
+      ...mapGetters(['allPlayers', 'curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus', 'gameStarted']),
     },
     mounted: function () {
       window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
       if ('webkitSpeechRecognition' in window) {
         // speech recognition API supported
         this.webSpeech = true;
-      } else {
-        // speech recognition API not supported
       }
     },
     components: {
       AddPlayer,
       AllPlayers,
-      RecordBtn,
+      RecordPanel,
       AudioWave,
       FormInputRange,
       FormInputSelect,
@@ -143,7 +146,7 @@
   }
 
   .container {
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.85);
     border-radius: 15px;
     padding: 20px;
     max-width: 320px;
@@ -152,7 +155,7 @@
   }
 
   h1 {
-    color: #0F9D58;
+    color: rgb(15, 157, 88);
     margin: 0 0 10px 0;
 
     span {
@@ -161,7 +164,7 @@
       justify-content: center;
       align-items: center;
       border-radius: 100%;
-      border: solid 2px #0F9D58;
+      border: solid 2px #0f9d58;
       width: 45px;
       height: 45px;
       text-align: center;
@@ -196,6 +199,69 @@
       cursor: pointer;
       background-color: rgba(244, 160, 0, 1);
       color: #ffffff;
+    }
+  }
+
+  .btn-round {
+    display: block;
+    width: 80px;
+    height: 80px;
+    padding: 15px;
+    margin: 10px auto;
+    -webkit-appearance: none;
+    border-radius: 100%;
+    text-align: center;
+    box-shadow: 0 15px 20px 0 rgba(0, 0, 0, 0.25);
+    border: solid 5px #ffffff;
+    cursor: pointer;
+    transition: all .25s ease;
+    outline: 0;
+
+    &.is-red {
+      background-color: rgba(219, 68, 55, 1);
+    }
+
+    &.is-yellow {
+      background-color: rgba(244, 160, 0, 1);
+    }
+
+    &.is-green {
+      background-color: rgba(15, 157, 88, 1);
+    }
+
+    &.is-blue {
+      background-color: rgba(66, 133, 244, 1);
+    }
+
+    &:disabled,
+    &:disabled:hover {
+      opacity: 0.25;
+      box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.15);
+      cursor: not-allowed;
+    }
+
+    &:hover {
+      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    &:active {
+      box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.15);
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+
+      path {
+        fill: #ffffff;
+      }
+    }
+  }
+
+  .btn-group {
+    .btn-round {
+      display: inline-block;
+      margin: 10px 15px;
     }
   }
 </style>
