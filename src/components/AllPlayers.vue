@@ -8,8 +8,11 @@
             <span class="name">{{ displayName(player.name) }}</span>
             <span class="score">{{ player.score }}</span>
             <span class="indicator" v-if="player.currentPlayer"></span>
-            <button v-if="!gameSettingsStatus" @click="removePlayer(index)">Delete player</button>
-            <button v-if="!gameSettingsStatus">Edit name</button>
+
+            <div v-if="view !== 'icons'">
+                <button @click="removePlayer(index)">Delete player</button>
+                <button>Edit name</button>
+            </div>
         </li>
     </ul>
 </template>

@@ -3,12 +3,14 @@ import { shuffleArray } from '@/utils/utils.js';
 
 const state = {
     players: [],
+    
     gameStarted: false,
     gameRound: 1,
     gameCurPlayerIndex: 0,
     gameWinningScore: 5,
     gameOver: false,
-    gameSettingsSet: false
+    gameSettingsSet: false,
+    gameMaxPlayers: 2,
 };
 
 const getters = {
@@ -17,7 +19,8 @@ const getters = {
     curRound: state => state.gameRound,
     gameOverStatus: state => state.gameOver,
     gameSettingsStatus: state => state.gameSettingsSet,
-    gameStarted: state => state.gameStarted
+    gameStarted: state => state.gameStarted,
+    maxPlayers: state => state.gameMaxPlayers
 };
 
 const actions = {
@@ -28,8 +31,16 @@ const actions = {
         commit('MAKE_PLAYER_ACTIVE');
     },
 
+    setWinningScore({commit},score){
+        commit('SET_WINNING_SCORE',score);
+    },
+
     settingsSet({commit}){
         commit('SETTINGS_SET');
+    },
+
+    setMaxPlayers({commit},qty){
+        commit('SET_MAX_PLAYERS',qty);
     },
 
     resetGame({commit}){
@@ -74,15 +85,13 @@ const actions = {
         commit('REMOVE_POINT');
     },
 
-    setWinningScore({commit},score){
-        commit('SET_WINNING_SCORE',score);
-    },
+   
 
 };
 
 const mutations = {
     //MAKE MUTATIONS ALL CAPS
-    NEW_PLAYER: (state, player) => state.players.unshift(player),
+    NEW_PLAYER: (state, player) => state.players.push(player),
     DELETE_PLAYER: (state,player )=> state.players.splice(player,1),
     SELECT_FIRST_PLAYER: () => state.gameCurPlayerIndex = 0,
     SELECT_NEXT_PLAYER: () => state.gameCurPlayerIndex++,
@@ -94,7 +103,7 @@ const mutations = {
     },
 
     SHUFFLE_PLAYERS: () => state.players = shuffleArray(state.players),
-
+    
     SETTINGS_SET: () => state.gameSettingsSet = true,
     START_GAME: () => {
         state.gameStarted = true;
@@ -125,6 +134,7 @@ const mutations = {
     ADD_POINT: () => state.players[state.gameCurPlayerIndex].score++,
     REMOVE_POINT: () => state.players[state.gameCurPlayerIndex].score--,
     SET_WINNING_SCORE: (state,score) => (state.gameWinningScore = score),
+    SET_MAX_PLAYERS: (state,qty) => { state.gameMaxPlayers = qty; },
     
 };
 

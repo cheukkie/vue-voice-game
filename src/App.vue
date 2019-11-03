@@ -14,42 +14,7 @@
     <div class="container">
       <div class="panel">
         <div v-if="webSpeech">
-          <div>
-            <h2>Select game mode</h2>
-            <button disabled class="btn">Single player</button>
-            <button class="btn">Multi player</button>
-            <button disabled class="btn">Leaderboards</button>
-            <button disabled class="btn">Settings</button>
-          </div>
-          <div v-if="!gameSettingsStatus">
-            <h2>Rules</h2>
-            <FormInputRange v-model="gameModeSettings.maxPlayers" :min="2" :max="4" label="Spelers" />
-            <FormInputSelect v-model="gameModeSettings.targetScore" placeholder="Select win score - default 5"
-              :options="gameModeSettings.scoreOptions" />
-            <br>
-            <button class="btn" v-if="!gameSettingsStatus" @click="saveGameSettings">Opslaan</button>
-          </div>
-
-          <div v-if="!gameStarted && gameSettingsStatus && allPlayers.length < gameModeSettings.maxPlayers">
-            <h2>Add players</h2>
-            <AllPlayers view="list" />
-            <AddPlayer />
-          </div>
-          <div v-if="allPlayers.length >= gameModeSettings.maxPlayers && !gameStarted">
-            <h2>Explanation</h2>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam molestias inventore commodi aut ducimus enim nobis ad saepe dicta eligendi!</p>
-            <button class="btn" @click="beginGame">Start game</button>
-          </div>
-
-          <div v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
-            Ronde {{ curRound }}
-            <RecordPanel :player="curPlayer" />
-          </div>
-          <div v-if="gameOverStatus">
-            <h2>Winner!</h2>
-            <AllPlayers view="list" />
-            <button class="btn" @click="resetGame">Play again</button>
-          </div>
+          <router-view />
         </div>
         <div v-else>
           <p>This is an experiment with Web Speech API</p>
@@ -57,70 +22,24 @@
         </div>
       </div>
     </div>
-
-    <div v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
-      <AllPlayers view="icons" />
-    </div>
     <AudioWave :animate="waveAnimation" />
 
   </div>
 </template>
 
 <script>
-  import {
-    mapGetters,
-    mapActions
-  } from 'vuex';
-  import AllPlayers from './components/AllPlayers.vue';
-  import AddPlayer from './components/AddPlayer.vue';
-  import RecordPanel from './components/RecordPanel.vue';
-  import AudioWave from './components/AudioWave.vue';
-  import FormInputRange from './components/FormInputRange.vue';
-  import FormInputSelect from './components/FormInputSelect.vue';
-
+  import AudioWave from '@/components/AudioWave.vue';
+  
   export default {
     name: 'app',
     data: function () {
       return {
         webSpeech: false,
-        waveAnimation: false,
-        gameModeSettings: {
-          maxPlayers: 2,
-          targetScore: 5,
-          scoreOptions: [{
-            value: 5,
-            label: 'Winscore: 5'
-          },{
-            value: 10,
-            label: 'Winscore: 10'
-          }, {
-            value: 15,
-            label: 'Winscore: 15'
-          }, {
-            value: 20,
-            label: 'Winscore: 20'
-          }, {
-            value: 30,
-            label: 'Winscore: 30'
-          }]
-        }
+        waveAnimation: false
       };
     },
     methods: {
-      ...mapActions(['setWinningScore', 'resetGame', 'settingsSet', 'startGame']),
-      beginGame() {
-        //this.settingsSet();
-        this.startGame();
-        this.waveAnimation = true;
-      },
-      saveGameSettings() {
-        const winningScore = parseInt(this.gameModeSettings.targetScore);
-        this.setWinningScore(winningScore);
-        this.settingsSet();
-      }
-    },
-    computed: {
-      ...mapGetters(['allPlayers', 'curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus', 'gameStarted']),
+      
     },
     mounted: function () {
       window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
@@ -130,12 +49,7 @@
       }
     },
     components: {
-      AddPlayer,
-      AllPlayers,
-      RecordPanel,
       AudioWave,
-      FormInputRange,
-      FormInputSelect,
     }
   };
 </script>
