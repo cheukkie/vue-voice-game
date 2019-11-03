@@ -46,6 +46,7 @@ export const webSpeechApi = options => {
 
     //EVENTLISTENERS
     recognition.onerror = event => {
+        ////https://wicg.github.io/speech-api/#speechreco-error
         console.log(`error: ${event.error}`);
     };
     recognition.onnomatch = event => {

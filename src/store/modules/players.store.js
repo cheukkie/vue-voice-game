@@ -25,6 +25,7 @@ const actions = {
     startGame({commit}){
         commit('START_GAME');
         commit('SHUFFLE_PLAYERS');
+        commit('MAKE_PLAYER_ACTIVE');
     },
 
     settingsSet({commit}){
@@ -43,7 +44,8 @@ const actions = {
         commit('NEW_PLAYER', {
             name: player,
             score: 0,
-            winner: false
+            winner: false,
+            currentPlayer: false
         });
     },
 
@@ -58,6 +60,7 @@ const actions = {
             commit('SELECT_FIRST_PLAYER');
             commit('ADD_ROUND');
         }
+        commit('MAKE_PLAYER_ACTIVE');
     },
 
     addPoint({commit}){
@@ -83,6 +86,13 @@ const mutations = {
     DELETE_PLAYER: (state,player )=> state.players.splice(player,1),
     SELECT_FIRST_PLAYER: () => state.gameCurPlayerIndex = 0,
     SELECT_NEXT_PLAYER: () => state.gameCurPlayerIndex++,
+    MAKE_PLAYER_ACTIVE: () => {
+        for (let i = 0; i < state.players.length; i++) {
+            state.players[i].currentPlayer = false;
+        }
+        state.players[state.gameCurPlayerIndex].currentPlayer = true;
+    },
+
     SHUFFLE_PLAYERS: () => state.players = shuffleArray(state.players),
 
     SETTINGS_SET: () => state.gameSettingsSet = true,
@@ -101,6 +111,7 @@ const mutations = {
             for (let i = 0; i < state.players.length; i++) {
                 state.players[i].score = 0;
                 state.players[i].winner = false;
+                state.players[i].currentPlayer = false;
             }
         }
     },

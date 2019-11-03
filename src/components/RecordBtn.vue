@@ -28,11 +28,11 @@
 </template>
 
 <script>
-import { webSpeechApi } from '@/utils/webspeech.api';
 export default {
     name: 'RecordBtn',
     props: {
-        color: String
+        color: String,
+        showInterimResults: Boolean
     },
     data: function(){
         return {
@@ -49,7 +49,7 @@ export default {
         this.recognition = new webkitSpeechRecognition();
 
         this.recognition.continuous = false;
-        this.recognition.interimResults = false;
+        this.recognition.interimResults = this.showInterimResults || false;
         this.recognition.maxAlternatives = 3;
         this.recognition.lang = 'nl-NL';
 

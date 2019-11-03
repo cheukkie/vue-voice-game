@@ -29,6 +29,7 @@
                 showNextPlayerBtn: false,
                 showRecordBtn: false,
                 output: '',     
+                word: '',
                 list: [
                     'Inhoud',
                     'Sensor',
@@ -66,21 +67,8 @@
                     'Burgemeestersbenoeming',
                     'Fietspompreparatiesetje',
                     'Vijfhonderdduizendklapper',
-                    'Aansprakelijkheidsverzekeraar',
-                    'Huwelijksvruchtbaarheidscijfer',
-                    'Vertegenwoordigingsovereenkomst',
-                    'Kunstnijverheidstentoonstelling',
-                    'Chronischevermoeidheidssyndroom',
-                    'Medeverantwoordelijkheidsheffing',
-                    'Aankoopwaardegarantieverzekering',
-                    'Arbeidsongeschiktheidsverzekering',
-                    'Pensioenfondstoetredingsvoorwaarden',
-                    'Elektriciteitsproductiemaatschappij',
-                    'Hippopotomonstrosesquippedaliofobie',
-                    'Zandzeepsodemineraalwatersteenstralen',
-
                 ],
-                word: ''
+
             };
         },
         mounted: function () {
@@ -102,14 +90,16 @@
                 }
             },
             checkWord(){
-                if (this.output.toLowerCase().replace(' ','') === this.word.toLowerCase().replace(' ','')) {
+                console.log('output: '+this.output.toLowerCase().replace(/\s/g, ''));
+                console.log('word: '+this.output.toLowerCase().replace(/\s/g, ''));
+                if (this.output.toLowerCase().replace(/\s/g, '') === this.word.toLowerCase().replace(/\s/g, '')) {
                     this.addPoint();
                 }
                 if (
-                    this.output.toLowerCase().replace(' ','') !== this.word.toLowerCase().replace(' ','') &&
+                    this.output.toLowerCase().replace(/\s/g, '') !== this.word.toLowerCase().replace(/\s/g, '') &&
                     this.player.score >= 1
                 ) {
-                    this.removePoint();
+                    //this.removePoint();
                 }
                 this.showNextPlayerBtn = true;
             },

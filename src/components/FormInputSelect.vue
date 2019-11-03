@@ -34,6 +34,9 @@
 </script>
 
 <style lang="scss" scoped>
+    .btn{
+        padding: 10px 35px 10px 15px;
+    }
     .selectHolder{
         position:relative;
         .icon{

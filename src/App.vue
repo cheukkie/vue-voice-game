@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <div class="container">
+    <header>
       <h1>
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -10,36 +10,59 @@
         </span>
         Voice Game
       </h1>
-      <div v-if="webSpeech">
-        <div v-if="!gameSettingsStatus">
-          <FormInputRange v-model="gameModeSettings.maxPlayers" :min="2" :max="8" label="Spelers" />
-          <FormInputSelect v-model="gameModeSettings.targetScore" placeholder="Selecteer een win score"
-            :options="gameModeSettings.winOptions" />
-          <br>
-          <button class="btn" v-if="!gameSettingsStatus" @click="saveGameSettings">Opslaan</button>
-        </div>
+    </header>
+    <div class="container">
+      <div class="panel">
+        <div v-if="webSpeech">
+          <div>
+            <h2>Select game mode</h2>
+            <button disabled class="btn">Single player</button>
+            <button class="btn">Multi player</button>
+            <button disabled class="btn">Leaderboards</button>
+            <button disabled class="btn">Settings</button>
+          </div>
+          <div v-if="!gameSettingsStatus">
+            <h2>Rules</h2>
+            <FormInputRange v-model="gameModeSettings.maxPlayers" :min="2" :max="4" label="Spelers" />
+            <FormInputSelect v-model="gameModeSettings.targetScore" placeholder="Select win score - default 5"
+              :options="gameModeSettings.scoreOptions" />
+            <br>
+            <button class="btn" v-if="!gameSettingsStatus" @click="saveGameSettings">Opslaan</button>
+          </div>
 
-        <AllPlayers />
-        <AddPlayer v-if="!gameStarted && gameSettingsStatus && allPlayers.length < gameModeSettings.maxPlayers" />
-        <button class="btn" v-if="allPlayers.length >= gameModeSettings.maxPlayers && !gameStarted"
-          @click="beginGame">Start game</button>
+          <div v-if="!gameStarted && gameSettingsStatus && allPlayers.length < gameModeSettings.maxPlayers">
+            <h2>Add players</h2>
+            <AllPlayers view="list" />
+            <AddPlayer />
+          </div>
+          <div v-if="allPlayers.length >= gameModeSettings.maxPlayers && !gameStarted">
+            <h2>Explanation</h2>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam molestias inventore commodi aut ducimus enim nobis ad saepe dicta eligendi!</p>
+            <button class="btn" @click="beginGame">Start game</button>
+          </div>
 
-        <div v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
-          Ronde {{ curRound }}
-          <RecordPanel :player="curPlayer" />
+          <div v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
+            Ronde {{ curRound }}
+            <RecordPanel :player="curPlayer" />
+          </div>
+          <div v-if="gameOverStatus">
+            <h2>Winner!</h2>
+            <AllPlayers view="list" />
+            <button class="btn" @click="resetGame">Play again</button>
+          </div>
         </div>
-        <div v-if="gameOverStatus">
-          <button class="btn" @click="resetGame">Reset</button>
+        <div v-else>
+          <p>This is an experiment with Web Speech API</p>
+          <p>To play this game please use a Chrome browser.</p>
         </div>
       </div>
-      <div v-else>
-        <p>This is an experiment with Web Speech API</p>
-        <p>To play this game please use a Chrome browser.</p>
-      </div>
-      <AudioWave :animate="waveAnimation" />
-
-
     </div>
+
+    <div v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
+      <AllPlayers view="icons" />
+    </div>
+    <AudioWave :animate="waveAnimation" />
+
   </div>
 </template>
 
@@ -64,10 +87,10 @@
         gameModeSettings: {
           maxPlayers: 2,
           targetScore: 5,
-          winOptions: [{
+          scoreOptions: [{
             value: 5,
             label: 'Winscore: 5'
-          }, {
+          },{
             value: 10,
             label: 'Winscore: 10'
           }, {
@@ -141,22 +164,33 @@
     color: #2c3e50;
     height: 100vh;
     width: 100vw;
+    padding: 15px;
     display: flex;
     justify-content: center;
+    flex-direction: column;
   }
 
   .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    flex: 2;
+  }
+  .panel{
     background-color: rgba(255, 255, 255, 0.85);
     border-radius: 15px;
     padding: 20px;
-    max-width: 320px;
-    margin: auto;
     box-shadow: 0 20px 15px rgba(0, 0, 0, 0.15);
   }
 
   h1 {
     color: rgb(15, 157, 88);
-    margin: 0 0 10px 0;
+    margin: 0;
+    font-size: 24px;
 
     span {
       display: inline-flex;
@@ -195,7 +229,12 @@
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
     outline: 0;
 
-    &:hover {
+    &[disabled]{
+      cursor: not-allowed;
+      color: rgba(0, 0, 0, 0.15);
+    }
+
+    &:hover:not([disabled]) {
       cursor: pointer;
       background-color: rgba(244, 160, 0, 1);
       color: #ffffff;
