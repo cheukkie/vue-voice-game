@@ -8,11 +8,13 @@
             <span class="name">{{ displayName(player.name) }}</span>
             <span class="score">{{ player.score }}</span>
             <span class="indicator" v-if="player.currentPlayer"></span>
-
-            <div v-if="view !== 'icons'">
-                <button @click="removePlayer(index)">Delete player</button>
-                <button>Edit name</button>
-            </div>
+        
+            <button class="btn-delete" @click="removePlayer(index)" v-if="view !== 'icons' && !gameOverStatus">
+                <div class="svg-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.151 17.943l-4.143-4.102-4.117 4.159-1.833-1.833 4.104-4.157-4.162-4.119 1.833-1.833 4.155 4.102 4.106-4.16 1.849 1.849-4.1 4.141 4.157 4.104-1.849 1.849z"/></svg>
+                </div>
+            </button>
+        
         </li>
     </ul>
 </template>
@@ -29,7 +31,7 @@
             view: String,
         },
         computed: {
-            ...mapGetters(['allPlayers', 'gameSettingsStatus']),
+            ...mapGetters(['allPlayers', 'gameSettingsStatus','gameOverStatus']),
         },
         methods: {
             ...mapActions(['removePlayer']),
@@ -45,6 +47,24 @@
 </script>
 
 <style lang="scss" scoped>
+    
+    .btn-delete{
+        padding: 0 5px;
+        margin-left: 10px;
+        -webkit-appearance: none;
+        border: none;
+        height: 100%;
+        cursor: pointer;
+        svg path{
+            fill: #c5c5c5;
+        }
+        &:hover{
+            svg path{
+                fill: rgba(244, 160, 0, 1);
+            }
+        }
+    }
+
     ul {
         margin: auto;
         padding: 0;
@@ -116,12 +136,13 @@
             .indicator{
                 left: 0;
                 right: 0;
-                bottom: -10px;
+                top: 100%;
+                margin-top: 5px;;
 
-                border-right: 5px solid transparent;
-                border-bottom: 5px solid rgba(244, 160, 0, 1);
+                border-right: 15px solid transparent;
+                border-bottom: 15px solid rgba(244, 160, 0, 1);
                 
-                border-left: 5px solid transparent;
+                border-left: 15px solid transparent;
             }
             .name {
                 margin: 0;

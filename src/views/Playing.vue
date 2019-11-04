@@ -11,9 +11,7 @@
                 <button class="btn" @click="resetGame">Play again</button>
             </router-link>
         </div>
-        <div v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
-            <AllPlayers view="icons" />
-        </div>
+        
     </div>
 </template>
 

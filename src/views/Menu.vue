@@ -1,7 +1,8 @@
 <template>
     <div>
+        <h2>Select game mode</h2>        
         <button disabled class="btn">Single player</button>
-        <router-link to="/multiplayer/rules">
+        <router-link to="/multiplayer/info">
             <button class="btn">Multiplayer</button>
         </router-link>
         <!-- <button>Multi player</button> -->
@@ -12,7 +13,6 @@
 
 <script>
 export default {
-
 }
 </script>
 

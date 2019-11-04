@@ -11,16 +11,21 @@ const state = {
     gameOver: false,
     gameSettingsSet: false,
     gameMaxPlayers: 2,
+
+    waveAnimation: false
 };
 
 const getters = {
     allPlayers: state => state.players,
     curPlayer: state => state.players[state.gameCurPlayerIndex],
     curRound: state => state.gameRound,
+    gameWinningScore: state => state.gameWinningScore,
     gameOverStatus: state => state.gameOver,
     gameSettingsStatus: state => state.gameSettingsSet,
     gameStarted: state => state.gameStarted,
-    maxPlayers: state => state.gameMaxPlayers
+    maxPlayers: state => state.gameMaxPlayers,
+
+    isAudioWaveStarted: state => state.waveAnimation
 };
 
 const actions = {
@@ -29,6 +34,7 @@ const actions = {
         commit('START_GAME');
         commit('SHUFFLE_PLAYERS');
         commit('MAKE_PLAYER_ACTIVE');
+        commit('MAKE_AUDIOWAVE_ACTIVE');
     },
 
     setWinningScore({commit},score){
@@ -46,11 +52,7 @@ const actions = {
     resetGame({commit}){
         commit('RESET_GAME');
     },
-
-    removePlayer({commit},player){
-        commit('DELETE_PLAYER', player);
-    },
-
+    
     addPlayer({ commit }, player) {
         commit('NEW_PLAYER', {
             name: player,
@@ -59,7 +61,11 @@ const actions = {
             currentPlayer: false
         });
     },
-
+    
+    removePlayer({commit},player){
+        commit('DELETE_PLAYER', player);
+    },
+    
     nextPlayer({commit}){
         if( (state.gameCurPlayerIndex+1) < state.players.length ){
             commit('SELECT_NEXT_PLAYER');
@@ -90,7 +96,6 @@ const actions = {
 };
 
 const mutations = {
-    //MAKE MUTATIONS ALL CAPS
     NEW_PLAYER: (state, player) => state.players.push(player),
     DELETE_PLAYER: (state,player )=> state.players.splice(player,1),
     SELECT_FIRST_PLAYER: () => state.gameCurPlayerIndex = 0,
@@ -101,6 +106,8 @@ const mutations = {
         }
         state.players[state.gameCurPlayerIndex].currentPlayer = true;
     },
+
+    MAKE_AUDIOWAVE_ACTIVE: () => state.waveAnimation = true,
 
     SHUFFLE_PLAYERS: () => state.players = shuffleArray(state.players),
     
@@ -128,6 +135,11 @@ const mutations = {
     SET_WINNING_PLAYER: () => {
         state.players[state.gameCurPlayerIndex].winner = true;
         state.gameOver = true;
+        if( state.players.length > 0 ){
+            for (let i = 0; i < state.players.length; i++) {
+                state.players[i].currentPlayer = false;
+            }
+        }
     },
 
     ADD_ROUND: () => state.gameRound++,

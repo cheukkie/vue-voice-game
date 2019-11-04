@@ -1,13 +1,13 @@
 <template>
     <div>
-        <h2>Rules</h2>
-        <FormInputRange v-model="gameModeSettings.maxPlayers" :min="2" :max="4" label="Spelers" />
+        <h2>Change rules</h2>
+        <FormInputRange v-model="gameModeSettings.maxPlayers" :min="2" :max="4" label="Players" />
         <FormInputSelect v-model="gameModeSettings.targetScore" placeholder="Select win score - default 5"
             :options="gameModeSettings.scoreOptions" />
         <br>
-        <router-link to="/multiplayer/players">
-            <button class="btn" @click="saveGameSettings">Opslaan</button>
-        </router-link>
+        <button class="btn" @click="saveGameSettings">
+            {{ button.label }}
+        </button>
     </div>
 </template>
 
@@ -19,6 +19,14 @@
     export default {
         data: function () {
             return {
+                button:{
+                    label: '',
+                    states: {
+                        neutral: 'Save',
+                        progress: 'Saving rules...',
+                        success: 'Rules saved!',
+                    }
+                },
                 gameModeSettings: {
                     maxPlayers: 2,
                     targetScore: 5,
@@ -41,6 +49,9 @@
                 }
             };
         },
+        mounted: function(){
+            this.button.label = this.button.states.neutral;
+        },
         methods:{
             ...mapActions(['setWinningScore','settingsSet','setMaxPlayers']),
             saveGameSettings() {
@@ -50,6 +61,16 @@
                 this.setMaxPlayers(maxPlayers);
                 this.setWinningScore(winningScore);
                 this.settingsSet();
+                
+                this.button.label = this.button.states.progress;
+
+                setTimeout(()=>{
+                    this.button.label = this.button.states.success;
+                },1500);
+                setTimeout(()=>{
+                    this.button.label = this.button.states.neutral;
+                },3000);
+                
             }
         },
         components:{

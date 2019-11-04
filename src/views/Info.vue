@@ -1,9 +1,15 @@
 <template>
     <div>
         <h2>How to play</h2>
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam molestias inventore commodi aut ducimus enim nobis ad saepe dicta eligendi!</p>
-        <router-link to="/multiplayer/playing">
-            <button class="btn" @click="beginGame">Start game</button>
+        <p>There are <strong>{{ maxPlayers }} players/teams in total</strong>. The first team/player to reach the score of <strong>{{ gameWinningScore }} points</strong> will win the game. Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat cum saepe maiores ut, reiciendis aspernatur?</p>
+        <router-link to="/multiplayer/players">
+            <button class="btn">Add players</button>
+        </router-link>
+        <router-link to="?modal=rules">
+            <button class="btn">Change rules</button>
+        </router-link>
+        <router-link to="/">
+            Back
         </router-link>
     </div>
 </template>
@@ -11,14 +17,10 @@
 <script>
 import { mapGetters,mapActions } from 'vuex';
 export default {
-    methods:{
-        ...mapActions(['startGame']),
-        beginGame() {
-            //this.settingsSet();
-            this.startGame();
-            //this.waveAnimation = true;
-        }
-    }
+    computed:{
+        ...mapGetters(['maxPlayers','gameWinningScore']),
+    },
+    
 }
 </script>
 

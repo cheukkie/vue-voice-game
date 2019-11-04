@@ -42,6 +42,7 @@
         },
         methods: {
             beginDetect() {
+                const vm = this;
                 this.audioContext = new (window.AudioContext || window.webkitAudioContext)()
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                     navigator.mediaDevices.getUserMedia({audio: true}).then((stream) => {
@@ -50,6 +51,7 @@
                         this.mediaStreamSource.connect(this.meter);
                     })
                 }
+                vm.$el.querySelector('#audiowave').classList.add('is-visible');
             },
             createAudioMeter(audioContext, clipLevel, averaging, clipLag) {
                 const processor = audioContext.createScriptProcessor(512);
@@ -112,6 +114,7 @@
         },
         mounted: function () {
             const vm = this;
+
             let Sine = (function () {
                 let canvas, ctx;
                 let width, height;
@@ -296,10 +299,7 @@
     }
 </script>
 
-<style>
-    .hide{
-        display: none;
-    }
+<style lang="scss" scoped>
     #audiowave {
         position: absolute;
         top: 0;
@@ -307,6 +307,10 @@
         width: 100%;
         height: 100%;
         z-index: -1;
-        /* opacity: 0.7; */
+        opacity: 0;
+        transition: 1s 1s all ease;
+        &.is-visible{
+            opacity: .45;
+        }
     }
 </style>

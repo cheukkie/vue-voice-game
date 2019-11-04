@@ -1,9 +1,9 @@
 <template>
     <div>
-        <button class="btn" @click="decrement">-</button>
+        <button class="btn" @click="decrement" :disabled="min===rangeValue">-</button>
         <div class="inputValue">{{ label }}: {{ rangeValue}}</div>
         <input class="hide" :min="min" :max="max" type="range" v-model="rangeValue">
-        <button class="btn" @click="increment">+</button>
+        <button class="btn" @click="increment" :disabled="max===rangeValue">+</button>
     </div>
 </template>
 
