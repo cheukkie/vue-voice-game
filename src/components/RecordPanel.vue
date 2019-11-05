@@ -6,10 +6,11 @@
         <div>
             <span v-if="word">Lees op: {{ word }}</span> <span v-if="output"> - Output: {{ output }}</span>
         </div>
-        <RecordBtn v-if="showRecordBtn" @recordBtnOutput="checkOutput" color="red"/>
+        <RecordBtn v-if="showRecordBtn" :showPulse="true" @recordBtnOutput="checkOutput" color="red"/>
         <button class="btn" v-if="showNextPlayerBtn" @click="selectNextPlayer" title="Next player">
             Next
         </button>
+        <AudioWave :animate="isWaveStarted" />
     </div>
 </template>
 
@@ -18,6 +19,7 @@
     import { mapActions, mapGetters } from 'vuex';
     
     import RecordBtn from '@/components/RecordBtn.vue';
+    import AudioWave from '@/components/AudioWave.vue';
 
     export default {
         name: 'RecordPanel',
@@ -26,6 +28,7 @@
         },
         data: function () {
             return {           
+                isWaveStarted: false,
                 showNextPlayerBtn: false,
                 showRecordBtn: false,
                 output: '',     
@@ -73,6 +76,7 @@
         },
         mounted: function () {
             this.resetRound();
+            this.isWaveStarted = true;
         },
         
         methods: {
@@ -110,7 +114,8 @@
             }
         },
         components:{
-            RecordBtn
+            RecordBtn,
+            AudioWave
         }
     };
 </script>

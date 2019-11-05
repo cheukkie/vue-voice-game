@@ -34,7 +34,7 @@ const actions = {
         commit('START_GAME');
         commit('SHUFFLE_PLAYERS');
         commit('MAKE_PLAYER_ACTIVE');
-        commit('MAKE_AUDIOWAVE_ACTIVE');
+        // commit('MAKE_AUDIOWAVE_ACTIVE');
     },
 
     setWinningScore({commit},score){
