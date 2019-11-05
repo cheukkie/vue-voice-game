@@ -2,7 +2,7 @@
     <ul :class="{icons: view === 'icons'}">
         <li :class="{'is-winner': player.winner, 'is-active': player.currentPlayer}" v-for="(player,index) in allPlayers" :key="index">
             <span v-if="player.winner">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
                     <path d="M3 16l-3-10 7.104 4 4.896-8 4.896 8 7.104-4-3 10h-18zm0 2v4h18v-4h-18z" /></svg>
             </span>
             <span class="name">{{ displayName(player.name) }}</span>
@@ -11,7 +11,7 @@
         
             <button class="btn-delete" @click="removePlayer(index)" v-if="view !== 'icons' && !gameOverStatus">
                 <div class="svg-icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.151 17.943l-4.143-4.102-4.117 4.159-1.833-1.833 4.104-4.157-4.162-4.119 1.833-1.833 4.155 4.102 4.106-4.16 1.849 1.849-4.1 4.141 4.157 4.104-1.849 1.849z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.151 17.943l-4.143-4.102-4.117 4.159-1.833-1.833 4.104-4.157-4.162-4.119 1.833-1.833 4.155 4.102 4.106-4.16 1.849 1.849-4.1 4.141 4.157 4.104-1.849 1.849z"/></svg>
                 </div>
             </button>
         
@@ -50,11 +50,13 @@
     
     .btn-delete{
         padding: 0 5px;
-        margin-left: 10px;
+        margin: 0 -10px 0 10px;
         -webkit-appearance: none;
         border: none;
         height: 100%;
+        background-color: transparent;
         cursor: pointer;
+        
         svg path{
             fill: #c5c5c5;
         }
@@ -88,8 +90,6 @@
             font-weight: bold;
 
             svg {
-                margin-right: 5px;
-
                 path {
                     fill: #ffffff;
                 }
@@ -136,13 +136,12 @@
             .indicator{
                 left: 0;
                 right: 0;
-                top: 100%;
-                margin-top: 5px;;
+                bottom: -10px;
 
-                border-right: 15px solid transparent;
-                border-bottom: 15px solid rgba(244, 160, 0, 1);
+                border-right: 5px solid transparent;
+                border-bottom: 5px solid rgba(244, 160, 0, 1);
                 
-                border-left: 15px solid transparent;
+                border-left: 5px solid transparent;
             }
             .name {
                 margin: 0;

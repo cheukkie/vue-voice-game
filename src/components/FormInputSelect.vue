@@ -1,6 +1,6 @@
 <template>
     <div class="selectHolder">
-        <select class="btn" @change="select" v-model="selectValue">
+        <select class="btn" @change="select" v-model="selectValue" :disabled="disabled">
             <option disabled value="">{{placeholder}}</option>
             <option v-for="(option,index) in options" :value="option.value" :key="index">
                 {{ option.label }}
@@ -16,6 +16,7 @@
     export default {
         name: 'FormInputSelect',
         props: {
+            disabled: Boolean,
             value: Number,
             placeholder: String,
             options: Array
@@ -34,6 +35,7 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '@/styles/setup/_variables.scss';
     .btn{
         padding: 10px 35px 10px 15px;
     }
@@ -49,7 +51,7 @@
             svg{
                 display: inline-block;
                 path{
-                    fill: #f4a000;
+                    fill: $color1;
                 }
             }
         }
@@ -57,6 +59,9 @@
             .icon svg path{
                 fill: #ffffff;
             }
+        }
+        select[disabled] + .icon svg path{
+            fill: rgba(0, 0, 0, 0.15);
         }
     }
     

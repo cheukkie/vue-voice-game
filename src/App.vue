@@ -12,28 +12,38 @@
             target="_blank">Web Speech API</a>. To play this game please use a Chrome browser.</p>
       </div>
     </AppBody>
-    
-    <AllPlayers view="icons" v-if="gameStarted && gameSettingsStatus && !gameOverStatus" />
-    <AudioWave :animate="isAudioWaveStarted" />
-    
+    <AppFooter />
     <ModalContainer v-if="modalOpen"></ModalContainer>
-
+    <!--
+    <NotificationContainer
+      :auto-hide-after="0"
+      type="modal"
+      role="success"
+      pos-x="right" 
+      pos-y="bottom"
+      title="Notification title"
+      msg="This is a message">
+    </NotificationContainer>
+    -->
   </div>
 </template>
 
 <script>
+  // Input text component
+  // Notification component
   // URL Params
-  // GAME MODES
   // Save to localstorage
+  // Audiowave mobile
+  // GAME MODES
 
   import { mapGetters } from 'vuex';
   
   import AppHeader from '@/components/AppHeader.vue';
   import AppBody from '@/components/AppBody.vue';
-  import AllPlayers from '@/components/AllPlayers.vue';
-  import AudioWave from '@/components/AudioWave.vue';
+  import AppFooter from '@/components/AppFooter.vue';
 
   import ModalContainer from '@/components/ModalContainer.vue';
+  import NotificationContainer from '@/components/NotificationContainer.vue';
 
   export default {
     name: 'app',
@@ -71,45 +81,32 @@
       }
     },
     computed: {
-      ...mapGetters(['curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus', 'gameStarted','isAudioWaveStarted']),
+      ...mapGetters(['curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus', 'gameStarted']),
     },
     components: {
       AppHeader,
-      AudioWave,
       AppBody,
+      AppFooter,
       ModalContainer,
-      AllPlayers
+      NotificationContainer
     }
   };
 </script>
 
 <style lang="scss">
-  html {
-    box-sizing: border-box;
-  }
+  @import "@/styles/_global.scss";
 
-  *,
-  *:before,
-  *:after {
-    box-sizing: inherit;
-  }
-
-  body {
-    background-color: #fff;
-    margin: 0;
-  }
   .hide{
       display: none;
   }
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: $fontMain;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
     height: 100vh;
     width: 100vw;
-    padding: 15px;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -119,7 +116,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-
+      padding: 10px;
       width: 100%;
       max-width: 600px;
       margin: auto;
@@ -136,98 +133,10 @@
 
   .svg-icon {
     display: inline-flex;
+    justify-content: center;
     align-items: center;
     height: 100%;
     width: 100%;
   }
 
-  .btn {
-    display: block;
-    border-radius: 25px;
-    border: none;
-    -webkit-appearance: none;
-    color: rgba(244, 160, 0, 1);
-    background-color: #ffffff;
-    font-weight: bold;
-    width: 100%;
-    font-size: 16px;
-    padding: 10px 15px;
-    margin: 10px 0;
-    box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
-    outline: 0;
-
-    &[disabled] {
-      cursor: not-allowed;
-      color: rgba(0, 0, 0, 0.15);
-    }
-
-    &:hover:not([disabled]) {
-      cursor: pointer;
-      background-color: rgba(244, 160, 0, 1);
-      color: #ffffff;
-    }
-  }
-
-  .btn-round {
-    display: block;
-    width: 80px;
-    height: 80px;
-    padding: 15px;
-    margin: 10px auto;
-    -webkit-appearance: none;
-    border-radius: 100%;
-    text-align: center;
-    box-shadow: 0 15px 20px 0 rgba(0, 0, 0, 0.25);
-    border: solid 5px #ffffff;
-    cursor: pointer;
-    transition: all .25s ease;
-    outline: 0;
-
-    &.is-red {
-      background-color: rgba(219, 68, 55, 1);
-    }
-
-    &.is-yellow {
-      background-color: rgba(244, 160, 0, 1);
-    }
-
-    &.is-green {
-      background-color: rgba(15, 157, 88, 1);
-    }
-
-    &.is-blue {
-      background-color: rgba(66, 133, 244, 1);
-    }
-
-    &:disabled,
-    &:disabled:hover {
-      opacity: 0.25;
-      box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.15);
-      cursor: not-allowed;
-    }
-
-    &:hover {
-      box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
-    }
-
-    &:active {
-      box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.15);
-    }
-
-    svg {
-      width: 100%;
-      height: 100%;
-
-      path {
-        fill: #ffffff;
-      }
-    }
-  }
-
-  .btn-group {
-    .btn-round {
-      display: inline-block;
-      margin: 10px 15px;
-    }
-  }
 </style>
