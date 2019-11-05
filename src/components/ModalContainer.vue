@@ -25,12 +25,14 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
+    @import '@/styles/setup/_variables.scss';
     .modal{
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
+        padding: 10px;
         background-color: rgba(0,0,0,0.25);
         .modal-close{
             position: absolute;
@@ -39,7 +41,7 @@ export default {
             width: 40px;
             height: 40px;
             svg path{
-                fill: rgba(244, 160, 0, 1);
+                fill: $color1;
             }
             &:hover{
                 svg path{

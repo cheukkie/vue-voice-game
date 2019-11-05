@@ -39,9 +39,7 @@
 </script>
 
 <style lang="scss" scoped>
-    .hide{
-        display: none;
-    }
+    @import '@/styles/setup/_variables.scss';
     div{
         display: flex;
         flex-direction: row;
@@ -55,7 +53,7 @@
             display: block;
             border: none;
             -webkit-appearance: none;
-            color: #f4a000;
+            color: $color1;
             background-color: #ffffff;
             font-weight: bold;
             font-size: 16px;
