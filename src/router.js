@@ -2,23 +2,30 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Menu from '@/views/Menu.vue';
-import Players from '@/views/Players.vue';
 import Info from '@/views/Info.vue';
+import AddPlayers from '@/views/AddPlayers.vue';
 import Playing from '@/views/Playing.vue';
+import Settings from '@/views/Settings.vue';
 
 Vue.use(Router)
 
 const appRouter = new Router({
   // mode: 'history',
-  routes: [{
+  routes: [
+    {
       path: '/',
       name: 'Menu',
       component: Menu,
     },
     {
+      path: '/settings',
+      name: 'Settings',
+      component: Settings,
+    },
+    {
       path: '/multiplayer/players',
-      name: 'Players',
-      component: Players,
+      name: 'Add players',
+      component: AddPlayers,
     },
     {
       path: '/multiplayer/info',
