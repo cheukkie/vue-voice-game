@@ -188,7 +188,7 @@
                     // console.log("draw");
                     //line 1 - blue
                     ctx.beginPath();
-                    ctx.lineWidth = 1;
+                    ctx.lineWidth = 2;
                     ctx.strokeStyle = "rgb(66,133,244)";
 
                     let h = Math.sin(runTime * speed) * a;
@@ -205,7 +205,7 @@
 
                     //line 2 - red
                     ctx.beginPath();
-                    ctx.lineWidth = 1;
+                    ctx.lineWidth = 2;
                     ctx.strokeStyle = "red";
 
                     let h2 = Math.sin(runTime * speed2) * a2;
@@ -222,7 +222,7 @@
 
                     //line 3 - green
                     ctx.beginPath();
-                    ctx.lineWidth = 1;
+                    ctx.lineWidth = 2;
                     ctx.strokeStyle = "green";
 
                     let h3 = Math.sin(runTime * speed3) * a3;
@@ -239,7 +239,7 @@
 
                     //line 4 - yellow
                     ctx.beginPath();
-                    ctx.lineWidth = 1;
+                    ctx.lineWidth = 2;
                     ctx.strokeStyle = "yellow";
 
                     let h4 = Math.sin(runTime * 0) * 0;
@@ -302,10 +302,10 @@
 <style lang="scss" scoped>
     #audiowave {
         position: absolute;
-        top: 0;
+        bottom: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        height: 50vh;
         z-index: -1;
         opacity: 0;
         transition: 1s 1s all ease;
