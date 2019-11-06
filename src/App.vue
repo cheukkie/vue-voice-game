@@ -14,23 +14,12 @@
     </AppBody>
     <AppFooter />
     <ModalContainer v-if="modalOpen"></ModalContainer>
-    <!--
-    <NotificationContainer
-      :auto-hide-after="0"
-      type="modal"
-      role="success"
-      pos-x="right" 
-      pos-y="bottom"
-      title="Notification title"
-      msg="This is a message">
-    </NotificationContainer>
-    -->
+    
   </div>
 </template>
 
 <script>
   // Input text component
-  // Notification component
   // URL Params
   // Save to localstorage
   // Audiowave mobile
@@ -43,7 +32,7 @@
   import AppFooter from '@/components/AppFooter.vue';
 
   import ModalContainer from '@/components/ModalContainer.vue';
-  import NotificationContainer from '@/components/NotificationContainer.vue';
+  
 
   export default {
     name: 'app',
@@ -88,7 +77,6 @@
       AppBody,
       AppFooter,
       ModalContainer,
-      NotificationContainer
     }
   };
 </script>
@@ -97,7 +85,7 @@
   @import "@/styles/_global.scss";
 
   .hide{
-      display: none;
+    display: none;
   }
   #app {
     font-family: $fontMain;
@@ -105,7 +93,7 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    height: 100vh;
+    min-height: 100vh;
     width: 100vw;
     display: flex;
     justify-content: center;

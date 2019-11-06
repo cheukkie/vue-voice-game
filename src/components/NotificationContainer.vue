@@ -178,6 +178,12 @@ export default {
             }
             #{$gp}-msg{
                 flex: none;
+                h2{
+                    font-size: 22px;
+                }
+                p{
+                    font-size: 18px;
+                }
             }
             #{$gp}-close{
                 position: absolute;

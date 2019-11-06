@@ -1,25 +1,38 @@
 <template>
     <div>
-        <div>
-            {{ player.name }} is aan de beurt! <br><br>
-        </div>
-        <div>
-            <span v-if="word">Lees op: {{ word }}</span> <span v-if="output"> - Output: {{ output }}</span>
-        </div>
-        <RecordBtn v-if="showRecordBtn" :showPulse="true" @recordBtnOutput="checkOutput" color="red"/>
+        <span v-if="output"> - Output: {{ output }}</span>
+        <RecordBtn ref="recordButton" v-if="showRecordBtn" :showPulse="true" @recordBtnOutput="checkOutput" color="red" />
         <button class="btn" v-if="showNextPlayerBtn" @click="selectNextPlayer" title="Next player">
             Next
         </button>
+
+        <NotificationContainer v-if="showRecordBtn" :auto-hide-after="5" type="modal" role="default" pos-x="center" pos-y="center">
+            <h2>{{ player.name }}</h2>
+            <br>
+            <p>
+                Your word is<br>
+                <strong class="current-word">{{ word }}</strong>
+            </p>
+            <br><br><br>
+            <CountDown @countDownFinished="clickRecord" :time="5" />
+        </NotificationContainer>
         <AudioWave :animate="isWaveStarted" />
     </div>
 </template>
 
 <script>
-    import { getRandomInt } from '@/utils/utils';
-    import { mapActions, mapGetters } from 'vuex';
-    
+    import {
+        getRandomInt
+    } from '@/utils/utils';
+    import {
+        mapActions,
+        mapGetters
+    } from 'vuex';
+
     import RecordBtn from '@/components/RecordBtn.vue';
     import AudioWave from '@/components/AudioWave.vue';
+    import NotificationContainer from '@/components/NotificationContainer.vue';
+    import CountDown from '@/components/CountDown.vue';
 
     export default {
         name: 'RecordPanel',
@@ -27,11 +40,11 @@
             player: Object
         },
         data: function () {
-            return {           
+            return {
                 isWaveStarted: false,
                 showNextPlayerBtn: false,
                 showRecordBtn: false,
-                output: '',     
+                output: '',
                 word: '',
                 list: [
                     'Inhoud',
@@ -78,12 +91,15 @@
             this.resetRound();
             this.isWaveStarted = true;
         },
-        
+
         methods: {
             ...mapActions(['nextPlayer', 'addPoint', 'removePoint']),
             selectNextPlayer() {
                 this.nextPlayer();
                 this.resetRound();
+            },
+            clickRecord(val){
+                this.$refs.recordButton.$el.click();
             },
             resetRound() {
                 this.output = '';
@@ -93,9 +109,9 @@
                     this.word = this.list[getRandomInt(0, this.list.length)];
                 }
             },
-            checkWord(){
-                console.log('output: '+this.output.toLowerCase().replace(/\s/g, ''));
-                console.log('word: '+this.output.toLowerCase().replace(/\s/g, ''));
+            checkWord() {
+                console.log('output: ' + this.output.toLowerCase().replace(/\s/g, ''));
+                console.log('word: ' + this.output.toLowerCase().replace(/\s/g, ''));
                 if (this.output.toLowerCase().replace(/\s/g, '') === this.word.toLowerCase().replace(/\s/g, '')) {
                     this.addPoint();
                 }
@@ -107,19 +123,24 @@
                 }
                 this.showNextPlayerBtn = true;
             },
-            checkOutput(word){
+            checkOutput(word) {
                 this.output = word;
                 this.checkWord();
                 this.showRecordBtn = false;
             }
         },
-        components:{
+        components: {
             RecordBtn,
-            AudioWave
+            AudioWave,
+            NotificationContainer,
+            CountDown
         }
     };
 </script>
 
-<style >
-    
+<style lang="scss" scoped>
+    .current-word{
+        word-break: break-all;
+        font-size: 30px;
+    }
 </style>

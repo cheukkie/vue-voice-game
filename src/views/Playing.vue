@@ -1,7 +1,6 @@
 <template>
-    <div>
+    <div class="game-view">
         <div v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
-            <div>Ronde {{ curRound }}</div>
             <RecordPanel :player="curPlayer" />
         </div>
         <div v-if="gameOverStatus">
@@ -11,8 +10,16 @@
                 <button class="btn" @click="resetGame">Play again</button>
             </router-link>
         </div>
-        <div v-if="msg" v-html="msg"></div>
-        <AllPlayers id="allPlayersIcons" view="icons" v-if="gameStarted && gameSettingsStatus && !gameOverStatus" />
+        <NotificationContainer v-if="allPlayers.length === 0" :auto-hide-after="5" type="modal" role="warning" pos-x="center" pos-y="center">
+            <h2>No players found</h2>
+            <p> Returning to menu...</p>
+            <br><br>
+            <CountDown :time="5" />
+        </NotificationContainer>
+        <div id="gameInfo" v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
+            <div><h2>Ronde {{ curRound }}</h2></div>
+            <AllPlayers view="icons" v-if="gameStarted && gameSettingsStatus && !gameOverStatus" />
+        </div>
     </div>
 </template>
 
@@ -21,6 +28,8 @@
 
     import AllPlayers from '@/components/AllPlayers.vue';
     import RecordPanel from '@/components/RecordPanel.vue';
+    import NotificationContainer from '@/components/NotificationContainer.vue';
+    import CountDown from '@/components/CountDown.vue';
 
     export default {
         data:function(){
@@ -33,26 +42,31 @@
         },
         mounted:function(){
             if( this.allPlayers.length === 0 ){
-                this.msg = '<h2>No players found</h2><p> Returning to menu...<p>';
                 setTimeout(()=>{
                     this.$router.push('/');
-                },2000);
+                },5000);
             }
         },
         computed:{
-            ...mapGetters(['allPlayers','curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus', 'gameStarted']),
+            ...mapGetters(['allPlayers','curPlayer', 'gameOverStatus', 'gameSettingsStatus', 'gameStarted','curRound']),
         },
         components:{
             AllPlayers,
-            RecordPanel
+            RecordPanel,
+            NotificationContainer,
+            CountDown
         }
     }
 </script>
 
 <style scoped>
-    #allPlayersIcons{
+    #gameInfo{
         position: fixed;
         bottom: 50px;
         left: 0;
+        right: 0;
+    }
+    .game-view{
+        margin-bottom: 20vh;
     }
 </style>
