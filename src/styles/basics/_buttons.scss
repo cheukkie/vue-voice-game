@@ -1,12 +1,11 @@
 .btn {
-    display: block;
+    display: inline-block;
     border-radius: 25px;
     border: none;
     -webkit-appearance: none;
     color: $color1;
     background-color: #ffffff;
     font-weight: bold;
-    width: 100%;
     font-size: 16px;
     padding: 10px 15px;
     margin: 10px 0;
@@ -22,6 +21,10 @@
             text-decoration: underline;
         }
     }
+    &.is-block{
+        display: block;
+        width: 100%;
+    }
 
     &[disabled] {
         cursor: not-allowed;
@@ -35,7 +38,7 @@
     }
 }
 
-.btn-round {
+.btn-icon {
     display: block;
     width: 80px;
     height: 80px;
@@ -93,7 +96,10 @@
 }
 
 .btn-group {
-    .btn-round {
+    .btn{
+        margin: 10px 5px;
+    }
+    .btn-icon {
         display: inline-block;
         margin: 10px 15px;
     }

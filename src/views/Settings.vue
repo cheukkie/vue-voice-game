@@ -1,19 +1,18 @@
 <template>
     <div>
         <h2>Settings</h2>
-        <FormInputSelect :disabled="true" v-model="language.selected" placeholder="Nederlands (Coming soon)" :options="languageOptions" />
+        <FormInputSelect :disabled="true" v-model="language.selected" placeholder="Nederlands (More coming soon)" :options="languageOptions" />
         <br>
-        <button class="btn" @click="saveAppSettings">
+        <button class="btn is-block" @click="saveAppSettings">
             {{ button.label }}
         </button>
         <router-link to="/">
-            <button class="btn is-ghost">Back</button>Back
+            <button class="btn is-block is-ghost">Back</button>
         </router-link>
     </div>
 </template>
 
 <script>
-    import { mapActions } from 'vuex';
     import FormInputSelect from '@/components/FormInputSelect.vue';
 
     export default {
