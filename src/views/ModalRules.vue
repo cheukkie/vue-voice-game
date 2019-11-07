@@ -5,7 +5,7 @@
         <FormInputSelect v-model="gameModeSettings.targetScore" placeholder="Select win score - default 5"
             :options="gameModeSettings.scoreOptions" />
         <br>
-        <button class="btn" @click="saveGameSettings">
+        <button class="btn is-block" @click="saveGameSettings">
             {{ button.label }}
         </button>
     </div>

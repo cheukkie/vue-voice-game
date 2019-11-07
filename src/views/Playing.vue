@@ -7,7 +7,7 @@
             <h2>Winner!</h2>
             <AllPlayers view="list" />
             <router-link to="/">
-                <button class="btn" @click="resetGame">Play again</button>
+                <button class="btn is-block" @click="resetGame">Play again</button>
             </router-link>
         </div>
         <NotificationContainer v-if="allPlayers.length === 0" :auto-hide-after="5" type="modal" role="warning" pos-x="center" pos-y="center">
