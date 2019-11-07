@@ -1,6 +1,6 @@
 <template>
     <div class="selectHolder">
-        <select class="btn" @change="select" v-model="selectValue" :disabled="disabled">
+        <select class="btn is-block" @change="select" v-model="selectValue" :disabled="disabled">
             <option disabled value="">{{placeholder}}</option>
             <option v-for="(option,index) in options" :value="option.value" :key="index">
                 {{ option.label }}
