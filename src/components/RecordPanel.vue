@@ -1,38 +1,52 @@
 <template>
     <div>
-        <span v-if="output"> - Output: {{ output }}</span>
         <RecordBtn ref="recordButton" v-if="showRecordBtn" :showPulse="true" @recordBtnOutput="checkOutput" color="red" />
-        <button class="btn" v-if="showNextPlayerBtn" @click="selectNextPlayer" title="Next player">
-            Next
+        <br><br>
+        <div class="btn-group">
+            <button class="btn" v-if="!showNextPlayerBtn" @click="skipWord">Skip word</button>
+        </div>
+        <div v-if="resultStatus=== 'success'">
+            <h2>Good job!</h2>
+            <p>
+                We heard your word <strong>{{ word.current }}</strong> correctly!
+            </p>
+        </div>
+        <div v-else-if="resultStatus === 'error'">
+            <h2>That's too bad!</h2>
+            <p>
+                Your word was {{word.current}}.<br>
+                We heard <span v-if="word.output">{{ word.output }}</span><span v-else>nothing</span>.
+            </p>
+        </div>
+        <button v-if="showNextPlayerBtn" class="btn" @click="selectNextPlayer" title="Next player">
+            Next player
         </button>
 
         <NotificationContainer v-if="showRecordBtn" :auto-hide-after="5" type="modal" role="default" pos-x="center" pos-y="center">
             <h2>{{ player.name }}</h2>
-            <br>
+            <br><br>
             <p>
                 Your word is<br>
-                <strong class="current-word">{{ word }}</strong>
+                <strong class="current-word">{{ word.current }}</strong>
             </p>
             <br><br><br>
+            <p>Start saying the word in...</p>
+            <br>
             <CountDown @countDownFinished="clickRecord" :time="5" />
         </NotificationContainer>
+        
         <AudioWave :animate="isWaveStarted" />
     </div>
 </template>
 
 <script>
-    import {
-        getRandomInt
-    } from '@/utils/utils';
-    import {
-        mapActions,
-        mapGetters
-    } from 'vuex';
+    import { getRandomInt } from '@/utils/utils';
+    import { mapActions, mapGetters } from 'vuex';
 
     import RecordBtn from '@/components/RecordBtn.vue';
     import AudioWave from '@/components/AudioWave.vue';
-    import NotificationContainer from '@/components/NotificationContainer.vue';
     import CountDown from '@/components/CountDown.vue';
+    import NotificationContainer from '@/components/NotificationContainer.vue';
 
     export default {
         name: 'RecordPanel',
@@ -44,46 +58,50 @@
                 isWaveStarted: false,
                 showNextPlayerBtn: false,
                 showRecordBtn: false,
-                output: '',
-                word: '',
-                list: [
-                    'Inhoud',
-                    'Sensor',
-                    'Obligaat',
-                    'Redmiddel',
-                    'Snoeperij',
-                    'Indiaanse',
-                    'Hemelhoog',
-                    'Enquêteur',
-                    'Begintune',
-                    'Wonderblad',
-                    'Wintergoed',
-                    'Winterpeen',
-                    'Voortrekker',
-                    'Informatica',
-                    'Warmvoelend',
-                    'Onopvallend',
-                    'Watergebrek',
-                    'Zilverfolie',
-                    'Reaffectatie',
-                    'Binnenpagina',
-                    'Gekrenktheid',
-                    'Zuidoostkust',
-                    'Roddelaarster',
-                    'Dopinggebruik',
-                    'Olieproducent',
-                    'Flexiemorfeem',
-                    'Leeftijdsgroep',
-                    'Zorgvoorziening',
-                    'Nietradioactief',
-                    'Gedesoriënteerd',
-                    'Avonturenverhaal',
-                    'Basisberoepsgericht',
-                    'Leningenportefeuille',
-                    'Burgemeestersbenoeming',
-                    'Fietspompreparatiesetje',
-                    'Vijfhonderdduizendklapper',
-                ],
+                resultStatus: '',
+                
+                word:{
+                    output: '',
+                    current: '',
+                    list: [
+                        'Inhoud',
+                        'Sensor',
+                        'Obligaat',
+                        'Redmiddel',
+                        'Snoeperij',
+                        'Indiaanse',
+                        'Hemelhoog',
+                        'Enquêteur',
+                        'Begintune',
+                        'Wonderblad',
+                        'Wintergoed',
+                        'Winterpeen',
+                        'Voortrekker',
+                        'Informatica',
+                        'Warmvoelend',
+                        'Onopvallend',
+                        'Watergebrek',
+                        'Zilverfolie',
+                        'Reaffectatie',
+                        'Binnenpagina',
+                        'Gekrenktheid',
+                        'Zuidoostkust',
+                        'Roddelaarster',
+                        'Dopinggebruik',
+                        'Olieproducent',
+                        'Flexiemorfeem',
+                        'Leeftijdsgroep',
+                        'Zorgvoorziening',
+                        'Nietradioactief',
+                        'Gedesoriënteerd',
+                        'Avonturenverhaal',
+                        'Basisberoepsgericht',
+                        'Leningenportefeuille',
+                        'Burgemeestersbenoeming',
+                        'Fietspompreparatiesetje',
+                        'Vijfhonderdduizendklapper',
+                    ],
+                }
 
             };
         },
@@ -102,29 +120,37 @@
                 this.$refs.recordButton.$el.click();
             },
             resetRound() {
-                this.output = '';
+                this.word.output = '';
                 this.showNextPlayerBtn = false;
                 this.showRecordBtn = true;
-                if (!this.retry) {
-                    this.word = this.list[getRandomInt(0, this.list.length)];
-                }
+                this.resultStatus = '';
+                this.word.current = this.word.list[getRandomInt(0, this.word.list.length)];
+            },
+            skipWord(){
+                this.showNextPlayerBtn = true;
+                this.showRecordBtn = false;
+                this.resultStatus = 'error';
+                //this.removePoint();
             },
             checkWord() {
-                console.log('output: ' + this.output.toLowerCase().replace(/\s/g, ''));
-                console.log('word: ' + this.output.toLowerCase().replace(/\s/g, ''));
-                if (this.output.toLowerCase().replace(/\s/g, '') === this.word.toLowerCase().replace(/\s/g, '')) {
+                console.log('output: ' + this.word.output.toLowerCase().replace(/\s/g, ''));
+                console.log('current: ' + this.word.current.toLowerCase().replace(/\s/g, ''));
+                if (this.word.output.toLowerCase().replace(/\s/g, '') === this.word.current.toLowerCase().replace(/\s/g, '')) {
                     this.addPoint();
+                    this.resultStatus = 'success';
                 }
                 if (
-                    this.output.toLowerCase().replace(/\s/g, '') !== this.word.toLowerCase().replace(/\s/g, '') &&
-                    this.player.score >= 1
+                    this.word.output.toLowerCase().replace(/\s/g, '') !== this.word.current.toLowerCase().replace(/\s/g, '')
                 ) {
-                    //this.removePoint();
+                    this.resultStatus = 'error';
+                    if( this.player.score >= 1 ){
+                        //this.removePoint();
+                    }
                 }
                 this.showNextPlayerBtn = true;
             },
             checkOutput(word) {
-                this.output = word;
+                this.word.output = word;
                 this.checkWord();
                 this.showRecordBtn = false;
             }
@@ -142,5 +168,8 @@
     .current-word{
         word-break: break-all;
         font-size: 30px;
+    }
+    .btn-group{
+        position: relative;
     }
 </style>
