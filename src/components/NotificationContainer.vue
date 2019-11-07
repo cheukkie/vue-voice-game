@@ -1,5 +1,5 @@
 <template>
-    <div class="notification" :pos-x="posX" :pos-y="posY" :type="type" :auto-hide-after="autoHideAfter" :role="role">
+    <div class="notification" :pos-x="posX" :pos-y="posY" :type="type" :auto-hide-after="autoHideAfter" :role="role" :visible="visible">
         <span class="notification-icon" v-if="role === 'warning' || role === 'success' || role === 'error'">
             <span class="svg-icon" v-if="role === 'warning'">
                 <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M12 5.177l8.631 15.823h-17.262l8.631-15.823zm0-4.177l-12 22h24l-12-22zm-1 9h2v6h-2v-6zm1 9.75c-.689 0-1.25-.56-1.25-1.25s.561-1.25 1.25-1.25 1.25.56 1.25 1.25-.561 1.25-1.25 1.25z"/></svg>
@@ -27,7 +27,6 @@
 <script>
 export default {
     props:{
-        show: Boolean,
         autoHideAfter: Number,
         posX: String,
         posY: String,
@@ -38,23 +37,28 @@ export default {
     },
     data: function(){
         return {
-
+            visible: false,
         }
     },
     mounted: function(){
         const vm = this;
-        vm.$el.classList.add('is-visible');
-
+        //vm.$el.classList.add('is-visible');
+        vm.visible = true;
         if( vm.autoHideAfter !== 0 ){
             setTimeout(()=>{
-                vm.$el.classList.remove('is-visible');
+                //vm.$el.classList.remove('is-visible');
+                vm.visible = false;
+                this.$forceUpdate();
             },vm.autoHideAfter*1000);
         }
     },
     methods:{
         hideNotification(){
-            this.$el.classList.remove('is-visible');
-        }
+            //this.$el.classList.remove('is-visible');
+            this.visible = false;
+        },
+    },
+    watch:{
     }
 }
 </script>
@@ -84,7 +88,7 @@ export default {
         opacity: 0;
         transition: all .75s ease-out;
         
-        &.is-visible{ 
+        &[visible]{ 
             transform: translate3d(0, 0, 0) !important;
             visibility: visible;
             opacity: 1;
@@ -192,8 +196,4 @@ export default {
             }
         }
     }
-
-    // Success
-    // Error
-    // Warning
 </style>
