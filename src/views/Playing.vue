@@ -1,8 +1,7 @@
 <template>
     <div class="game-view">
-        <div v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
-            <RecordPanel :player="curPlayer" />
-        </div>
+        <div id="gameRound" v-if="allPlayers.length > 0"><h2>Round {{ curRound }}</h2></div>
+        <RecordPanel :player="curPlayer" v-if="gameStarted && gameSettingsStatus && !gameOverStatus" />
         <div v-if="gameOverStatus">
             <h2>Winner!</h2>
             <AllPlayers view="list" />
@@ -12,12 +11,11 @@
         </div>
         <NotificationContainer v-if="allPlayers.length === 0" :auto-hide-after="5" type="modal" role="warning" pos-x="center" pos-y="center">
             <h2>No players found</h2>
-            <p> Returning to menu...</p>
+            <p>Returning to menu...</p>
             <br><br>
             <CountDown :time="5" />
         </NotificationContainer>
-        <div id="gameInfo" v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
-            <div><h2>Ronde {{ curRound }}</h2></div>
+        <div id="playerInfo" v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
             <AllPlayers view="icons" v-if="gameStarted && gameSettingsStatus && !gameOverStatus" />
         </div>
     </div>
@@ -60,13 +58,20 @@
 </script>
 
 <style scoped>
-    #gameInfo{
+    #playerInfo{
         position: fixed;
         bottom: 50px;
         left: 0;
         right: 0;
     }
-    .game-view{
-        margin-bottom: 20vh;
+    #gameRound{
+        position: fixed;
+        top: 40px;
+        width: 100%;
+        text-align: center;
+        left: 0;
     }
+    /* .game-view{
+        margin-bottom: 20vh;
+    } */
 </style>
