@@ -1,7 +1,6 @@
 <template>
     <div>
-        <RecordBtn ref="recordButton" v-if="showRecordBtn" :showPulse="true" @recordBtnOutput="checkOutput" color="red" />
-        <br><br>
+        <RecordBtn class="record-btn" ref="recordButton" v-if="showRecordBtn" :showPulse="true" @recordBtnOutput="checkOutput" color="red" />
         <div class="btn-group">
             <button class="btn" v-if="!showNextPlayerBtn" @click="skipWord">Skip word</button>
         </div>
@@ -14,7 +13,7 @@
         <div v-else-if="resultStatus === 'error'">
             <h2>That's too bad!</h2>
             <p>
-                Your word was {{word.current}}.<br>
+                Your word was <strong>{{word.current}}</strong>.<br>
                 We heard <span v-if="word.output">{{ word.output }}</span><span v-else>nothing</span>.
             </p>
         </div>
@@ -35,7 +34,7 @@
             <CountDown @countDownFinished="clickRecord" :time="5" />
         </NotificationContainer>
         
-        <AudioWave :animate="isWaveStarted" />
+        <AudioWave :animate="isWaveInit" :visible="showAudioWave" />
     </div>
 </template>
 
@@ -55,7 +54,9 @@
         },
         data: function () {
             return {
-                isWaveStarted: false,
+                isWaveInit: false,
+                showAudioWave: false,
+
                 showNextPlayerBtn: false,
                 showRecordBtn: false,
                 resultStatus: '',
@@ -99,7 +100,6 @@
                         'Leningenportefeuille',
                         'Burgemeestersbenoeming',
                         'Fietspompreparatiesetje',
-                        'Vijfhonderdduizendklapper',
                     ],
                 }
 
@@ -107,7 +107,7 @@
         },
         mounted: function () {
             this.resetRound();
-            this.isWaveStarted = true;
+            this.isWaveInit = true;
         },
 
         methods: {
@@ -118,9 +118,11 @@
             },
             clickRecord(val){
                 this.$refs.recordButton.$el.click();
+                this.showAudioWave = true;
             },
             resetRound() {
                 this.word.output = '';
+                this.showAudioWave = false;
                 this.showNextPlayerBtn = false;
                 this.showRecordBtn = true;
                 this.resultStatus = '';
@@ -129,6 +131,7 @@
             skipWord(){
                 this.showNextPlayerBtn = true;
                 this.showRecordBtn = false;
+                this.showAudioWave = false;
                 this.resultStatus = 'error';
                 //this.removePoint();
             },
@@ -172,4 +175,11 @@
     .btn-group{
         position: relative;
     }
+    .record-btn{
+        margin: 30px auto;
+        &[disabled]{
+            opacity: 1;
+        }
+    }
+
 </style>

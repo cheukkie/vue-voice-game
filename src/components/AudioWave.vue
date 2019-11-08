@@ -1,6 +1,6 @@
 <template>
     <div>
-        <canvas id="audiowave"></canvas>
+        <canvas id="audiowave" :visible="visible"></canvas>
         <div id="settings" class="hide">
             <div style="position: relative;">
                 <!-- <input type="range" id="spacing" name="spacing" min="0" max="1" step="0.0001" /> -->
@@ -27,17 +27,21 @@
     //https://github.com/cwilso/volume-meter/
     //https://medium.com/@radarboy3000
 
+    import { isMobile } from 'mobile-device-detect';
+
     export default {
         name: 'AudioWave',
         props:{
-            animate: false
+            animate: Boolean,
+            visible: Boolean
         },
         data: function () {
             return {
                 audioContext: '',
                 mediaStreamSource: null,
                 meter: null,
-                volumeMeter: 0
+                volumeMeter: 0,
+                mobileUser: isMobile
             };
         },
         methods: {
@@ -51,7 +55,6 @@
                         this.mediaStreamSource.connect(this.meter);
                     })
                 }
-                vm.$el.querySelector('#audiowave').classList.add('is-visible');
             },
             createAudioMeter(audioContext, clipLevel, averaging, clipLag) {
                 const processor = audioContext.createScriptProcessor(512);
@@ -125,7 +128,7 @@
                 let spacing = 0.0308,
                     a = 0.1924,
                     speed = 0.0055;
-
+            
                 let spacing2 = 0.8292,
                     a2 = 0.0393,
                     speed2 = 0.0158;
@@ -133,6 +136,7 @@
                 let spacing3 = 0.4411,
                     a3 = 0.3799,
                     speed3 = 0.0096;
+            
 
                 function init(options) {
                     canvas = document.getElementById(options.canvas);
@@ -186,6 +190,7 @@
 
                 function draw() {
                     // console.log("draw");
+
                     //line 1 - blue
                     ctx.beginPath();
                     ctx.lineWidth = 2;
@@ -253,7 +258,7 @@
                         }
                     }
                     ctx.stroke();
-                    
+                
                 }
 
                 function update() {
@@ -266,6 +271,10 @@
                     let loopNum = 0;
                     let pointList = [];
 
+                    if( vm.mobileUser ){
+                        vm.volumeMeter = spacing;
+                    }
+
                     for (let i = 0; i < width / 2; i++) {
                         pointList[loopNum] = [loopNum, Math.sin(loopNum * vm.volumeMeter) * (i * h) + height / 2];
                         loopNum++;
@@ -275,6 +284,7 @@
                         pointList[loopNum] = [loopNum, Math.sin(loopNum * vm.volumeMeter) * (i * h) + height / 2];
                         loopNum++;
                     }
+
                     return pointList;
                 }
 
@@ -292,7 +302,9 @@
         },
         watch:{
             animate: function(){
-                this.beginDetect();
+                if( vm.mobileUser ){
+                    this.beginDetect();
+                }
             }
         }
 
@@ -301,16 +313,16 @@
 
 <style lang="scss" scoped>
     #audiowave {
-        position: absolute;
+        position: fixed;
         bottom: 0;
         left: 0;
-        width: 100%;
-        height: 50vh;
+        width: 100vw;
+        height: 100vh;
         z-index: -1;
         opacity: 0;
-        transition: 1s 1s all ease;
-        &.is-visible{
-            opacity: .45;
+        transition: .25s all ease;
+        &[visible]{
+            opacity: .15;
         }
     }
 </style>

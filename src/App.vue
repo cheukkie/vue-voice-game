@@ -2,9 +2,7 @@
   <div id="app">
     <AppHeader />
     <AppBody>
-      <div v-if="webSpeech">
-        <router-view />
-      </div>
+      <router-view v-if="webSpeech" />
       <div v-else>
         <h2>Woops!</h2>
         <p>This is an experiment with <a
@@ -22,7 +20,8 @@
   // Input text component
   // URL Params
   // Save to localstorage
-  // Audiowave mobile
+  // Clean playing view & remove notification container
+  // Clean code audiowave
   // GAME MODES
 
   import { mapGetters } from 'vuex';
@@ -104,7 +103,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 10px;
+      padding: 15px;
       width: 100%;
       max-width: 600px;
       margin: auto;

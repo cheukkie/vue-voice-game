@@ -132,7 +132,7 @@ export default {
             height: 100%;
             border-radius: 100%;
             animation: pulsating 2s ease-out infinite;
-            border: solid 1px #999999;
+            border: solid 1px rgba(220, 220, 220,.75);
             transform: scale(0.1, 0.1); 
             opacity: 0.0;
         }
