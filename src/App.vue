@@ -11,7 +11,9 @@
       </div>
     </AppBody>
     <AppFooter />
-    <ModalContainer v-if="modalOpen"></ModalContainer>
+    <ModalContainer v-if="modal.active">
+      <ModalRules v-if="modal.content==='rules'" />
+    </ModalContainer>
     
   </div>
 </template>
@@ -32,25 +34,31 @@
   import AppFooter from '@/components/AppFooter.vue';
 
   import ModalContainer from '@/components/ModalContainer.vue';
+  import ModalRules from '@/views/ModalRules.vue';
 
   export default {
     name: 'app',
     data: function () {
       return {
         webSpeech: false,
-        modalOpen: false,
+        modal:{
+          active: false,
+          content: '',
+          views:[
+            'rules'
+          ]
+        }
       };
     },
     methods: {
       ...mapActions(['setMobileUser']),
       checkParams(to,from){
-        if( to.query.modal ){
-          this.modalOpen = true;
-          if(to.query.modal === 'rules'){
-            //console.log('show rules');
-          }
+        if( to.query.modal && this.modal.views.includes(to.query.modal) ){
+          this.modal.active = true;
+          this.modal.content = to.query.modal;
         }else{
-          this.modalOpen = false;
+          this.modal.active = false;
+          this.modal.content = '';
         }
       }
     },
@@ -79,6 +87,7 @@
       AppBody,
       AppFooter,
       ModalContainer,
+      ModalRules
     }
   };
 </script>

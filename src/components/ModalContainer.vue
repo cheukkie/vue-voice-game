@@ -8,20 +8,14 @@
                     </span>
                 </a>
                 <slot></slot>
-                <ModalRules />
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import ModalRules from '@/views/ModalRules.vue';
-
 export default {
-    name: 'ModalContainer',
-    components:{
-        ModalRules
-    }
+    name: 'ModalContainer'
 }
 </script>
 <style lang="scss" scoped>
@@ -40,6 +34,7 @@ export default {
             right: 10px;
             width: 40px;
             height: 40px;
+            padding: 12px;
             svg path{
                 fill: $color1;
             }
