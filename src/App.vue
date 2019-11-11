@@ -14,6 +14,7 @@
     <ModalContainer v-if="modal.active">
       <ModalRules v-if="modal.content==='rules'" />
     </ModalContainer>
+    <NotificationContainer />
     
   </div>
 </template>
@@ -22,7 +23,6 @@
   // Input text component
   // URL Params
   // Save to localstorage
-  // Clean playing view & remove notification container
   // Clean code audiowave
   // GAME MODES
 
@@ -32,6 +32,8 @@
   import AppHeader from '@/components/AppHeader.vue';
   import AppBody from '@/components/AppBody.vue';
   import AppFooter from '@/components/AppFooter.vue';
+
+  import NotificationContainer from '@/components/NotificationContainer.vue';
 
   import ModalContainer from '@/components/ModalContainer.vue';
   import ModalRules from '@/views/ModalRules.vue';
@@ -86,8 +88,9 @@
       AppHeader,
       AppBody,
       AppFooter,
+      NotificationContainer,
       ModalContainer,
-      ModalRules
+      ModalRules,
     }
   };
 </script>
@@ -95,47 +98,6 @@
 <style lang="scss">
   @import "@/styles/_global.scss";
 
-  .hide{
-    display: none;
-  }
-  #app {
-    font-family: $fontMain;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    min-height: 100vh;
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-  }
 
-  .container {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 15px;
-      width: 100%;
-      max-width: 600px;
-      margin: auto;
-      flex: 2;
-  }
-
-  a {
-    text-decoration: none;
-  }
-
-  p>a {
-    text-decoration: underline;
-  }
-
-  .svg-icon {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-  }
 
 </style>

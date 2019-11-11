@@ -57,12 +57,23 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
     #playerInfo{
         position: fixed;
         bottom: 50px;
         left: 0;
         right: 0;
+
+        @media screen and (max-height: 480px) and (orientation: landscape) {
+            display:flex;
+            bottom: 0;
+            left: 0;
+            right: auto;
+            top: 0;  
+            margin: auto;
+            height: 100%;
+            width: 50px;
+        }
     }
     #gameRound{
         position: fixed;
@@ -70,8 +81,14 @@
         width: 100%;
         text-align: center;
         left: 0;
+        @media screen and (max-height: 480px) and (orientation: landscape) {
+            right: 0;
+            top: 0;
+            height: 100%;
+            width: 50px;
+            left: auto;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+        }
     }
-    /* .game-view{
-        margin-bottom: 20vh;
-    } */
 </style>

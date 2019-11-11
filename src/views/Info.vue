@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>How to play</h2>
-        <p>There are <strong>{{ maxPlayers }} players</strong> or teams in total. The first team/player to reach the score of <strong>{{ gameWinningScore }} points</strong> will win the game.</p>
+        <p>There are <strong>{{ maxPlayers }} players</strong> in total. The first player to reach the score of <strong>{{ gameWinningScore }} points</strong> will win the game.</p>
         <router-link to="/multiplayer/players">
             <button class="btn is-block">Add players</button>
         </router-link>

@@ -42,19 +42,15 @@ export default {
     },
     mounted: function(){
         const vm = this;
-        //vm.$el.classList.add('is-visible');
         vm.visible = true;
         if( vm.autoHideAfter !== 0 ){
             setTimeout(()=>{
-                //vm.$el.classList.remove('is-visible');
                 vm.visible = false;
-                this.$forceUpdate();
             },vm.autoHideAfter*1000);
         }
     },
     methods:{
         hideNotification(){
-            //this.$el.classList.remove('is-visible');
             this.visible = false;
         },
     },
