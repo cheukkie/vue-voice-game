@@ -17,7 +17,7 @@
         name: 'FormInputSelect',
         props: {
             disabled: Boolean,
-            value: Number,
+            value: [Number,String],
             placeholder: String,
             options: Array
         },
