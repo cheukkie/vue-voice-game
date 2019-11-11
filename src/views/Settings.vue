@@ -1,7 +1,7 @@
 <template>
     <div>
         <h2>Settings</h2>
-        <FormInputSelect :disabled="true" v-model="language.selected" placeholder="Nederlands (More coming soon)" :options="languageOptions" />
+        <FormInputSelect :disabled="true" v-model="language.selected" placeholder="Nederlands (More coming soon)" :options="language.options" />
         <br>
         <button class="btn is-block" @click="saveAppSettings">
             {{ button.label }}
