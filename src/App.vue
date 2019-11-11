@@ -22,6 +22,7 @@
 <script>
   // Input text component
   // URL Params
+  // Notifications
   // Save to localstorage
   // Clean code audiowave
   // GAME MODES

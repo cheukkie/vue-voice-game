@@ -58,13 +58,12 @@
 </template>
 
 <script>
-    import { getRandomInt } from '@/utils/utils';
+    import { getRandomInt } from '@/js/utils';
     import { mapActions, mapGetters } from 'vuex';
 
     import RecordBtn from '@/components/RecordBtn.vue';
     import AudioWave from '@/components/AudioWave.vue';
     import CountDown from '@/components/CountDown.vue';
-    import NotificationContainer from '@/components/NotificationContainer.vue';
 
     export default {
         name: 'RecordPanel',
@@ -185,7 +184,6 @@
         components: {
             RecordBtn,
             AudioWave,
-            NotificationContainer,
             CountDown
         }
     };

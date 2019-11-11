@@ -1,5 +1,5 @@
 //import axios from 'axios';
-import { shuffleArray } from '@/utils/utils.js';
+import { shuffleArray } from '@/js/utils.js';
 
 const state = {
     players: [],
