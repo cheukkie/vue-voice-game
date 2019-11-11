@@ -24,14 +24,14 @@
   // Clean code audiowave
   // GAME MODES
 
-  import { mapGetters } from 'vuex';
+  import { mapGetters, mapActions } from 'vuex';
+  import { isMobile } from 'mobile-device-detect';
   
   import AppHeader from '@/components/AppHeader.vue';
   import AppBody from '@/components/AppBody.vue';
   import AppFooter from '@/components/AppFooter.vue';
 
   import ModalContainer from '@/components/ModalContainer.vue';
-  
 
   export default {
     name: 'app',
@@ -42,6 +42,7 @@
       };
     },
     methods: {
+      ...mapActions(['setMobileUser']),
       checkParams(to,from){
         if( to.query.modal ){
           this.modalOpen = true;
@@ -60,6 +61,8 @@
         this.webSpeech = true;
       }
       this.checkParams(this.$route);
+      this.setMobileUser(isMobile);
+      
     },
     watch:{
       $route(to,from){

@@ -27,13 +27,12 @@
     //https://github.com/cwilso/volume-meter/
     //https://medium.com/@radarboy3000
 
-    import { isMobile } from 'mobile-device-detect';
-
     export default {
         name: 'AudioWave',
         props:{
             animate: Boolean,
-            visible: Boolean
+            visible: Boolean,
+            mobileUser: Boolean
         },
         data: function () {
             return {
@@ -41,7 +40,6 @@
                 mediaStreamSource: null,
                 meter: null,
                 volumeMeter: 0,
-                mobileUser: isMobile
             };
         },
         methods: {
@@ -302,7 +300,7 @@
         },
         watch:{
             animate: function(){
-                if( vm.mobileUser ){
+                if( !this.mobileUser ){
                     this.beginDetect();
                 }
             }

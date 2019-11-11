@@ -34,7 +34,7 @@
             <CountDown @countDownFinished="clickRecord" :time="5" />
         </NotificationContainer>
         
-        <AudioWave :animate="isWaveInit" :visible="showAudioWave" />
+        <AudioWave :animate="isWaveInit" :visible="showAudioWave" :mobileUser="isMobileUser" />
     </div>
 </template>
 
@@ -157,6 +157,9 @@
                 this.checkWord();
                 this.showRecordBtn = false;
             }
+        },
+        computed:{
+            ...mapGetters(['isMobileUser']),
         },
         components: {
             RecordBtn,

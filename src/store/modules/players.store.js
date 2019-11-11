@@ -12,7 +12,8 @@ const state = {
     gameSettingsSet: false,
     gameMaxPlayers: 2,
 
-    waveAnimation: false
+    waveAnimation: false,
+    mobileUser: false
 };
 
 const getters = {
@@ -25,7 +26,8 @@ const getters = {
     gameStarted: state => state.gameStarted,
     maxPlayers: state => state.gameMaxPlayers,
 
-    isAudioWaveStarted: state => state.waveAnimation
+    isAudioWaveStarted: state => state.waveAnimation,
+    isMobileUser: state => state.mobileUser
 };
 
 const actions = {
@@ -43,6 +45,10 @@ const actions = {
 
     settingsSet({commit}){
         commit('SETTINGS_SET');
+    },
+
+    setMobileUser({commit},user){
+        commit('SET_MOBILE_USER',user);
     },
 
     setMaxPlayers({commit},qty){
@@ -112,6 +118,9 @@ const mutations = {
     SHUFFLE_PLAYERS: () => state.players = shuffleArray(state.players),
     
     SETTINGS_SET: () => state.gameSettingsSet = true,
+
+    SET_MOBILE_USER: (state,user) => state.mobileUser = user,
+
     START_GAME: () => {
         state.gameStarted = true;
     },
