@@ -190,7 +190,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '@/styles/setup/_variables.scss';
     .card{
         position: fixed;
         z-index: 1;
@@ -201,12 +200,13 @@
         bottom: 0;
         height: 60vh;
         padding: 20px;
-        max-width: 640px;
+        @include rem(max-width, 640px);
 
         width: calc(100vw - 30px);
+        width: calc(100vw - 3rem);
         margin: auto;
         color: #ffffff;
-        border-radius: 5px;
+        @include rem(border-radius, 5px);
         
         display: flex;
         flex-direction: column;
@@ -220,7 +220,7 @@
             }
         }
         .icon{
-            height: 50px;
+            @include rem(height, 50px);
         }
 
         &.is-success{
@@ -242,7 +242,7 @@
         }
         .current{
             word-break: break-all;
-            font-size: 30px;
+            @include rem(font-size, 30px);
         }
         @media screen and (max-height: 480px) and (orientation: landscape) {
             height: 70vh;
@@ -255,7 +255,7 @@
         position: relative;
     }
     .record-btn{
-        margin: 30px auto;
+        @include rem(margin, 30px auto);
         &[disabled]{
             opacity: 1;
         }

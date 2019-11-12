@@ -39,7 +39,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '@/styles/setup/_variables.scss';
     div{
         display: flex;
         flex-direction: row;
@@ -48,17 +47,17 @@
             margin: 0;
         }
         .inputValue{
-            flex: 10;
-            border-radius: 25px;
-            display: block;
-            border: none;
             -webkit-appearance: none;
-            color: $color1;
+            flex: 10;
+            display: block;
             background-color: #ffffff;
+            @include rem(border-radius, 25px);
+            border: none;
+            color: $color1;
             font-weight: bold;
-            font-size: 16px;
-            padding: 10px 15px;
-            margin: 0 5px;
+            @include rem(font-size, 16px);
+            @include rem(padding, 10px 15px);
+            @include rem(margin, 0 5px);
         }
     }
 </style>

@@ -35,16 +35,16 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '@/styles/setup/_variables.scss';
+
     .btn{
-        padding: 10px 35px 10px 15px;
+        @include rem(padding, 10px 35px 10px 15px);
     }
     .selectHolder{
         position:relative;
         .icon{
             position: absolute;
             top: 0;
-            right: 15px;
+            @include rem(right, 15px);
             height: 100%;
             display: flex;
             align-items: center;

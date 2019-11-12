@@ -1,15 +1,16 @@
 .btn {
-    display: inline-block;
-    border-radius: 25px;
-    border: none;
     -webkit-appearance: none;
-    color: $color1;
+    display: inline-block;
     background-color: #ffffff;
+    @include rem(padding, 15px);
+    @include rem(margin, 10px 0);
+    @include rem(border-radius, 25px);
+    border: none;
+    color: $color1;
+    @include rem(font-size, 16px);
     font-weight: bold;
-    font-size: 16px;
-    padding: 15px;
-    margin: 10px 0;
     box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
+    box-shadow: 0 .5rem 1rem 0 rgba(0, 0, 0, 0.15);
     outline: 0;
 
     &.is-ghost {
@@ -39,20 +40,21 @@
 }
 
 .btn-icon {
-    display: block;
-    width: 80px;
-    height: 80px;
-    padding: 15px;
-    margin: 10px auto;
     -webkit-appearance: none;
+    display: block;
+    @include rem(width, 80px);
+    @include rem(height, 80px);
+    @include rem(padding, 15px);
+    @include rem(margin, 10px auto);
     border-radius: 100%;
     text-align: center;
     box-shadow: 0 15px 20px 0 rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1.5rem 2rem 0 rgba(0, 0, 0, 0.25);
     border: solid 5px #ffffff;
-    cursor: pointer;
+    border: solid .5rem #ffffff;
     transition: all .25s ease;
     outline: 0;
-
+    cursor: pointer;
 
     &.is-yellow {
         background-color: $color1;
@@ -73,16 +75,19 @@
     &:disabled,
     &:disabled:hover {
         opacity: 0.25;
-        box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 .5rem 0 rgba(0, 0, 0, 0.15);
         cursor: not-allowed;
     }
 
     &:hover {
         box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.15);
+        box-shadow: 0 .5rem 1rem 0 rgba(0, 0, 0, 0.15);
     }
 
     &:active {
-        box-shadow: 0 0px 5px 0 rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+        box-shadow: 0 0 .5rem 0 rgba(0, 0, 0, 0.15);
     }
 
     svg {
@@ -97,10 +102,10 @@
 
 .btn-group {
     .btn{
-        margin: 10px 5px;
+        @include rem(margin, 10px 5px);
     }
     .btn-icon {
         display: inline-block;
-        margin: 10px 15px;
+        @include rem(margin, 10px 15px);
     }
 }

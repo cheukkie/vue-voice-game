@@ -19,22 +19,21 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-    @import '@/styles/setup/_variables.scss';
     .modal{
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        padding: 10px;
+        @include rem(padding, 10px);
         background-color: rgba(0,0,0,0.25);
         .modal-close{
             position: absolute;
-            top: 0px;
-            right: 10px;
-            width: 40px;
-            height: 40px;
-            padding: 12px;
+            top: 0;
+            @include rem(right, 10px);
+            @include rem(width, 40px);
+            @include rem(height, 40px);
+            @include rem(padding, 12px);
             svg path{
                 fill: $color1;
             }
@@ -52,9 +51,10 @@ export default {
     .panel {
         position: relative;
         background-color: rgba(255, 255, 255, 0.85);
-        border-radius: 15px;
-        padding: 20px;
+        @include rem(border-radius, 15px);
+        @include rem(padding, 20px);
         box-shadow: 0 20px 15px rgba(0, 0, 0, 0.15);
+        box-shadow: 0 2rem 1.5rem rgba(0, 0, 0, 0.15);
         background-color: #ffffff;
     }
 </style>

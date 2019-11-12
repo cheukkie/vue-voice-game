@@ -60,7 +60,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    @import '@/styles/setup/_variables.scss';
 
     .notification{
         $gp: &;
@@ -70,12 +69,13 @@ export default {
         align-items: center;
         position: fixed;
 
-        padding: 0 10px;
+        @include rem(padding, 0 10px);
         margin: auto;
 
         width: calc(100% - 30px);
+        width: calc(100% - 3rem);
         background-color: $color4;
-        border-radius: 5px;
+        @include rem(border-radius, 5px);
         
         text-align: left;
         color: #fff;
@@ -105,18 +105,18 @@ export default {
             }
         }
         &-icon{
-            width: 30px;
-            height: 30px;
+            @include rem(width,30px);
+            @include rem(height,30px);
         }
         &-msg{
             flex: 1;
-            padding: 5px 10px;
+            @include rem(padding, 5px 10px);
             h2{
-                font-size: 16px;
+                @include rem(font-size, 16px);
                 margin: 0;
             }
             p{
-                font-size: 14px;
+                @include rem(font-size, 14px);
                 margin: 0;
             }
         }
@@ -124,71 +124,72 @@ export default {
             -webkit-appearance: none;
             border: none;
             background-color: transparent;
-            width: 32px;
-            height: 32px;
-            padding: 10px;
+            @include rem(width, 32px);
+            @include rem(height, 32px);
+            @include rem(padding, 10px);
             cursor: pointer;
         }
 
         &[pos="bottom"]{
             top: auto;
-            bottom: $margin;
+            @include rem(bottom, $margin);
             transform: translate3d(0, 100%, 0);
         }
         &[pos="top"]{
-            top: $margin;
+            @include rem(top, $margin);
             bottom: auto;
             transform: translate3d(0, -100%, 0);
         }
         &[type="toast"]{
-            padding: 10px;
+            @include rem(padding, 10px);
             align-items: flex-start;
-            width: 300px;
+            @include rem(width, 300px);
             #{$gp}-close{
                 position: absolute;
-                right: 10px;
+                @include rem(right, 10px);
             }
             &.pos-left{
-                left: $margin;
+                @include rem(left, $margin);
                 right: auto;
             }
             &.pos-right{
                 left: auto;
-                right: $margin;
+                @include rem(right, $margin);
             }
         }
         &[type="modal"]{
-            padding: 10px;
+            @include rem(padding, 10px);
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
             width: calc(100% - 30px);
-            max-width: 300px;
-            max-height: 300px;
+            width: calc(100% - 3rem);
+            @include rem(max-width, 300px);
+            @include rem(max-height, 300px);
             bottom: 0;
             top: 0;
             left: 0;
             right: 0;
             
             #{$gp}-icon{
-                width: 40px;
-                height: 40px;
-                margin-bottom: 10px;
+                @include rem(width, 40px);
+                @include rem(height, 40px);
+                @include rem(margin-bottom, 10px);
             }
             #{$gp}-msg{
                 flex: none;
                 h2{
-                    font-size: 22px;
+                    @include rem(font-size, 22px);
                 }
                 p{
-                    font-size: 18px;
+                    @include rem(font-size, 18px);
                 }
             }
             #{$gp}-close{
                 position: absolute;
-                top: 10px;
-                right: 10px;
+                @include rem(top, 10px);
+                @include rem(right, 10px);
             }
         }
     }

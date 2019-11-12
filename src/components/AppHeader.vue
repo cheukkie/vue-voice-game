@@ -21,25 +21,25 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '@/styles/setup/_variables.scss';
     header{
-        padding: 10px;
+        @include rem(padding, 10px);
     }
     h1 {
         color: $color3;
         margin: 0;
-        font-size: 24px;
+        @include rem(font-size, 24px);
 
         span.icon-holder {
             display: inline-flex;
             vertical-align: middle;
             justify-content: center;
             align-items: center;
+            
             border-radius: 100%;
             border: solid 2px $color3;
-            padding: 5px;
-            width: 35px;
-            height: 35px;
+            @include rem(padding, 5px);
+            @include rem(width, 35px);
+            @include rem(height, 35px);
             text-align: center;
             vertical-align: middle;
         }

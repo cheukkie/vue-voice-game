@@ -46,7 +46,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '@/styles/setup/_variables.scss';
 
     ul {
         margin: auto;
@@ -60,15 +59,15 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-radius: 15px;
+            @include rem(border-radius, 15px);
+            @include rem(margin, 0 0 5px 0);
+            @include rem(padding, 0 15px);
+            @include rem(border-radius, 25px);
+            @include rem(height, 40px);
             border: solid 1px $color1;
-            color: $color1;
-            margin: 0 0 5px 0;
-            padding: 0 15px;
             text-align: center;
-            border-radius: 25px;
-            height: 40px;
             font-weight: bold;
+            color: $color1;
 
             svg {
                 path {
@@ -86,30 +85,31 @@
                 display: block;
                 width: 0; 
                 height: 0; 
-                left: -10px;
+                @include rem(left, -10px);
                 margin:auto;
 
                 border-top: 5px solid transparent;
+                border-top: .5rem solid transparent;
                 border-bottom: 5px solid transparent;
-                
+                border-bottom: .5rem solid transparent;
                 border-left: 5px solid $color1;
+                border-left: .5rem solid $color1;
             }
 
             .icon{
-                width: 20px;
-                height: 20px;
-                margin-right: 5px;
+                @include rem(width, 20px);
+                @include rem(height, 20px);
+                @include rem(margin-right, 5px);
             }
             
 
             .delete{
-                margin: 0 0 0 10px;
                 -webkit-appearance: none;
-                border: none;
-                height: 100%;
+                @include rem(width, 40px);
+                @include rem(height, 40px);
                 background-color: transparent;
-                width: 40px;
-                height: 40px;
+                border: none;
+                @include rem(margin, 0 0 0 10px);
                 cursor: pointer;
                 
                 svg path{
@@ -126,7 +126,7 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
                 overflow: hidden;
-                margin-right: 20px;
+                @include rem(margin-right, 20px);
                 text-align: left;
                 flex: 12;
             }
@@ -135,14 +135,15 @@
         &.icons {
             li {
                 display: inline-block;
-                height: 40px;
-                width: 40px;
-                margin: 5px;
+                background-color: #ffffff;
+                @include rem(height, 40px);
+                @include rem(width, 40px);
+                @include rem(margin, 5px);
                 padding: 0;
                 color: $color1;
-                background-color: #ffffff;
                 border: none;
                 box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.2);
+                box-shadow: 0 .5rem 1rem 0 rgba(0, 0, 0, 0.2);
                 // &.is-active{
                 //     background-color: $color1;
                 //     color: #ffffff;
@@ -156,29 +157,31 @@
             .indicator{
                 left: 0;
                 right: 0;
-                bottom: -10px;
+                @include rem(bottom, -10px);
 
                 border-right: 5px solid transparent;
+                border-right: .5rem solid transparent;
                 border-bottom: 5px solid $color1;
-                
+                border-bottom: .5rem solid $color1;
                 border-left: 5px solid transparent;
+                border-left: .5rem solid transparent;
             }
             .name {
                 margin: 0;
-                line-height: 40px;
+                @include rem(line-height, 40px);
             }
 
             .score {
                 position: absolute;
-                top: -5px;
-                right: -10px;
+                @include rem(top, -5px);
+                @include rem(right, -10px);
+                @include rem(width, 20px);
+                @include rem(height, 20px);
                 background-color: $color1;
-                width: 20px;
-                height: 20px;
                 border-radius: 100%;
+                @include rem(font-size, 12px);
+                @include rem(line-height, 20px);
                 color: #fff;
-                font-size: 12px;
-                line-height: 20px;
                 text-align: center;
             }
         }

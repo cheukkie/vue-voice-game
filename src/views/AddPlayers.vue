@@ -90,25 +90,25 @@
     };
 </script>
 <style lang="scss" scoped>
-    @import '@/styles/setup/_variables.scss';
+
     $borderRadius: 25px;
     .inputHolder{
-        width: 100%;
-        height: 40px;
-        margin-bottom: 5px;
         display: flex;
         justify-content: center;
+        width: 100%;
+        @include rem(height, 40px);
+        @include rem(margin-bottom, 5px);
     }
     input[type="text"]{
+        -webkit-appearance: none;
         display: block;
         width: 100%;
-        -webkit-appearance: none;
         border: none;
-        padding: 0 15px;
+        @include rem(padding, 0 15px);
         border: solid 1px #dddddd;
         border-radius: $borderRadius;
         color: $color1;
-        font-size: 14px;
+        @include rem(font-size, 14px);
         font-weight: bold;
         outline: 0;
         &:focus{

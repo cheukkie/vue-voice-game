@@ -60,7 +60,7 @@
 <style lang="scss" scoped>
     #playerInfo{
         position: fixed;
-        bottom: 50px;
+        @include rem(bottom, 50px);
         left: 0;
         right: 0;
 
@@ -72,12 +72,12 @@
             top: 0;  
             margin: auto;
             height: 100%;
-            width: 50px;
+            @include rem(width, 50px);
         }
     }
     #gameRound{
         position: fixed;
-        top: 40px;
+        @include rem(top, 40px);
         width: 100%;
         text-align: center;
         left: 0;
@@ -85,7 +85,7 @@
             right: 0;
             top: 0;
             height: 100%;
-            width: 50px;
+            @include rem(width, 50px);
             left: auto;
             writing-mode: vertical-rl;
             text-orientation: upright;

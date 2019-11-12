@@ -12,8 +12,8 @@ export default {
 
 <style lang="scss" scoped>
     footer{
-        padding: 10px;
-        font-size: 10px;
+        @include rem(padding, 10px);
+        @include rem(font-size, 10px);
         a{
             color: #ccc;
         }

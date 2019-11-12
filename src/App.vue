@@ -95,10 +95,5 @@
     }
   };
 </script>
+<style src="@/styles/_global.scss" lang="scss"></style>
 
-<style lang="scss">
-  @import "@/styles/_global.scss";
-
-
-
-</style>

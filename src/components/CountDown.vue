@@ -39,8 +39,8 @@ export default {
         --countdown-time: 5;
         position: relative;
         margin: auto;
-        height: 40px;
-        width: 40px;
+        @include rem(height, 40px);
+        @include rem(width, 40px);
         text-align: center;
         transition: all .25s ease;
         &.is-hidden{
@@ -51,14 +51,14 @@ export default {
             position: absolute;
             top: 0;
             right: 0;
-            width: 40px;
-            height: 40px;
+            @include rem(width, 40px);
+            @include rem(height, 40px);
             transform: rotateY(-180deg) rotateZ(-90deg);
             circle {
-                stroke-dasharray: 113px;
-                stroke-dashoffset: 0px;
+                @include rem(stroke-dasharray, 113px);
+                @include rem(stroke-dashoffset, 0px);
+                @include rem(stroke-width, 2px);
                 stroke-linecap: round;
-                stroke-width: 2px;
                 stroke: white;
                 fill: none;
                 animation: countdown calc(var(--countdown-time) * 1s) linear infinite forwards;
@@ -67,16 +67,16 @@ export default {
         .countdown-number {
             color: white;
             display: inline-block;
-            line-height: 40px;
+            @include rem(line-height, 40px);
         }
     }
 
     @keyframes countdown {
         from {
-            stroke-dashoffset: 0px;
+            @include rem(stroke-dashoffset, 0px);
         }
         to {
-            stroke-dashoffset: 113px;
+            @include rem(stroke-dashoffset, 113px);
         }
     }
 

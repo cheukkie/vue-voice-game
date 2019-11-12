@@ -2,3 +2,16 @@ $color1: rgba(244, 160, 0, 1);  // yellow
 $color2: rgba(219, 68, 55, 1);  // red
 $color3: rgba(15, 157, 88, 1);  // green
 $color4: rgba(66, 133, 244, 1); // blue
+
+$zindex: (
+    notification: 5000,
+    modal       : 4000,
+    menu        : 3000,
+    layout      : 2000,
+    background  : 1000
+);
+
+$screen-sm-min: 576px;  // Small tablets and large smartphones (landscape view)
+$screen-md-min: 768px;  // Small tablets (portrait view)
+$screen-lg-min: 992px;  // Tablets and small desktops
+$screen-xl-min: 1200px; // Large tablets and desktops
