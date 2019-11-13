@@ -19,14 +19,13 @@
 
       :active="notificationInfo.active"
       :auto-hide-after="notificationInfo.autoHideAfter"
-      pos-x='center'
-      pos-y='bottom'
+      :pos-x='notificationInfo.posX'
+      :pos-y='notificationInfo.posY'
       :type='notificationInfo.type'
       :role='notificationInfo.role'
       :title='notificationInfo.title'
       :msg='notificationInfo.msg'
     />
-    
     
   </div>
 </template>
@@ -34,9 +33,12 @@
 <script>
   // Input text component
   // URL Params
+  // BUG after skip dont show notif
+  // Edit player names
   // Save to localstorage
   // Clean code audiowave
   // Unique words
+  // Win view
   // GAME MODES
 
   import { mapGetters, mapActions } from 'vuex';
