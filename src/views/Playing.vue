@@ -9,12 +9,6 @@
                 <button class="btn is-block" @click="resetGame">Play again</button>
             </router-link>
         </div>
-        <NotificationContainer v-if="allPlayers.length === 0" :auto-hide-after="5" type="modal" role="warning" pos-x="center" pos-y="center">
-            <h2>No players found</h2>
-            <p>Returning to menu...</p>
-            <br><br>
-            <CountDown :time="5" />
-        </NotificationContainer>
         <div id="playerInfo" v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
             <AllPlayers view="icons" v-if="gameStarted && gameSettingsStatus && !gameOverStatus" />
         </div>
@@ -36,13 +30,23 @@
             }
         },
         methods:{
-            ...mapActions(['resetGame']),
+            ...mapActions(['resetGame','showNotification']),
         },
         mounted:function(){
             if( this.allPlayers.length === 0 ){
+                this.showNotification({
+                    autoHideAfter : 0,
+                    title         : 'No players found',
+                    msg           : 'Returning to menu...',
+                    role          : 'warning',
+                    type          : 'toast',
+                    posX          : 'right',
+                    posY          : 'top',
+                });
+
                 setTimeout(()=>{
                     this.$router.push('/');
-                },5000);
+                },4000);
             }
         },
         computed:{
