@@ -2,6 +2,9 @@ import Vue from 'vue';
 import Router from 'vue-router';
 
 import Menu from '@/views/Menu.vue';
+import MenuSingleplayer from '@/views/MenuSingleplayer.vue';
+import MenuMultiplayer from '@/views/MenuMultiplayer.vue';
+
 import Info from '@/views/Info.vue';
 import AddPlayers from '@/views/AddPlayers.vue';
 import Playing from '@/views/Playing.vue';
@@ -18,22 +21,32 @@ const appRouter = new Router({
       component: Menu,
     },
     {
+      path: '/single',
+      name: 'Single player',
+      component: MenuSingleplayer,
+    },
+    {
+      path: '/multi',
+      name: 'Multi player',
+      component: MenuMultiplayer,
+    },
+    {
       path: '/settings',
       name: 'Settings',
       component: Settings,
     },
     {
-      path: '/multiplayer/players',
+      path: '/:category/:mode/players',
       name: 'Add players',
       component: AddPlayers,
     },
     {
-      path: '/multiplayer/info',
+      path: '/:category/:mode/info',
       name: 'Info',
       component: Info,
     },
     {
-      path: '/multiplayer/playing',
+      path: '/:category/:mode/playing',
       name: 'Playing',
       component: Playing,
     },

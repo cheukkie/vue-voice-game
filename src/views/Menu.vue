@@ -1,11 +1,11 @@
 <template>
     <div>
-        <h2>Select game mode</h2>        
-        <button disabled class="btn is-block">Single player (Coming soon)</button>
-        <router-link to="/multiplayer/info">
+        <router-link to="/single/">
+            <button class="btn is-block">Single player</button>
+        </router-link>
+        <router-link to="/multi/">
             <button class="btn is-block">Multiplayer</button>
         </router-link>
-        <!-- <button>Multi player</button> -->
         <button disabled class="btn is-block">Leaderboards (Coming soon)</button>
         <router-link to="/settings">
             <button class="btn is-block">Settings</button>

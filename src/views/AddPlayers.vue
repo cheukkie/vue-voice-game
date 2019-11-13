@@ -1,15 +1,17 @@
 <template>
     <div>
-        <h2>Players</h2>
+        <h2>Player<span v-if="category === 'multi'">s</span></h2>
         <AllPlayers view="list" />
         <div v-if="allPlayers.length < maxPlayers">
             <form @submit.prevent="onSubmit">
                 <div class="inputHolder">
                     <input ref="player" type="text" placeholder="New player" v-model="name" :disabled="isRecording">
                 </div>
-                <div v-for="(n,index) in (maxPlayers-(allPlayers.length+1))" :key="index">
-                    <div class="inputHolder">
-                        <input disabled type="text" placeholder="New player">
+                <div v-if="category === 'multi'">
+                    <div v-for="(n,index) in (maxPlayers-(allPlayers.length+1))" :key="index">
+                        <div class="inputHolder">
+                            <input disabled type="text" placeholder="New player">
+                        </div>
                     </div>
                 </div>
                 <button @click.prevent="onSubmit" class="hide">Add player</button>
@@ -21,10 +23,10 @@
                 </button>
             </div>
         </div>
-        <router-link to="/multiplayer/playing" v-if="allPlayers.length === maxPlayers">
-            <button :disabled="allPlayers.length < maxPlayers" class="btn is-block" @click="beginGame">Start</button>
+        <router-link :to="`/${category}/${mode}/playing`" v-if="allPlayers.length === maxPlayers">
+            <button :disabled="allPlayers.length < maxPlayers" class="btn is-block" @click="beginGame">Play</button>
         </router-link>
-        <router-link to="/multiplayer/info">
+        <router-link :to="`/${category}/${mode}/info`">
             <button class="btn is-block is-ghost">Back</button>
         </router-link>
     </div>
@@ -40,7 +42,9 @@
         data: function () {
             return {
                 name: '',
-                isRecording: false
+                isRecording: false,
+                category : this.$route.params.category,
+                mode : this.$route.params.mode,
             };
         },
         updated: function () {
