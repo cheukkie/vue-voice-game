@@ -19,7 +19,9 @@ const state = {
         title:'',
         msg: '',
         role: 'default',
-        type: 'toast'
+        type: 'toast',
+        posX: 'center',
+        posY: 'bottom'
     },
 
     mobileUser: false
@@ -174,13 +176,17 @@ const mutations = {
         state.notification.msg = options.msg || '';
         state.notification.role = options.role || 'default';
         state.notification.type = options.type || 'toast';
+        state.notification.posX = options.posX || 'center';
+        state.notification.posY = options.posY || 'bottom';
     },
     RESET_NOTIFICATION_OPTIONS: () => {
         state.notification.autoHideAfter = 0;
-        state.notification.title ='';
+        state.notification.title = '';
         state.notification.msg = '';
         state.notification.role = 'default';
         state.notification.type = 'toast';
+        state.notification.posX = 'center';
+        state.notification.posY = 'bottom';
     },
 
     SET_MOBILE_USER: (state,user) => state.mobileUser = user,

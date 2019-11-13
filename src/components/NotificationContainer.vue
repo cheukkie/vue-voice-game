@@ -53,7 +53,7 @@ export default {
         ...mapActions(['hideNotification']),
         onHide(){
             this.visible = false;
-            //MUTATE GLOBAL STORE AFTER
+            //Mutate global store
             setTimeout(()=>{
                 this.hideNotification();
             },250);
