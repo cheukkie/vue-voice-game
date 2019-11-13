@@ -68,6 +68,9 @@
                 this.name = '';
             },
             addName(output){
+                if( output === '' ){
+                    this.isRecording = false;
+                }
                 this.name = this.capitalize(output);
                 this.isRecording = false;
             },
