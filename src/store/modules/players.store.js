@@ -12,7 +12,16 @@ const state = {
     gameSettingsSet: false,
     gameMaxPlayers: 2,
 
-    waveAnimation: false,
+    notification:{
+        active: false,
+
+        autoHideAfter: 0,
+        title:'',
+        msg: '',
+        role: 'default',
+        type: 'toast'
+    },
+
     mobileUser: false
 };
 
@@ -26,8 +35,9 @@ const getters = {
     gameStarted: state => state.gameStarted,
     maxPlayers: state => state.gameMaxPlayers,
 
-    isAudioWaveStarted: state => state.waveAnimation,
-    isMobileUser: state => state.mobileUser
+    isMobileUser: state => state.mobileUser,
+
+    notificationInfo: state => state.notification
 };
 
 const actions = {
@@ -35,8 +45,7 @@ const actions = {
     startGame({commit}){
         commit('START_GAME');
         commit('SHUFFLE_PLAYERS');
-        commit('MAKE_PLAYER_ACTIVE');
-        // commit('MAKE_AUDIOWAVE_ACTIVE');
+        commit('SET_PLAYER_ACTIVE');
     },
 
     setWinningScore({commit},score){
@@ -45,10 +54,6 @@ const actions = {
 
     settingsSet({commit}){
         commit('SETTINGS_SET');
-    },
-
-    setMobileUser({commit},user){
-        commit('SET_MOBILE_USER',user);
     },
 
     setMaxPlayers({commit},qty){
@@ -76,14 +81,10 @@ const actions = {
         if( (state.gameCurPlayerIndex+1) < state.players.length ){
             commit('SELECT_NEXT_PLAYER');
         }else{
-            // const reachedScore = state.players.filter(player=>{
-            //     return player.score >= state.gameWinningScore;
-            // });
-            // console.log( reachedScore );
             commit('SELECT_FIRST_PLAYER');
             commit('ADD_ROUND');
         }
-        commit('MAKE_PLAYER_ACTIVE');
+        commit('SET_PLAYER_ACTIVE');
     },
 
     addPoint({commit}){
@@ -97,7 +98,19 @@ const actions = {
         commit('REMOVE_POINT');
     },
 
-   
+    showNotification({commit},options){
+        commit('SET_NOTIFICATION_OPTIONS',options);
+        commit('SET_NOTIFICATION_ACTIVE');
+    },
+
+    hideNotification({commit}){
+        commit('SET_NOTIFICATION_INACTIVE');
+        commit('RESET_NOTIFICATION_OPTIONS');
+    },
+
+    setMobileUser({commit},user){
+        commit('SET_MOBILE_USER',user);
+    },
 
 };
 
@@ -106,20 +119,15 @@ const mutations = {
     DELETE_PLAYER: (state,player )=> state.players.splice(player,1),
     SELECT_FIRST_PLAYER: () => state.gameCurPlayerIndex = 0,
     SELECT_NEXT_PLAYER: () => state.gameCurPlayerIndex++,
-    MAKE_PLAYER_ACTIVE: () => {
+    SET_PLAYER_ACTIVE: () => {
         for (let i = 0; i < state.players.length; i++) {
             state.players[i].currentPlayer = false;
         }
         state.players[state.gameCurPlayerIndex].currentPlayer = true;
     },
-
-    MAKE_AUDIOWAVE_ACTIVE: () => state.waveAnimation = true,
-
     SHUFFLE_PLAYERS: () => state.players = shuffleArray(state.players),
     
     SETTINGS_SET: () => state.gameSettingsSet = true,
-
-    SET_MOBILE_USER: (state,user) => state.mobileUser = user,
 
     START_GAME: () => {
         state.gameStarted = true;
@@ -157,6 +165,25 @@ const mutations = {
     SET_WINNING_SCORE: (state,score) => (state.gameWinningScore = score),
     SET_MAX_PLAYERS: (state,qty) => { state.gameMaxPlayers = qty; },
     
+
+    SET_NOTIFICATION_ACTIVE: () => state.notification.active = true,
+    SET_NOTIFICATION_INACTIVE: () => state.notification.active = false,
+    SET_NOTIFICATION_OPTIONS: (state,options) => {
+        state.notification.autoHideAfter = options.autoHideAfter || 0;
+        state.notification.title = options.title || '';
+        state.notification.msg = options.msg || '';
+        state.notification.role = options.role || 'default';
+        state.notification.type = options.type || 'toast';
+    },
+    RESET_NOTIFICATION_OPTIONS: () => {
+        state.notification.autoHideAfter = 0;
+        state.notification.title ='';
+        state.notification.msg = '';
+        state.notification.role = 'default';
+        state.notification.type = 'toast';
+    },
+
+    SET_MOBILE_USER: (state,user) => state.mobileUser = user,
 };
 
 export default {

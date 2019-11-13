@@ -14,7 +14,19 @@
     <ModalContainer v-if="modal.active">
       <ModalRules v-if="modal.content==='rules'" />
     </ModalContainer>
-    <NotificationContainer />
+    <NotificationContainer
+      v-if="notificationInfo.active"
+
+      :active="notificationInfo.active"
+      :auto-hide-after="notificationInfo.autoHideAfter"
+      pos-x='center'
+      pos-y='bottom'
+      :type='notificationInfo.type'
+      :role='notificationInfo.role'
+      :title='notificationInfo.title'
+      :msg='notificationInfo.msg'
+    />
+    
     
   </div>
 </template>
@@ -22,9 +34,9 @@
 <script>
   // Input text component
   // URL Params
-  // Notifications
   // Save to localstorage
   // Clean code audiowave
+  // Unique words
   // GAME MODES
 
   import { mapGetters, mapActions } from 'vuex';
@@ -54,7 +66,7 @@
       };
     },
     methods: {
-      ...mapActions(['setMobileUser']),
+      ...mapActions(['setMobileUser','showNotification']),
       checkParams(to,from){
         if( to.query.modal && this.modal.views.includes(to.query.modal) ){
           this.modal.active = true;
@@ -74,6 +86,16 @@
       this.checkParams(this.$route);
       this.setMobileUser(isMobile);
       
+      if(isMobile){
+        this.showNotification({
+          autoHideAfter : 0,
+          title         : 'Hello mobile you!',
+          msg           : 'We are glad you are using this app on mobile. Keep in mind that the recording part of the game is working slower on mobile.',
+          role          : 'default',
+          type          : 'modal'
+        });
+      }
+      
     },
     watch:{
       $route(to,from){
@@ -83,7 +105,7 @@
       }
     },
     computed: {
-      ...mapGetters(['curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus', 'gameStarted']),
+      ...mapGetters(['notificationInfo','curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus', 'gameStarted']),
     },
     components: {
       AppHeader,

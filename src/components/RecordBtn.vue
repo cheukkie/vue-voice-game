@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
     name: 'RecordBtn',
     props: {
@@ -62,7 +64,15 @@ export default {
         };
         this.recognition.onend = function (e) {
             if (vm.output === '') {
-                console.log('Je moet wel iets zeggen ');
+                //console.log('Je moet wel iets zeggen');
+                vm.showNotification({
+                    autoHideAfter : 5,
+                    title         : 'We heard nothing',
+                    msg           : 'Make sure you say something. Try again.',
+                    role          : 'warning',
+                    type          : 'toast'
+                });
+                vm.$emit('recordBtnOutput', '');
                 vm.retry = true;
             }
             vm.recording = false;
@@ -71,6 +81,14 @@ export default {
         this.recognition.onerror = function (e) {
             console.log(`error: ${e.error}`);
             vm.error = e.error;
+
+            // vm.showNotification({
+            //     autoHideAfter : 0,
+            //     title         : 'Whoops!',
+            //     msg           : `We encountered an error: ${vm.error}`,
+            //     role          : 'error',
+            //     type          : 'toast'
+            // });
         };
         this.recognition.onnomatch = function (e) {
             console.log('no match');
@@ -92,6 +110,7 @@ export default {
         };
     },
     methods: {
+        ...mapActions(['showNotification']),
         startDictation() {
             this.recognition.start();
             this.recordingDone = false;

@@ -16,7 +16,7 @@
             <p v-if="msg">{{ msg }}</p>
             <slot></slot>
         </span>
-        <button class="notification-close" @click="hideNotification" v-if="autoHideAfter === 0">
+        <button class="notification-close" @click="onHide" v-if="autoHideAfter === 0">
             <span class="svg-icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z"/></svg>
             </span>
@@ -25,6 +25,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
+
 export default {
     props:{
         autoHideAfter: Number,
@@ -42,19 +44,32 @@ export default {
     },
     mounted: function(){
         const vm = this;
-        vm.visible = true;
-        if( vm.autoHideAfter !== 0 ){
-            setTimeout(()=>{
-                vm.visible = false;
-            },vm.autoHideAfter*1000);
-        }
+        vm.visible = false;
+        this.$nextTick(() => {
+            vm.visible = true;
+        });
     },
     methods:{
-        hideNotification(){
+        ...mapActions(['hideNotification']),
+        onHide(){
             this.visible = false;
+            //MUTATE GLOBAL STORE AFTER
+            setTimeout(()=>{
+                this.hideNotification();
+            },250);
         },
     },
     watch:{
+        visible: function(){
+            const vm = this;
+            this.$nextTick(() => {
+                if( vm.autoHideAfter !== 0 && vm.visible === true ){
+                    setTimeout(()=>{
+                        vm.onHide();
+                    },vm.autoHideAfter*1000);
+                }
+            });
+        }
     }
 }
 </script>
@@ -82,7 +97,7 @@ export default {
 
         visibility: hidden;
         opacity: 0;
-        transition: all .75s ease-out;
+        transition: all .5s ease-in-out;
         
         &[visible]{ 
             transform: translate3d(0, 0, 0) !important;
@@ -130,15 +145,25 @@ export default {
             cursor: pointer;
         }
 
-        &[pos="bottom"]{
+        &[pos-y="bottom"]{
             top: auto;
             @include rem(bottom, $margin);
             transform: translate3d(0, 100%, 0);
         }
-        &[pos="top"]{
+        &[pos-y="top"]{
             @include rem(top, $margin);
             bottom: auto;
             transform: translate3d(0, -100%, 0);
+        }
+        &[pos-y="center"]{
+            @include rem(top, $margin);
+            top: auto;
+            bottom: auto;
+            transform: translate3d(0, -100%, 0);
+        }
+        &[type="bar"]{
+            left: 0;
+            right: 0;
         }
         &[type="toast"]{
             @include rem(padding, 10px);
@@ -148,12 +173,17 @@ export default {
                 position: absolute;
                 @include rem(right, 10px);
             }
-            &.pos-left{
+            &[pos-x="left"]{
                 @include rem(left, $margin);
                 right: auto;
             }
-            &.pos-right{
+            &[pos-x="right"]{
                 left: auto;
+                @include rem(right, $margin);
+            }
+            &[pos-x="center"]{
+                right: 0;
+                left: 0;
                 @include rem(right, $margin);
             }
         }
