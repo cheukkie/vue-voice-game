@@ -66,10 +66,10 @@
 
                 setTimeout(()=>{
                     this.button.label = this.button.states.success;
-                },1500);
+                },1000);
                 setTimeout(()=>{
                     this.button.label = this.button.states.neutral;
-                },3000);
+                },2000);
                 
             }
         },
