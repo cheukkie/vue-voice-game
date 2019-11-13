@@ -19,7 +19,7 @@
             <button class="btn" v-if="!showNextPlayerBtn" @click="skipWord">Skip word</button>
         </div>
                
-        <div v-if="resultStatus" :class="'card is-'+resultStatus">
+        <div v-if="resultStatus" :class="`card is-${resultStatus}`">
             <main>
                 <div v-if="resultStatus=== 'success'">
                     <div class="icon">
@@ -141,7 +141,7 @@
             clickRecord(val){
                 this.showAudioWave = true;
                 this.$refs.recordButton.$el.click();
-                this.$refs.cardCurrent.classList.add('is-hidden')
+                this.$refs.cardCurrent.classList.add('is-hidden');
             },
             resetRound() {
                 this.word.output = '';
@@ -156,6 +156,7 @@
                 this.showRecordBtn = false;
                 this.showAudioWave = false;
                 this.resultStatus = 'error';
+
                 //this.removePoint();
             },
             cleanWord(input){
@@ -200,26 +201,34 @@
     .card{
         position: fixed;
         z-index: 1;
-        background-color: $color4;
         top: 0;
         left: 0;
         right: 0;
         bottom: 0;
         height: 60vh;
-        padding: 20px;
-        @include rem(max-width, 640px);
 
         width: calc(100vw - 30px);
         width: calc(100vw - 3rem);
+        @include rem(max-width, 480px);
+        @include rem(border-radius, 5px);
+
+        background-color: $color4;
+        padding: 20px;
         margin: auto;
         color: #ffffff;
-        @include rem(border-radius, 5px);
         
         display: flex;
         flex-direction: column;
         justify-content: space-around;
 
+        box-shadow: 0 15px 40px 5px rgba($color4, 0.5);
+        box-shadow: 0 1.5rem 4rem .5rem rgba($color4, 0.5);
+
         transition: all 0.25s ease;
+
+        .btn:not(:hover){
+            color: $color4;
+        }
 
         svg{
             path{
@@ -232,12 +241,26 @@
 
         &.is-success{
             background-color: $color3;
+            box-shadow: 0 15px 40px 5px rgba($color3, 0.5);
+            box-shadow: 0 1.5rem 4rem .5rem rgba($color3, 0.5);
             .btn:not(:hover){
                 color: $color3;
             }
         }
+
+        &.is-warning{
+            background-color: $color1;
+            box-shadow: 0 15px 40px 5px rgba($color1, 0.5);
+            box-shadow: 0 1.5rem 4rem .5rem rgba($color1, 0.5);
+            .btn:not(:hover){
+                color: $color1;
+            }
+        }
+
         &.is-error{
             background-color: $color2;
+            box-shadow: 0 15px 40px 5px rgba($color2, 0.5);
+            box-shadow: 0 1.5rem 4rem .5rem rgba($color2, 0.5);
             .btn:not(:hover){
                 color: $color2;
             }
