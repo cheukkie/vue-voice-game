@@ -76,6 +76,7 @@ export default {
                 vm.retry = true;
             }
             vm.recording = false;
+            vm.$emit('recordBtnEnd',true);
         };
 
         this.recognition.onerror = function (e) {
