@@ -18,8 +18,7 @@
         <div class="btn-group">
             <button class="btn" v-if="!showNextPlayerBtn" @click="skipWord">Skip word</button>
         </div>
-        
-        
+               
         <div v-if="resultStatus" :class="'card is-'+resultStatus">
             <main>
                 <div v-if="resultStatus=== 'success'">
@@ -39,10 +38,14 @@
                             <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M5 14h-5v-12h5v12zm18.875-4.809c0-.646-.555-1.32-1.688-1.41-.695-.055-.868-.623-.031-.812.701-.159 1.098-.652 1.098-1.181 0-.629-.559-1.309-1.826-1.543-.766-.141-.842-.891-.031-.953.688-.053.96-.291.96-.626-.001-.931-1.654-2.666-4.852-2.666-4.16 0-6.123 2.067-10.505 2.768v10.878c2.375.869 4.466 2.644 5.688 6.886.478 1.661.781 3.468 2.374 3.468 2.375 0 2.594-5.125 1.688-8.781 1.312-.688 3.751-.936 4.979-.885 1.771.072 2.271-.818 2.271-1.49 0-1.011-.833-1.35-1.354-1.51-.609-.188-.889-.807-.031-.922.836-.112 1.26-.656 1.26-1.221z"/></svg>
                         </div>
                     </div>
-                    <h2>That's too bad!</h2>
+                    <h2>
+                        <span v-if="word.output">That's too bad!</span>
+                        <span v-else>You skipper!</span>
+                    </h2>
                     <p>
                         Your word was <strong>{{word.current}}</strong>.<br>
-                        We heard <span v-if="word.output">{{ word.output }}</span><span v-else>nothing</span>.
+                        <span v-if="word.output">We heard {{ word.output }}</span> 
+                        <span v-else>Better luck next time!</span>.
                     </p>
                 </div>
             </main>
@@ -155,16 +158,18 @@
                 this.resultStatus = 'error';
                 //this.removePoint();
             },
+            cleanWord(input){
+                return input.toLowerCase().replace(/\s/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+            },
             checkWord() {
                 console.log('output: ' + this.word.output.toLowerCase().replace(/\s/g, ''));
                 console.log('current: ' + this.word.current.toLowerCase().replace(/\s/g, ''));
-                if (this.word.output.toLowerCase().replace(/\s/g, '') === this.word.current.toLowerCase().replace(/\s/g, '')) {
+                
+                if ( this.cleanWord(this.word.output) === this.cleanWord(this.word.current) ){
                     this.addPoint();
                     this.resultStatus = 'success';
                 }
-                if (
-                    this.word.output.toLowerCase().replace(/\s/g, '') !== this.word.current.toLowerCase().replace(/\s/g, '')
-                ) {
+                if ( this.cleanWord(this.word.output) !== this.cleanWord( this.word.current ) ){
                     this.resultStatus = 'error';
                     if( this.player.score >= 1 ){
                         //this.removePoint();
@@ -173,9 +178,11 @@
                 this.showNextPlayerBtn = true;
             },
             checkOutput(word) {
-                this.word.output = word;
-                this.checkWord();
-                this.showRecordBtn = false;
+                if( word !== '' ){
+                    this.word.output = word;
+                    this.checkWord();
+                    this.showRecordBtn = false;
+                }
             }
         },
         computed:{
