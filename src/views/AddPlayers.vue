@@ -56,13 +56,15 @@
             });
         },
         mounted: function(){
-            const vm = this;
-            if( vm.allPlayers.length < vm.maxPlayers ){
+            if( this.allPlayers.length < this.maxPlayers ){
                 this.$refs.player.focus();
+            }
+            if( this.category === 'single' && this.allPlayers.length > 1 ){
+                this.keepFirstPlayer();
             }
         },
         methods: {
-            ...mapActions(['addPlayer','startGame','settingsSet']),
+            ...mapActions(['addPlayer','startGame','settingsSet','keepFirstPlayer']),
             beginGame() {
                 this.settingsSet();
                 this.startGame();

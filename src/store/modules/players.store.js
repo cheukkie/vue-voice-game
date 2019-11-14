@@ -7,7 +7,7 @@ const state = {
     gameStarted: false,
     gameRound: 1,
     gameCurPlayerIndex: 0,
-    gameWinningScore: 5,
+    gameWinningScore: 1,
     gameOver: false,
     gameSettingsSet: false,
     gameMaxPlayers: 2,
@@ -30,6 +30,7 @@ const state = {
 const getters = {
     allPlayers: state => state.players,
     curPlayer: state => state.players[state.gameCurPlayerIndex],
+    curPlayerIndex: state => state.gameCurPlayerIndex,
     curRound: state => state.gameRound,
     gameWinningScore: state => state.gameWinningScore,
     gameOverStatus: state => state.gameOver,
@@ -75,6 +76,10 @@ const actions = {
         });
     },
     
+    keepFirstPlayer({commit}){
+        commit('KEEP_FIRST_PLAYER');
+    },
+
     removePlayer({commit},player){
         commit('DELETE_PLAYER', player);
     },
@@ -89,11 +94,12 @@ const actions = {
         commit('SET_PLAYER_ACTIVE');
     },
 
+    setWinningPlayer({commit},playerIndex){
+        commit('SET_WINNING_PLAYER',playerIndex);
+    },
+
     addPoint({commit}){
         commit('ADD_POINT');
-        if( state.players[state.gameCurPlayerIndex].score >= state.gameWinningScore ){
-            commit('SET_WINNING_PLAYER');
-        }
     },
 
     removePoint({commit}){
@@ -119,6 +125,7 @@ const actions = {
 const mutations = {
     NEW_PLAYER: (state, player) => state.players.push(player),
     DELETE_PLAYER: (state,player )=> state.players.splice(player,1),
+    KEEP_FIRST_PLAYER: () => state.players = state.players.splice(1),
     SELECT_FIRST_PLAYER: () => state.gameCurPlayerIndex = 0,
     SELECT_NEXT_PLAYER: () => state.gameCurPlayerIndex++,
     SET_PLAYER_ACTIVE: () => {
@@ -151,9 +158,11 @@ const mutations = {
         }
     },
     
-    SET_WINNING_PLAYER: () => {
-        state.players[state.gameCurPlayerIndex].winner = true;
-        state.gameOver = true;
+    SET_WINNING_PLAYER: (state,playerIndex) => {
+        if( state.players[playerIndex] ){
+            state.players[playerIndex].winner = true;
+            state.gameOver = true;
+        }
         if( state.players.length > 0 ){
             for (let i = 0; i < state.players.length; i++) {
                 state.players[i].currentPlayer = false;
