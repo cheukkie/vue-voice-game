@@ -7,7 +7,8 @@ const state = {
     gameStarted: false,
     gameRound: 1,
     gameCurPlayerIndex: 0,
-    gameWinningScore: 1,
+    gamePlayerLives: 3,
+    gameWinningScore: 5,
     gameOver: false,
     gameSettingsSet: false,
     gameMaxPlayers: 2,
@@ -32,10 +33,13 @@ const getters = {
     curPlayer: state => state.players[state.gameCurPlayerIndex],
     curPlayerIndex: state => state.gameCurPlayerIndex,
     curRound: state => state.gameRound,
+    
     gameWinningScore: state => state.gameWinningScore,
     gameOverStatus: state => state.gameOver,
     gameSettingsStatus: state => state.gameSettingsSet,
     gameStarted: state => state.gameStarted,
+    
+    maxLives: state => state.gamePlayerLives,
     maxPlayers: state => state.gameMaxPlayers,
 
     isMobileUser: state => state.mobileUser,
@@ -49,6 +53,10 @@ const actions = {
         commit('START_GAME');
         commit('SHUFFLE_PLAYERS');
         commit('SET_PLAYER_ACTIVE');
+    },
+
+    setPlayerLives({commit},lives){
+        commit('SET_PLAYER_LIVES',lives);
     },
 
     setWinningScore({commit},score){
@@ -71,6 +79,7 @@ const actions = {
         commit('NEW_PLAYER', {
             name: player,
             score: 0,
+            lives: state.gamePlayerLives,
             winner: false,
             currentPlayer: false
         });
@@ -104,6 +113,10 @@ const actions = {
 
     removePoint({commit}){
         commit('REMOVE_POINT');
+    },
+
+    removeLife({commit}){
+        commit('REMOVE_LIFE');
     },
 
     showNotification({commit},options){
@@ -172,11 +185,18 @@ const mutations = {
 
     ADD_ROUND: () => state.gameRound++,
     ADD_POINT: () => state.players[state.gameCurPlayerIndex].score++,
+    ADD_LIFE: () => state.players[state.gameCurPlayerIndex].lives++,
+    REMOVE_LIFE: () => state.players[state.gameCurPlayerIndex].lives--,
     REMOVE_POINT: () => state.players[state.gameCurPlayerIndex].score--,
     SET_WINNING_SCORE: (state,score) => (state.gameWinningScore = score),
+    SET_PLAYER_LIVES: (state,lives) => {
+        state.gamePlayerLives = lives;
+        for (let i = 0; i < state.players.length; i++) {
+            state.players[i].lives = state.gamePlayerLives;
+        }
+    },
     SET_MAX_PLAYERS: (state,qty) => { state.gameMaxPlayers = qty; },
     
-
     SET_NOTIFICATION_ACTIVE: () => state.notification.active = true,
     SET_NOTIFICATION_INACTIVE: () => state.notification.active = false,
     SET_NOTIFICATION_OPTIONS: (state,options) => {
@@ -188,6 +208,7 @@ const mutations = {
         state.notification.posX = options.posX || 'center';
         state.notification.posY = options.posY || 'bottom';
     },
+
     RESET_NOTIFICATION_OPTIONS: () => {
         state.notification.autoHideAfter = 0;
         state.notification.title = '';

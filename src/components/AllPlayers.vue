@@ -8,7 +8,14 @@
                 </span>
             </span>
             <span class="name">{{ displayName(player.name) }}</span>
-            <span class="score" v-if="gameStarted">{{ player.score }}</span>
+            <span class="score" v-if="gameStarted">
+                <span v-if="mode==='classic'">
+                    {{ player.score }}
+                </span>
+                <span v-else-if="mode==='survival'">
+                    {{ player.lives }}
+                </span>
+            </span>
             <span class="indicator" v-if="player.currentPlayer"></span>
         
             <button class="delete" @click="removePlayer(index)" v-if="view !== 'icons' && !gameOverStatus" title="Remove player">
@@ -28,6 +35,7 @@
         name: 'AllPlayers',
         props: {
             view: String,
+            mode: String
         },
         computed: {
             ...mapGetters(['allPlayers', 'gameSettingsStatus','gameOverStatus','gameStarted']),

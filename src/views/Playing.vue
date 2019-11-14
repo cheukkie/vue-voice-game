@@ -1,7 +1,12 @@
 <template>
     <div class="game-view">
         <div id="gameRound" v-if="allPlayers.length > 0"><h2>Round {{ curRound }}</h2></div>
-        <RecordPanel :player="curPlayer" v-if="gameStarted && gameSettingsStatus && !gameOverStatus" />
+        <RecordPanel 
+            v-if="gameStarted && gameSettingsStatus && !gameOverStatus"
+            :player="curPlayer" 
+            :category = "$route.params.category"
+            :mode = "$route.params.mode"
+        />
         <div v-if="gameOverStatus">
             <h2>Winner!</h2>
             <AllPlayers view="list" />
@@ -10,7 +15,7 @@
             </router-link>
         </div>
         <div id="playerInfo" v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
-            <AllPlayers view="icons" v-if="gameStarted && gameSettingsStatus && !gameOverStatus" />
+            <AllPlayers view="icons" :mode="$route.params.mode" v-if="gameStarted && gameSettingsStatus && !gameOverStatus" />
         </div>
     </div>
 </template>
@@ -24,24 +29,19 @@
     import CountDown from '@/components/CountDown.vue';
 
     export default {
-        data:function(){
-            return {
-                msg: ''
-            }
-        },
         methods:{
             ...mapActions(['resetGame','showNotification']),
         },
         mounted:function(){
             if( this.allPlayers.length === 0 ){
                 this.showNotification({
-                    autoHideAfter : 0,
+                    autoHideAfter : 3,
                     title         : 'No players found',
                     msg           : 'Returning to menu...',
                     role          : 'warning',
-                    type          : 'toast',
-                    posX          : 'right',
-                    posY          : 'top',
+                    type          : 'modal',
+                    posX          : 'center',
+                    posY          : 'center',
                 });
 
                 setTimeout(()=>{
