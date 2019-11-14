@@ -42,6 +42,7 @@
     div{
         display: flex;
         flex-direction: row;
+        @include rem(margin-bottom, 5px);
         button{
             flex: 1;
             margin: 0;

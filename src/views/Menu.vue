@@ -1,5 +1,6 @@
 <template>
     <div>
+        <h2>Menu</h2>
         <router-link to="/single/">
             <button class="btn is-block">Single player</button>
         </router-link>

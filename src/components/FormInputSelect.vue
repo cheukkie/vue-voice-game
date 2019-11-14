@@ -41,6 +41,7 @@
     }
     .selectHolder{
         position:relative;
+        @include rem(margin-bottom, 5px);
         .icon{
             position: absolute;
             top: 0;
