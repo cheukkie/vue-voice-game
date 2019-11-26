@@ -5,10 +5,11 @@ import Menu from '@/views/Menu.vue';
 import MenuSingleplayer from '@/views/MenuSingleplayer.vue';
 import MenuMultiplayer from '@/views/MenuMultiplayer.vue';
 
+import Settings from '@/views/Settings.vue';
 import Info from '@/views/Info.vue';
 import AddPlayers from '@/views/AddPlayers.vue';
 import Playing from '@/views/Playing.vue';
-import Settings from '@/views/Settings.vue';
+import Winner from '@/views/Winner.vue';
 
 Vue.use(Router)
 
@@ -49,6 +50,11 @@ const appRouter = new Router({
       path: '/:category/:mode/playing',
       name: 'Playing',
       component: Playing,
+    },
+    {
+      path: '/:category/:mode/winner',
+      name: 'Winner',
+      component: Winner,
     },
   ]
 });

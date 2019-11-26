@@ -1,9 +1,9 @@
 <template>
     <div>
-        <button class="btn" @click="decrement" :disabled="min===rangeValue">-</button>
+        <button class="btn" @click="decrement" :disabled="min === rangeValue">-</button>
         <div class="inputValue">{{ label }}: {{ rangeValue}}</div>
         <input class="hide" :min="min" :max="max" type="range" v-model="rangeValue">
-        <button class="btn" @click="increment" :disabled="max===rangeValue">+</button>
+        <button class="btn" @click="increment" :disabled="max === rangeValue">+</button>
     </div>
 </template>
 
@@ -18,7 +18,7 @@
         },
         data: function () {
             return {
-                rangeValue: this.min,
+                rangeValue: this.value,
             }
         },
         methods:{

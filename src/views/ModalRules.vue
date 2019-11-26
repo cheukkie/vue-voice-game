@@ -4,19 +4,21 @@
         <FormInputRange
             v-model="gameModeSettings.maxPlayers"
             :min="2" 
-            :max="8" 
+            :max="8"
+            :value="gameModeSettings.maxPlayers"
             label="Players" 
         />
         <FormInputRange
             v-if="mode ==='survival'"
-            v-model="gameModeSettings.playerLives"
+            v-model.number="gameModeSettings.playerLives"
             :min="1"
             :max="5"
+            :value="gameModeSettings.playerLives"
             label="Lives" 
         />
         <FormInputSelect 
             v-if="mode ==='classic'"
-            v-model="gameModeSettings.targetScore" 
+            v-model.number="gameModeSettings.targetScore" 
             :placeholder="gameModeSettings.placeHolderText"
             :options="gameModeSettings.scoreOptions" 
         />
@@ -28,7 +30,16 @@
 </template>
 
 <script>
-    import { mapActions } from 'vuex';
+    import { createNamespacedHelpers } from 'vuex';
+
+    const {
+        mapActions: mapGameActions,
+    } = createNamespacedHelpers('game');
+    const {
+        mapState: mapPlayersState,
+        mapActions: mapPlayersActions,
+    } = createNamespacedHelpers('players');
+
     import FormInputRange from '@/components/FormInputRange.vue';
     import FormInputSelect from '@/components/FormInputSelect.vue';
 
@@ -70,7 +81,7 @@
                 gameModeSettings: {
                     maxPlayers: 2,
                     targetScore: 5,
-                    playerLives: 3,
+                    playerLives: 1,
                     placeHolderText : classic.placeHolder,
                     scoreOptions: classic.options
                 }
@@ -79,14 +90,25 @@
         mounted: function(){
             this.button.label = this.button.states.neutral;
         },
+        created: function(){
+            this.gameModeSettings.playerLives = this.maxLives;
+            this.gameModeSettings.maxPlayers = this.maxLives;
+        },
         methods:{
-            ...mapActions(['setWinningScore','setPlayerLives','settingsSet','setMaxPlayers']),
+            ...mapGameActions([
+                'setWinningScore',
+                'settingsSet',
+            ]),
+            ...mapPlayersActions([
+                'setMaxPlayers',
+                'setPlayerLives',
+            ]),
             saveGameSettings() {
                 const winningScore = parseInt(this.gameModeSettings.targetScore);
                 const playerLives = parseInt(this.gameModeSettings.playerLives);
-                const maxPlayers = parseInt(this.gameModeSettings.maxPlayers);
+                const newMaxPlayers = parseInt(this.gameModeSettings.maxPlayers);
 
-                this.setMaxPlayers(maxPlayers);
+                this.setMaxPlayers(newMaxPlayers);
                 this.setPlayerLives(playerLives);
                 this.setWinningScore(winningScore);
                 this.settingsSet();
@@ -101,6 +123,12 @@
                 },2000);
                 
             }
+        },
+        computed:{
+            ...mapPlayersState({
+                maxLives: state => state.max_lives,
+                maxLives: state => state.max_players,
+            }),
         },
         components:{
             FormInputRange,
