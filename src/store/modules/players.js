@@ -13,9 +13,9 @@ const getters = {
 };
 const actions = {
 
-    initStore({commit}){
-        console.log('store init players');
-    },
+    // initStore({commit}){
+    //     console.log('store init players');
+    // },
     
     nextPlayer({commit}){
         commit('SELECT_NEXT_PLAYER');

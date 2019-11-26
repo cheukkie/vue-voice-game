@@ -1,7 +1,8 @@
-export const getRandomInt = (min, max) => {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min; //The maximum is exclusive and the minimum is inclusive
+export function getRandomInt(minimum, maximum) {
+    const min = Math.ceil(minimum);
+    const max = Math.floor(maximum);
+    // The max is exclusive and the min is inclusive
+    return Math.floor(Math.random() * (max - min)) + min;
 }
 
 //https://gist.github.com/guilhermepontes/17ae0cc71fa2b13ea8c20c94c5c35dc4
