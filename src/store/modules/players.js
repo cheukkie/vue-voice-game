@@ -11,7 +11,6 @@ const state = {
 const getters = {
     getCurrentPlayer: state => state.players[state.current_player_index],
 };
-
 const actions = {
 
     addPlayer({ commit }, player) {
