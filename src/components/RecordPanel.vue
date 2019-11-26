@@ -72,6 +72,7 @@
         mapState: mapPlayersState,
         mapGetters: mapPlayersGetters,
         mapActions: mapPlayersActions,
+        mapMutations: mapPlayersMutations,
     } = createNamespacedHelpers('players');
     const {
         mapState: mapConfigState,
@@ -147,14 +148,18 @@
         },
 
         methods: {
+            ...mapGameMutations([
+                'ADD_ROUND',
+            ]),
+            ...mapPlayersMutations([
+                'REMOVE_LIFE',
+                'REMOVE_POINT',
+                'ADD_POINT',
+                'SET_WINNING_PLAYER',
+            ]),
             ...mapPlayersActions([
                 'nextPlayer',
                 'selectFirstPlayer', 
-                'addPoint',
-                'addRound', 
-                'removePoint',
-                'removeLife',
-                'setWinningPlayer'
             ]),
             selectNextPlayer() {
                 if( this.category === 'multi' ){
@@ -162,7 +167,7 @@
                         this.nextPlayer();
                     }else{
                         this.selectFirstPlayer();
-                        this.addRound();
+                        this.ADD_ROUND();
                     }
                 }
                 this.resetRound();
@@ -186,7 +191,7 @@
                 this.showAudioWave = false;
                 this.resultStatus = 'error';
                 if( this.mode === 'survival' && this.player.lives >= 1 ){
-                    this.removeLife();
+                    this.REMOVE_LIFE();
                     this.checkWinner();
                 }
             },
@@ -200,19 +205,19 @@
                 if ( this.cleanWord(this.word.output) === this.cleanWord(this.word.current) ){
                     this.resultStatus = 'success';
                     if( this.mode === 'classic' ){
-                        this.addPoint();
+                        this.ADD_POINT();
                     }
                     if( this.category === 'single' ){
-                        this.addRound();
+                        this.ADD_ROUND();
                     }
                 }
                 if ( this.cleanWord(this.word.output) !== this.cleanWord( this.word.current ) ){
                     this.resultStatus = 'error';
                     if( this.mode === 'survival' && this.player.lives >= 1 ){
-                        this.removeLife();
+                        this.REMOVE_LIFE();
                     }
                     // if( this.mode === 'classic' this.player.score >= 1 ){
-                    //     this.removePoint();
+                    //     this.REMOVE_POINT();
                     // }
                 }
                 this.checkWinner();
@@ -228,7 +233,7 @@
             checkWinner(){
                 //classic
                 if( this.mode === 'classic' && this.getCurrentPlayer.score >= this.getWinningScore ){
-                    this.setWinningPlayer(this.curPlayerIndex);
+                    this.SET_WINNING_PLAYER(this.curPlayerIndex);
                     this.$router.push(`/${this.category}/${this.mode}/winner`);
                 }
                 //survival
@@ -241,13 +246,13 @@
                         })
                         if( survivors.length === 1){
                             const winner = this.getAllPlayers.findIndex(x => x === survivors[0]);
-                            this.setWinningPlayer(winner);
+                            this.SET_WINNING_PLAYER(winner);
                             this.$router.push(`/${this.category}/${this.mode}/winner`);
                         }
                     }
                     if( this.category === 'single' && this.getCurrentPlayer.lives === 0 ){
                         console.log(`You've reached ${this.getCurrentRound} rounds`);
-                        this.setWinningPlayer(this.curPlayerIndex);
+                        this.SET_WINNING_PLAYER(this.curPlayerIndex);
                         this.$router.push(`/${this.category}/${this.mode}/winner`);
                     }
                 }

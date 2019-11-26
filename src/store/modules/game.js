@@ -16,21 +16,6 @@ const actions = {
         commit('players/SHUFFLE_PLAYERS', null, { root: true });
         commit('players/SET_PLAYER_ACTIVE', null, { root: true });        
     },
-    
-    setWinningScore({commit},score){
-        commit('SET_WINNING_SCORE',score);
-    },
-
-    settingsSet({commit}){
-        commit('SETTINGS_SET');
-    },
-
-    resetGame({commit}){
-        commit('RESET_GAME');
-    },
-    addRound({commit}){
-        commit('ADD_ROUND');
-    },
 };
 
 const mutations = {

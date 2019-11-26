@@ -7,9 +7,7 @@ const getters = {
 };
 
 const actions = {
-    setMobileUser({commit},user){
-        commit('SET_MOBILE_USER',user);
-    },
+    
 };
 
 const mutations = {

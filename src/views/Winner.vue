@@ -9,8 +9,17 @@
 </template>
 
 <script>
+import { createNamespacedHelpers, mapMutations } from 'vuex';
+const {
+    mapMutations: mapGameMutations,
+} = createNamespacedHelpers('game');
 import AllPlayers from '@/components/AllPlayers.vue';
 export default {
+    methods:{
+        ...mapGameMutations([
+            'RESET_GAME',
+        ])
+    },
     components:{
         AllPlayers
     }

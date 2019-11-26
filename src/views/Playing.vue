@@ -35,7 +35,6 @@
 
     export default {
         methods:{
-            ...mapPlayersActions(['resetGame']),
             ...mapNotificationActions(['showNotification']),
         },
         mounted: function(){

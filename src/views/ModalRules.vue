@@ -2,7 +2,7 @@
     <div>
         <h2>Change rules</h2>
         <FormInputRange
-            v-model="gameModeSettings.maxPlayers"
+            v-model.number="gameModeSettings.maxPlayers"
             :min="2" 
             :max="8"
             :value="gameModeSettings.maxPlayers"
@@ -32,12 +32,10 @@
 <script>
     import { createNamespacedHelpers } from 'vuex';
 
-    const {
-        mapActions: mapGameActions,
-    } = createNamespacedHelpers('game');
+    const { mapMutations: mapGameMutations } = createNamespacedHelpers('game');
     const {
         mapState: mapPlayersState,
-        mapActions: mapPlayersActions,
+        mapMutations: mapPlayersMutations,
     } = createNamespacedHelpers('players');
 
     import FormInputRange from '@/components/FormInputRange.vue';
@@ -92,26 +90,26 @@
         },
         created: function(){
             this.gameModeSettings.playerLives = this.maxLives;
-            this.gameModeSettings.maxPlayers = this.maxLives;
+            this.gameModeSettings.maxPlayers = this.maxPlayers;
         },
         methods:{
-            ...mapGameActions([
-                'setWinningScore',
-                'settingsSet',
+            ...mapGameMutations([
+                'SET_WINNING_SCORE',
+                'SETTINGS_SET'
             ]),
-            ...mapPlayersActions([
-                'setMaxPlayers',
-                'setPlayerLives',
+            ...mapPlayersMutations([
+                'SET_PLAYER_LIVES',
+                'SET_MAX_PLAYERS',
             ]),
             saveGameSettings() {
-                const winningScore = parseInt(this.gameModeSettings.targetScore);
-                const playerLives = parseInt(this.gameModeSettings.playerLives);
-                const newMaxPlayers = parseInt(this.gameModeSettings.maxPlayers);
+                const winningScore = this.gameModeSettings.targetScore;
+                const playerLives = this.gameModeSettings.playerLives;
+                const newMaxPlayers = this.gameModeSettings.maxPlayers;
 
-                this.setMaxPlayers(newMaxPlayers);
-                this.setPlayerLives(playerLives);
-                this.setWinningScore(winningScore);
-                this.settingsSet();
+                this.SET_MAX_PLAYERS(newMaxPlayers);
+                this.SET_PLAYER_LIVES(playerLives);
+                this.SET_WINNING_SCORE(winningScore);
+                this.SETTINGS_SET();
                 
                 this.button.label = this.button.states.progress;
 
@@ -127,7 +125,7 @@
         computed:{
             ...mapPlayersState({
                 maxLives: state => state.max_lives,
-                maxLives: state => state.max_players,
+                maxPlayers: state => state.max_players,
             }),
         },
         components:{

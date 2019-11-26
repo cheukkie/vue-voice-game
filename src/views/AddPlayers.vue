@@ -36,12 +36,12 @@
     import { createNamespacedHelpers } from 'vuex';
 
     const { 
+        mapMutations: mapGameMutations,
         mapActions: mapGameActions,
     } = createNamespacedHelpers('game');
     const {
         mapState: mapPlayersState,
-        mapGetters: mapPlayersGetters,
-        mapActions: mapPlayersActions,
+        mapMutations: mapPlayersMutations,
     } = createNamespacedHelpers('players');
 
 
@@ -71,24 +71,26 @@
                 this.$refs.player.focus();
             }
             if( this.category === 'single' && this.getAllPlayers.length > 1 ){
-                this.keepFirstPlayer();
+                this.KEEP_FIRST_PLAYER();
             }
         },
         methods: {
+            ...mapGameMutations([
+                'SETTINGS_SET',
+            ]),
             ...mapGameActions([
                 'startGame',
-                'settingsSet',
             ]),
-            ...mapPlayersActions([
-                'addPlayer',
-                'keepFirstPlayer'
+            ...mapPlayersMutations([
+                'KEEP_FIRST_PLAYER',
+                'ADD_PLAYER',
             ]),
             beginGame() {
-                this.settingsSet();
+                this.SETTINGS_SET();
                 this.startGame();
             },
             onSubmit() {
-                this.addPlayer( this.capitalize(this.name) );
+                this.ADD_PLAYER( this.capitalize(this.name) );
                 this.name = '';
             },
             addName(output){
