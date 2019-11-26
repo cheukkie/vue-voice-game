@@ -13,26 +13,8 @@ const getters = {
 };
 const actions = {
 
-    addPlayer({ commit }, player) {
-        commit('NEW_PLAYER', {
-            name: player,
-            score: 0,
-            lives: state.max_lives,
-            winner: false,
-            currentPlayer: false
-        });
-    },
-    
-    setMaxPlayers({commit},qty){
-        commit('SET_MAX_PLAYERS',qty);
-    },
-
-    keepFirstPlayer({commit}){
-        commit('KEEP_FIRST_PLAYER');
-    },
-
-    removePlayer({commit},player){
-        commit('DELETE_PLAYER', player);
+    initStore({commit}){
+        console.log('store init players');
     },
     
     nextPlayer({commit}){
@@ -45,30 +27,16 @@ const actions = {
         commit('SET_PLAYER_ACTIVE');
     },
 
-    setPlayerLives({commit},lives){
-        commit('SET_PLAYER_LIVES',lives);
-    },
-
-    setWinningPlayer({commit},playerIndex){
-        commit('SET_WINNING_PLAYER',playerIndex);
-    },
-
-    addPoint({commit}){
-        commit('ADD_POINT');
-    },
-
-    removePoint({commit}){
-        commit('REMOVE_POINT');
-    },
-
-    removeLife({commit}){
-        commit('REMOVE_LIFE');
-    },
-
 };
 
 const mutations = {
-    NEW_PLAYER: (state, player) => state.players.push(player),
+    NEW_PLAYER: (state, playerName) => state.players.push({
+        name: playerName,
+        score: 0,
+        lives: state.max_lives,
+        winner: false,
+        currentPlayer: false,
+    }),
     DELETE_PLAYER: (state,player )=> state.players.splice(player,1),
     KEEP_FIRST_PLAYER: () => state.players = state.players.splice(1),
     SELECT_FIRST_PLAYER: () => state.current_player_index = 0,

@@ -33,7 +33,6 @@
 <script>
   // Input text component
   // URL Params
-  // input range component
   // BUG after skip dont show notif
   // Edit player names
   // Save to localstorage
@@ -42,14 +41,13 @@
   // Win view
   // single player
   // GAME MODES
-
   
   import { createNamespacedHelpers } from 'vuex';
 	const {
     mapState: mapNotificationState,
     mapActions: mapNotificationActions,
   } = createNamespacedHelpers('notification');
-  const { mapActions: mapConfigActions, } = createNamespacedHelpers('config');
+  const { mapMutations: mapConfigMutations } = createNamespacedHelpers('config');
 
   import { isMobile } from 'mobile-device-detect';
   
@@ -77,7 +75,7 @@
       };
     },
     methods: {
-      ...mapConfigActions(['setMobileUser']),
+      ...mapConfigMutations(['SET_MOBILE_USER']),
       ...mapNotificationActions(['showNotification']),
       checkParams(to,from){
         if( to.query.modal && this.modal.views.includes(to.query.modal) ){
@@ -96,7 +94,7 @@
         this.webSpeech = true;
       }
       this.checkParams(this.$route);
-      this.setMobileUser(isMobile);
+      this.SET_MOBILE_USER(isMobile);
       
       if(isMobile){
         this.showNotification({

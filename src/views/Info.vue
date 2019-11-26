@@ -42,6 +42,7 @@
     const {
         mapState: mapPlayersState,
         mapActions: mapPlayersActions,
+        mapMutations: mapPlayersMutations,
     } = createNamespacedHelpers('players');
     const {
         mapState: mapGameState,
@@ -56,17 +57,17 @@
         },
         mounted: function(){
             if( this.category === 'single' ){
-                this.setMaxPlayers(1);
-                this.setPlayerLives(3);
+                this.SET_MAX_PLAYERS(1);
+                this.SET_PLAYER_LIVES(3);
             }
             if( this.category === 'multi' && this.maxPlayers === 1 ){
-                this.setMaxPlayers(2);
+                this.SET_MAX_PLAYERS(2);
             }
         },
         methods:{
-            ...mapPlayersActions([
-                'setPlayerLives',
-                'setMaxPlayers',
+            ...mapPlayersMutations([
+                'SET_PLAYER_LIVES',
+                'SET_MAX_PLAYERS'
             ]),
         },
         computed: {
