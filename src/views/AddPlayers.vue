@@ -2,13 +2,13 @@
     <div>
         <h2>Player<span v-if="category === 'multi'">s</span></h2>
         <AllPlayers view="list" />
-        <div v-if="allPlayers.length < maxPlayers">
+        <div v-if="getAllPlayers.length < maxPlayers">
             <form @submit.prevent="onSubmit">
                 <div class="inputHolder">
                     <input ref="player" type="text" placeholder="New player" v-model="name" :disabled="isRecording">
                 </div>
                 <div v-if="category === 'multi'">
-                    <div v-for="(n,index) in (maxPlayers-(allPlayers.length+1))" :key="index">
+                    <div v-for="(n,index) in (maxPlayers-(getAllPlayers.length+1))" :key="index">
                         <div class="inputHolder">
                             <input disabled type="text" placeholder="New player">
                         </div>
@@ -23,8 +23,8 @@
                 </button>
             </div>
         </div>
-        <router-link :to="`/${category}/${mode}/playing`" v-if="allPlayers.length === maxPlayers">
-            <button :disabled="allPlayers.length < maxPlayers" class="btn is-block" @click="beginGame">Play</button>
+        <router-link :to="`/${category}/${mode}/playing`" v-if="getAllPlayers.length === maxPlayers">
+            <button :disabled="getAllPlayers.length < maxPlayers" class="btn is-block" @click="beginGame">Play</button>
         </router-link>
         <router-link :to="`/${category}/${mode}/info`">
             <button class="btn is-block is-ghost">Back</button>
@@ -33,7 +33,18 @@
 </template>
 
 <script>
-    import { mapGetters,mapActions } from 'vuex';
+    import { createNamespacedHelpers } from 'vuex';
+
+    const { 
+        mapActions: mapGameActions,
+    } = createNamespacedHelpers('game');
+    const {
+        mapState: mapPlayersState,
+        mapGetters: mapPlayersGetters,
+        mapActions: mapPlayersActions,
+    } = createNamespacedHelpers('players');
+
+
     import AllPlayers from '@/components/AllPlayers.vue';
     import RecordBtn from '@/components/RecordBtn.vue';
 
@@ -50,21 +61,28 @@
         updated: function () {
             const vm = this;
             this.$nextTick(function () {
-                if( vm.allPlayers.length < vm.maxPlayers ){
+                if( vm.getAllPlayers.length < vm.maxPlayers ){
                     vm.$refs.player.focus();
                 }
             });
         },
         mounted: function(){
-            if( this.allPlayers.length < this.maxPlayers ){
+            if( this.getAllPlayers.length < this.maxPlayers ){
                 this.$refs.player.focus();
             }
-            if( this.category === 'single' && this.allPlayers.length > 1 ){
+            if( this.category === 'single' && this.getAllPlayers.length > 1 ){
                 this.keepFirstPlayer();
             }
         },
         methods: {
-            ...mapActions(['addPlayer','startGame','settingsSet','keepFirstPlayer']),
+            ...mapGameActions([
+                'startGame',
+                'settingsSet',
+            ]),
+            ...mapPlayersActions([
+                'addPlayer',
+                'keepFirstPlayer'
+            ]),
             beginGame() {
                 this.settingsSet();
                 this.startGame();
@@ -93,7 +111,10 @@
             }
         },
         computed:{
-            ...mapGetters(['allPlayers','maxPlayers']),
+            ...mapPlayersState({
+                getAllPlayers: state => state.players,
+                maxPlayers: state => state.max_players,
+            }),
         },
         components:{
             RecordBtn,

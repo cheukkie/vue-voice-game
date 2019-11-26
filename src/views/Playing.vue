@@ -1,27 +1,32 @@
 <template>
-    <div class="game-view">
-        <div id="gameRound" v-if="allPlayers.length > 0"><h2>Round {{ curRound }}</h2></div>
+    <div>
+        <div id="gameRound" v-if="getAllPlayers.length > 0"><h2>Round {{ getCurrentRound }}</h2></div>
         <RecordPanel 
-            v-if="gameStarted && gameSettingsStatus && !gameOverStatus"
-            :player="curPlayer" 
+            v-if="isGameStarted && isSettingsSet && !isGameOver"
+            :player="getCurrentPlayer" 
             :category = "$route.params.category"
             :mode = "$route.params.mode"
         />
-        <div v-if="gameOverStatus">
-            <h2>Winner!</h2>
-            <AllPlayers view="list" />
-            <router-link to="/">
-                <button class="btn is-block" @click="resetGame">Play again</button>
-            </router-link>
-        </div>
-        <div id="playerInfo" v-if="gameStarted && gameSettingsStatus && !gameOverStatus">
-            <AllPlayers view="icons" :mode="$route.params.mode" v-if="gameStarted && gameSettingsStatus && !gameOverStatus" />
+        <div id="playerInfo" v-if="isGameStarted && isSettingsSet && !gameOverStatus">
+            <AllPlayers view="icons" :mode="$route.params.mode" v-if="isGameStarted && isSettingsSet && !gameOverStatus" />
         </div>
     </div>
 </template>
 
 <script>
-    import { mapGetters, mapActions } from 'vuex';
+    import { createNamespacedHelpers } from 'vuex';
+
+    const {
+        mapState: mapPlayersState,
+        mapGetters: mapPlayersGetters,
+        mapActions: mapPlayersActions,
+    } = createNamespacedHelpers('players');
+    const {
+        mapState: mapGameState,
+    } = createNamespacedHelpers('game');
+    const {
+        mapActions: mapNotificationActions,
+    } = createNamespacedHelpers('notification');
 
     import AllPlayers from '@/components/AllPlayers.vue';
     import RecordPanel from '@/components/RecordPanel.vue';
@@ -30,10 +35,11 @@
 
     export default {
         methods:{
-            ...mapActions(['resetGame','showNotification']),
+            ...mapPlayersActions(['resetGame']),
+            ...mapNotificationActions(['showNotification']),
         },
-        mounted:function(){
-            if( this.allPlayers.length === 0 ){
+        mounted: function(){
+            if( this.getAllPlayers.length === 0 ){
                 this.showNotification({
                     autoHideAfter : 3,
                     title         : 'No players found',
@@ -50,7 +56,18 @@
             }
         },
         computed:{
-            ...mapGetters(['allPlayers','curPlayer', 'gameOverStatus', 'gameSettingsStatus', 'gameStarted','curRound']),
+            ...mapPlayersState({
+                getAllPlayers: state => state.players,
+            }),
+            ...mapPlayersGetters([
+                'getCurrentPlayer', 
+            ]),
+            ...mapGameState({
+                getCurrentRound: state => state.round,
+                isGameStarted: state => state.started,
+                isGameOver: state => state.game_over,
+                isSettingsSet: state => state.settings_set,
+            }),
         },
         components:{
             AllPlayers,

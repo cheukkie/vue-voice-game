@@ -2,9 +2,8 @@
     <div>
         <h2>How to play {{ mode }} mode</h2>
 
-
         <p v-if="mode==='classic'">
-            There are <strong>{{ maxPlayers }} players</strong> in total. The first player to reach the score of <strong>{{ gameWinningScore }} points</strong> will win the game.
+            There are <strong>{{ maxPlayers }} players</strong> in total. The first player to reach the score of <strong>{{ getWinningScore }} points</strong> will win the game.
         </p>
         <p v-if="mode === 'survival'">
             <span v-if="category==='multi'">
@@ -39,7 +38,15 @@
 </template>
 
 <script>
-    import { mapGetters,mapActions } from 'vuex';
+    import { createNamespacedHelpers} from 'vuex';
+    const {
+        mapState: mapPlayersState,
+        mapActions: mapPlayersActions,
+    } = createNamespacedHelpers('players');
+    const {
+        mapState: mapGameState,
+    } = createNamespacedHelpers('game');
+    
     export default {
         data: function(){
             return{
@@ -48,18 +55,28 @@
             }
         },
         mounted: function(){
-            if(this.category === 'single' ){
+            if( this.category === 'single' ){
                 this.setMaxPlayers(1);
+                this.setPlayerLives(3);
             }
-            if(this.category === 'multi' && this.maxPlayers === 1){
+            if( this.category === 'multi' && this.maxPlayers === 1 ){
                 this.setMaxPlayers(2);
             }
         },
         methods:{
-            ...mapActions(['setMaxPlayers']),
+            ...mapPlayersActions([
+                'setPlayerLives',
+                'setMaxPlayers',
+            ]),
         },
         computed: {
-            ...mapGetters(['maxLives','maxPlayers','gameWinningScore']),
+            ...mapGameState({
+                getWinningScore: state => state.winning_score,
+            }),
+            ...mapPlayersState({
+                maxLives: state => state.max_lives,
+                maxPlayers: state => state.max_players,
+            })
         },
         
     }

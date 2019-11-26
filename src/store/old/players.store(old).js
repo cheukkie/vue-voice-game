@@ -93,14 +93,27 @@ const actions = {
         commit('DELETE_PLAYER', player);
     },
     
+    // nextPlayer({commit}){
+    //     if( (state.gameCurPlayerIndex+1) < state.players.length ){
+    //         commit('SELECT_NEXT_PLAYER');
+    //     }else{
+    //         commit('SELECT_FIRST_PLAYER');
+    //         commit('ADD_ROUND');
+    //     }
+    //     commit('SET_PLAYER_ACTIVE');
+    // },
     nextPlayer({commit}){
-        if( (state.gameCurPlayerIndex+1) < state.players.length ){
-            commit('SELECT_NEXT_PLAYER');
-        }else{
-            commit('SELECT_FIRST_PLAYER');
-            commit('ADD_ROUND');
-        }
+        commit('SELECT_NEXT_PLAYER');
         commit('SET_PLAYER_ACTIVE');
+    },
+
+    selectFirstPlayer({commit}){
+        commit('SELECT_FIRST_PLAYER');
+        commit('SET_PLAYER_ACTIVE');
+    },
+
+    addRound({commit}){
+        commit('ADD_ROUND');
     },
 
     setWinningPlayer({commit},playerIndex){
@@ -186,7 +199,7 @@ const mutations = {
     ADD_ROUND: () => state.gameRound++,
     ADD_POINT: () => state.players[state.gameCurPlayerIndex].score++,
     ADD_LIFE: () => state.players[state.gameCurPlayerIndex].lives++,
-    REMOVE_LIFE: () => state.players[state.gameCurPlayerIndex].lives--,
+    REMOVE_LIFE: () => {state.players[state.gameCurPlayerIndex].lives--},
     REMOVE_POINT: () => state.players[state.gameCurPlayerIndex].score--,
     SET_WINNING_SCORE: (state,score) => (state.gameWinningScore = score),
     SET_PLAYER_LIVES: (state,lives) => {
@@ -223,6 +236,7 @@ const mutations = {
 };
 
 export default {
+    namespaced: true,
     state,
     getters,
     actions,

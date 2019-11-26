@@ -29,7 +29,12 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+
+const {
+    mapActions: mapNotificationActions,
+} = createNamespacedHelpers('notification');
+
 
 export default {
     name: 'RecordBtn',
@@ -65,13 +70,13 @@ export default {
         this.recognition.onend = function (e) {
             if (vm.output === '') {
                 //console.log('Je moet wel iets zeggen');
-                vm.showNotification({
-                    autoHideAfter : 5,
-                    title         : 'We heard nothing',
-                    msg           : 'Make sure you say something. Try again.',
-                    role          : 'warning',
-                    type          : 'toast'
-                });
+                // vm.showNotification({
+                //     autoHideAfter : 5,
+                //     title         : 'We heard nothing',
+                //     msg           : 'Make sure you say something. Try again.',
+                //     role          : 'warning',
+                //     type          : 'toast'
+                // });
                 vm.$emit('recordBtnOutput', '');
                 vm.retry = true;
             }
@@ -82,6 +87,25 @@ export default {
         this.recognition.onerror = function (e) {
             console.log(`error: ${e.error}`);
             vm.error = e.error;
+            
+            if( e.error === 'network' ){
+                vm.showNotification({
+                    autoHideAfter : 0,
+                    title         : 'No internet detected',
+                    msg           : `Make sure you are connected to the interwebz.`,
+                    role          : 'error',
+                    type          : 'toast'
+                });
+            }
+            if( e.error === 'no-speech'){
+                vm.showNotification({
+                    autoHideAfter : 5,
+                    title         : 'We heard nothing',
+                    msg           : 'Make sure you say something. Try again.',
+                    role          : 'warning',
+                    type          : 'toast'
+                });
+            }
 
             // vm.showNotification({
             //     autoHideAfter : 0,
@@ -111,7 +135,7 @@ export default {
         };
     },
     methods: {
-        ...mapActions(['showNotification']),
+        ...mapNotificationActions(['showNotification']),
         startDictation() {
             this.recognition.start();
             this.recordingDone = false;

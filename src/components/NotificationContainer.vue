@@ -25,7 +25,11 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+const {
+    mapActions: mapNotificationActions,
+} = createNamespacedHelpers('notification');
+
 
 export default {
     props:{
@@ -50,7 +54,7 @@ export default {
         });
     },
     methods:{
-        ...mapActions(['hideNotification']),
+        ...mapNotificationActions(['hideNotification']),
         onHide(){
             this.visible = false;
             //Mutate global store

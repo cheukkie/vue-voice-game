@@ -1,6 +1,10 @@
 <template>
     <ul :class="{icons: view === 'icons'}">
-        <li :class="{'is-winner': player.winner, 'is-active': player.currentPlayer}" v-for="(player,index) in allPlayers" :key="index">
+        <li 
+            v-for="(player,index) in getAllPlayers" 
+            :class="{'is-winner': player.winner, 'is-active': player.currentPlayer}" 
+            :key="index"
+        >
             <span class="icon" v-if="player.winner">
                 <span class="svg-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24">
@@ -8,7 +12,7 @@
                 </span>
             </span>
             <span class="name">{{ displayName(player.name) }}</span>
-            <span class="score" v-if="gameStarted">
+            <span class="score" v-if="isGameStarted">
                 <span v-if="mode==='classic'">
                     {{ player.score }}
                 </span>
@@ -18,7 +22,7 @@
             </span>
             <span class="indicator" v-if="player.currentPlayer"></span>
         
-            <button class="delete" @click="removePlayer(index)" v-if="view !== 'icons' && !gameOverStatus" title="Remove player">
+            <button class="delete" @click="removePlayer(index)" v-if="view !== 'icons' && !isGameOver" title="Remove player">
                 <div class="svg-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm4.151 17.943l-4.143-4.102-4.117 4.159-1.833-1.833 4.104-4.157-4.162-4.119 1.833-1.833 4.155 4.102 4.106-4.16 1.849 1.849-4.1 4.141 4.157 4.104-1.849 1.849z"/></svg>
                 </div>
@@ -29,7 +33,17 @@
 </template>
 
 <script>
-    import { mapGetters, mapActions } from 'vuex';
+    import { createNamespacedHelpers } from 'vuex';
+    const {
+        mapState: mapPlayersState,
+        mapActions: mapPlayersActions,
+    } = createNamespacedHelpers('players');
+    const {
+        mapState: mapGameState,
+    } = createNamespacedHelpers('game');
+    const {
+        mapState: mapConfigState,
+    } = createNamespacedHelpers('config');
 
     export default {
         name: 'AllPlayers',
@@ -38,10 +52,17 @@
             mode: String
         },
         computed: {
-            ...mapGetters(['allPlayers', 'gameSettingsStatus','gameOverStatus','gameStarted']),
+            ...mapPlayersState({
+                getAllPlayers: state => state.players,
+            }),
+            ...mapGameState({
+                isGameStarted: state => state.started,
+                isGameOver: state => state.game_over,
+                isSettingsSet: state => state.settings_set,
+            }),
         },
         methods: {
-            ...mapActions(['removePlayer']),
+            ...mapPlayersActions(['removePlayer']),
             displayName: function(name) {
                 if (this.view === 'icons') {
                     return name.charAt(0);

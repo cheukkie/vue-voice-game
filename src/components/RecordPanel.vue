@@ -50,8 +50,8 @@
                 </div>
             </main>
             <footer>
-                <button v-if="showNextPlayerBtn" class="btn" @click="selectNextPlayer" title="Next player">
-                    Next player
+                <button v-if="showNextPlayerBtn" class="btn" @click="selectNextPlayer" title="Next">
+                    Next
                 </button>
             </footer>
         </div>
@@ -62,7 +62,20 @@
 
 <script>
     import { getRandomInt } from '@/js/utils';
-    import { mapActions, mapGetters } from 'vuex';
+    import { createNamespacedHelpers } from 'vuex';
+
+    const {
+        mapState: mapGameState 
+    } = createNamespacedHelpers('game');
+
+    const {
+        mapState: mapPlayersState,
+        mapGetters: mapPlayersGetters,
+        mapActions: mapPlayersActions,
+    } = createNamespacedHelpers('players');
+    const {
+        mapState: mapConfigState,
+    } = createNamespacedHelpers('config');
 
     import RecordBtn from '@/components/RecordBtn.vue';
     import AudioWave from '@/components/AudioWave.vue';
@@ -71,7 +84,9 @@
     export default {
         name: 'RecordPanel',
         props: {
-            player: Object
+            player: Object,
+            mode: String,
+            category: String
         },
         data: function () {
             return {
@@ -124,7 +139,6 @@
                         'Fietspompreparatiesetje',
                     ],
                 }
-
             };
         },
         mounted: function () {
@@ -133,9 +147,24 @@
         },
 
         methods: {
-            ...mapActions(['nextPlayer', 'addPoint', 'removePoint']),
+            ...mapPlayersActions([
+                'nextPlayer',
+                'selectFirstPlayer', 
+                'addPoint',
+                'addRound', 
+                'removePoint',
+                'removeLife',
+                'setWinningPlayer'
+            ]),
             selectNextPlayer() {
-                this.nextPlayer();
+                if( this.category === 'multi' ){
+                    if( (this.curPlayerIndex+1) < this.getAllPlayers.length ){
+                        this.nextPlayer();
+                    }else{
+                        this.selectFirstPlayer();
+                        this.addRound();
+                    }
+                }
                 this.resetRound();
             },
             clickRecord(val){
@@ -156,8 +185,10 @@
                 this.showRecordBtn = false;
                 this.showAudioWave = false;
                 this.resultStatus = 'error';
-
-                //this.removePoint();
+                if( this.mode === 'survival' && this.player.lives >= 1 ){
+                    this.removeLife();
+                    this.checkWinner();
+                }
             },
             cleanWord(input){
                 return input.toLowerCase().replace(/\s/g, '').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
@@ -167,15 +198,24 @@
                 console.log('current: ' + this.word.current.toLowerCase().replace(/\s/g, ''));
                 
                 if ( this.cleanWord(this.word.output) === this.cleanWord(this.word.current) ){
-                    this.addPoint();
                     this.resultStatus = 'success';
+                    if( this.mode === 'classic' ){
+                        this.addPoint();
+                    }
+                    if( this.category === 'single' ){
+                        this.addRound();
+                    }
                 }
                 if ( this.cleanWord(this.word.output) !== this.cleanWord( this.word.current ) ){
                     this.resultStatus = 'error';
-                    if( this.player.score >= 1 ){
-                        //this.removePoint();
+                    if( this.mode === 'survival' && this.player.lives >= 1 ){
+                        this.removeLife();
                     }
+                    // if( this.mode === 'classic' this.player.score >= 1 ){
+                    //     this.removePoint();
+                    // }
                 }
+                this.checkWinner();
                 this.showNextPlayerBtn = true;
             },
             checkOutput(word) {
@@ -184,10 +224,48 @@
                     this.checkWord();
                     this.showRecordBtn = false;
                 }
+            },
+            checkWinner(){
+                //classic
+                if( this.mode === 'classic' && this.getCurrentPlayer.score >= this.getWinningScore ){
+                    this.setWinningPlayer(this.curPlayerIndex);
+                    this.$router.push(`/${this.category}/${this.mode}/winner`);
+                }
+                //survival
+                if( this.mode === 'survival' ){
+                    if( this.category === 'multi' ){
+                        const survivors = this.getAllPlayers.filter( survivor =>{
+                            if(survivor.lives > 0){
+                                return survivor;
+                            }
+                        })
+                        if( survivors.length === 1){
+                            const winner = this.getAllPlayers.findIndex(x => x === survivors[0]);
+                            this.setWinningPlayer(winner);
+                            this.$router.push(`/${this.category}/${this.mode}/winner`);
+                        }
+                    }
+                    if( this.category === 'single' && this.getCurrentPlayer.lives === 0 ){
+                        console.log(`You've reached ${this.getCurrentRound} rounds`);
+                        this.setWinningPlayer(this.curPlayerIndex);
+                        this.$router.push(`/${this.category}/${this.mode}/winner`);
+                    }
+                }
             }
         },
         computed:{
-            ...mapGetters(['isMobileUser']),
+            ...mapConfigState({
+                isMobileUser: state => state.mobile
+            }),
+            ...mapGameState({
+                getCurrentRound: state => state.round,
+            }),
+            ...mapPlayersState({
+                getAllPlayers: state => state.players,
+                getWinningScore: state => state.winning_score,
+                curPlayerIndex: state => state.current_player_index,
+            }),
+            ...mapPlayersGetters(['getCurrentPlayer']),
         },
         components: {
             RecordBtn,

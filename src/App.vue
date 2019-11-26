@@ -33,15 +33,24 @@
 <script>
   // Input text component
   // URL Params
+  // input range component
   // BUG after skip dont show notif
   // Edit player names
   // Save to localstorage
   // Clean code audiowave
   // Unique words
   // Win view
+  // single player
   // GAME MODES
 
-  import { mapGetters, mapActions } from 'vuex';
+  
+  import { createNamespacedHelpers } from 'vuex';
+	const {
+    mapState: mapNotificationState,
+    mapActions: mapNotificationActions,
+  } = createNamespacedHelpers('notification');
+  const { mapActions: mapConfigActions, } = createNamespacedHelpers('config');
+
   import { isMobile } from 'mobile-device-detect';
   
   import AppHeader from '@/components/AppHeader.vue';
@@ -68,7 +77,8 @@
       };
     },
     methods: {
-      ...mapActions(['setMobileUser','showNotification']),
+      ...mapConfigActions(['setMobileUser']),
+      ...mapNotificationActions(['showNotification']),
       checkParams(to,from){
         if( to.query.modal && this.modal.views.includes(to.query.modal) ){
           this.modal.active = true;
@@ -107,7 +117,9 @@
       }
     },
     computed: {
-      ...mapGetters(['notificationInfo','curPlayer', 'curRound', 'gameOverStatus', 'gameSettingsStatus', 'gameStarted']),
+      ...mapNotificationState({
+        notificationInfo: state => { return state;}
+      }),
     },
     components: {
       AppHeader,
