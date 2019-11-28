@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign, no-shadow */
 const state = {
   mobile: false,
 };

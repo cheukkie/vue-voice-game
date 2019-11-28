@@ -1,4 +1,4 @@
-/* eslint-disable no-shadow */
+/* eslint-disable no-return-assign, no-shadow */
 const state = {
   round: 1,
   started: false,
@@ -20,10 +20,10 @@ const actions = {
 };
 
 const mutations = {
-  ADD_ROUND(state) { state.round += 1; },
-  SET_WINNING_SCORE(state, score) { state.winning_score = score; },
+  ADD_ROUND: (state) => state.round += 1,
+  SET_WINNING_SCORE: (state, score) => state.winning_score = score,
 
-  SETTINGS_SET() { state.settings_set = true; },
+  SETTINGS_SET: (state) => state.settings_set = true,
 
   START_GAME: () => {
     state.started = true;

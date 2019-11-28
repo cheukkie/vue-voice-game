@@ -134,14 +134,14 @@ export default {
     ]),
     ...mapPlayersMutations([
       'KEEP_FIRST_PLAYER',
-      'ADD_PLAYER',
+      'NEW_PLAYER',
     ]),
     beginGame() {
       this.SETTINGS_SET();
       this.startGame();
     },
     onSubmit() {
-      this.ADD_PLAYER(this.capitalize(this.name));
+      this.NEW_PLAYER(this.capitalize(this.name));
       this.name = '';
     },
     addName(output) {

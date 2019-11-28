@@ -11,10 +11,10 @@
       :category="$route.params.category"
       :mode="$route.params.mode" />
     <div
-      v-if="isGameStarted && isSettingsSet && !gameOverStatus"
+      v-if="isGameStarted && isSettingsSet && !isGameOver"
       id="playerInfo">
       <AllPlayers
-        v-if="isGameStarted && isSettingsSet && !gameOverStatus"
+        v-if="isGameStarted && isSettingsSet && !isGameOver"
         view="icons"
         :mode="$route.params.mode" />
     </div>

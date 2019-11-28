@@ -1,4 +1,4 @@
-/* eslint-disable no-shadow */
+/* eslint-disable no-return-assign, no-shadow */
 const state = {
   active: false,
 
@@ -31,8 +31,8 @@ const actions = {
 
 const mutations = {
 
-  SET_NOTIFICATION_ACTIVE() { state.active = true; },
-  SET_NOTIFICATION_INACTIVE() { state.active = false; },
+  SET_NOTIFICATION_ACTIVE: () => state.active = true,
+  SET_NOTIFICATION_INACTIVE: () => state.active = false,
   SET_NOTIFICATION_OPTIONS: (state, options) => {
     state.autoHideAfter = options.autoHideAfter || 0;
     state.title = options.title || '';

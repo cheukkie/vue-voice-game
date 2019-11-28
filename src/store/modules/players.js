@@ -1,4 +1,4 @@
-/* eslint-disable no-shadow */
+/* eslint-disable no-return-assign, no-shadow */
 import { shuffleArray } from '@/js/utils';
 
 const state = {
@@ -38,16 +38,16 @@ const mutations = {
     currentPlayer: false,
   }),
   DELETE_PLAYER: (state, player) => state.players.splice(player, 1),
-  KEEP_FIRST_PLAYER() { state.players = state.players.splice(1); },
-  SELECT_FIRST_PLAYER() { state.current_player_index = 0; },
-  SELECT_NEXT_PLAYER() { state.current_player_index += 1; },
+  KEEP_FIRST_PLAYER: () => state.players = state.players.splice(1),
+  SELECT_FIRST_PLAYER: () => state.current_player_index = 0,
+  SELECT_NEXT_PLAYER: () => state.current_player_index + 1,
   SET_PLAYER_ACTIVE: () => {
     for (let i = 0; i < state.players.length; i + 1) {
       state.players[i].currentPlayer = false;
     }
     state.players[state.current_player_index].currentPlayer = true;
   },
-  SHUFFLE_PLAYERS() { state.players = shuffleArray(state.players); },
+  SHUFFLE_PLAYERS: () => state.players = shuffleArray(state.players),
   SET_PLAYER_LIVES: (state, lives) => {
     state.max_lives = lives;
     for (let i = 0; i < state.players.length; i + 1) {
@@ -67,10 +67,10 @@ const mutations = {
   },
   SET_MAX_PLAYERS: (state, qty) => { state.max_players = qty; },
 
-  ADD_POINT() { state.players[state.current_player_index].score += 1; },
-  ADD_LIFE() { state.players[state.current_player_index].lives += 1; },
-  REMOVE_LIFE() { state.players[state.current_player_index].lives -= 1; },
-  REMOVE_POINT() { state.players[state.current_player_index].score -= 1; },
+  ADD_POINT: () => state.players[state.current_player_index].score += 1,
+  ADD_LIFE: () => state.players[state.current_player_index].lives += 1,
+  REMOVE_LIFE: () => { state.players[state.current_player_index].lives -= 1; },
+  REMOVE_POINT: () => state.players[state.current_player_index].score -= 1,
 };
 
 export default {
