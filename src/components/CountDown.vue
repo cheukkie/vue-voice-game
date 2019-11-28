@@ -1,37 +1,43 @@
 <template>
-    <div class="countdown">
-        <div class="countdown-number">{{ countdown }}</div>
-        <svg><circle r="18" cx="20" cy="20"></circle></svg>
+  <div class="countdown">
+    <div class="countdown-number">
+      {{ countdown }}
     </div>
+    <!-- eslint-disable-next-line vue/max-attributes-per-line -->
+    <svg><circle r="18" cx="20" cy="20" /></svg>
+  </div>
 </template>
 
 <script>
 export default {
-    props:{
-        time: Number
+  props: {
+    time: {
+      type: Number,
+      default: 0,
     },
-    data: function(){
-        return {
-            countdown: this.time,
-            interval: null,
-        }
-    },
-    mounted: function(){
-        const vm = this;
-        this.interval =  setInterval(function() {
-            if( vm.countdown > 1 ){
-                vm.countdown--
-            }else{
-                vm.countdown = 0;
+  },
+  data() {
+    return {
+      countdown: this.time,
+      interval: null,
+    };
+  },
+  mounted() {
+    const vm = this;
+    this.interval = setInterval(() => {
+      if (vm.countdown > 1) {
+        vm.countdown -= 1;
+      } else {
+        vm.countdown = 0;
 
-                vm.$el.classList.add('is-hidden');
-                clearInterval(vm.interval);
-                vm.$emit('countDownFinished', true);
-            }
-        }, 1000);
-        this.$el.style.setProperty('--countdown-time', this.time);
-    }
-}
+        vm.$el.classList.add('is-hidden');
+        clearInterval(vm.interval);
+        vm.$emit('countDownFinished', true);
+      }
+    }, 1000);
+    this.$el.style.setProperty('--countdown-time', this.time);
+  },
+};
 </script>
 
 <style lang="scss" scoped>

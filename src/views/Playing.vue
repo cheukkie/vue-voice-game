@@ -1,80 +1,83 @@
 <template>
-    <div>
-        <div id="gameRound" v-if="getAllPlayers.length > 0"><h2>Round {{ getCurrentRound }}</h2></div>
-        <RecordPanel 
-            v-if="isGameStarted && isSettingsSet && !isGameOver"
-            :player="getCurrentPlayer" 
-            :category = "$route.params.category"
-            :mode = "$route.params.mode"
-        />
-        <div id="playerInfo" v-if="isGameStarted && isSettingsSet && !gameOverStatus">
-            <AllPlayers view="icons" :mode="$route.params.mode" v-if="isGameStarted && isSettingsSet && !gameOverStatus" />
-        </div>
+  <div>
+    <div
+      v-if="getAllPlayers.length > 0"
+      id="gameRound">
+      <h2>Round {{ getCurrentRound }}</h2>
     </div>
+    <RecordPanel
+      v-if="isGameStarted && isSettingsSet && !isGameOver"
+      :player="getCurrentPlayer"
+      :category="$route.params.category"
+      :mode="$route.params.mode" />
+    <div
+      v-if="isGameStarted && isSettingsSet && !gameOverStatus"
+      id="playerInfo">
+      <AllPlayers
+        v-if="isGameStarted && isSettingsSet && !gameOverStatus"
+        view="icons"
+        :mode="$route.params.mode" />
+    </div>
+  </div>
 </template>
 
 <script>
-    import { createNamespacedHelpers } from 'vuex';
+import { createNamespacedHelpers } from 'vuex';
+import AllPlayers from '@/components/AllPlayers.vue';
+import RecordPanel from '@/components/RecordPanel.vue';
 
-    const {
-        mapState: mapPlayersState,
-        mapGetters: mapPlayersGetters,
-        mapActions: mapPlayersActions,
-    } = createNamespacedHelpers('players');
-    const {
-        mapState: mapGameState,
-    } = createNamespacedHelpers('game');
-    const {
-        mapActions: mapNotificationActions,
-    } = createNamespacedHelpers('notification');
+const {
+  mapState: mapPlayersState,
+  mapGetters: mapPlayersGetters,
+} = createNamespacedHelpers('players');
+const {
+  mapState: mapGameState,
+} = createNamespacedHelpers('game');
+const {
+  mapActions: mapNotificationActions,
+} = createNamespacedHelpers('notification');
 
-    import AllPlayers from '@/components/AllPlayers.vue';
-    import RecordPanel from '@/components/RecordPanel.vue';
-    import NotificationContainer from '@/components/NotificationContainer.vue';
-    import CountDown from '@/components/CountDown.vue';
+export default {
+  components: {
+    AllPlayers,
+    RecordPanel,
+  },
+  computed: {
+    ...mapPlayersState({
+      getAllPlayers: (state) => state.players,
+    }),
+    ...mapPlayersGetters([
+      'getCurrentPlayer',
+    ]),
+    ...mapGameState({
+      getCurrentRound: (state) => state.round,
+      isGameStarted: (state) => state.started,
+      isGameOver: (state) => state.game_over,
+      isSettingsSet: (state) => state.settings_set,
+    }),
+  },
+  mounted() {
+    if (this.getAllPlayers.length === 0) {
+      this.showNotification({
+        autoHideAfter: 3,
+        title: 'No players found',
+        msg: 'Returning to menu...',
+        role: 'warning',
+        type: 'modal',
+        posX: 'center',
+        posY: 'center',
+      });
 
-    export default {
-        methods:{
-            ...mapNotificationActions(['showNotification']),
-        },
-        mounted: function(){
-            if( this.getAllPlayers.length === 0 ){
-                this.showNotification({
-                    autoHideAfter : 3,
-                    title         : 'No players found',
-                    msg           : 'Returning to menu...',
-                    role          : 'warning',
-                    type          : 'modal',
-                    posX          : 'center',
-                    posY          : 'center',
-                });
-
-                setTimeout(()=>{
-                    this.$router.push('/');
-                },4000);
-            }
-        },
-        computed:{
-            ...mapPlayersState({
-                getAllPlayers: state => state.players,
-            }),
-            ...mapPlayersGetters([
-                'getCurrentPlayer', 
-            ]),
-            ...mapGameState({
-                getCurrentRound: state => state.round,
-                isGameStarted: state => state.started,
-                isGameOver: state => state.game_over,
-                isSettingsSet: state => state.settings_set,
-            }),
-        },
-        components:{
-            AllPlayers,
-            RecordPanel,
-            NotificationContainer,
-            CountDown
-        }
+      setTimeout(() => {
+        this.$router.push('/');
+      }, 4000);
     }
+  },
+  methods: {
+    ...mapNotificationActions(['showNotification']),
+  },
+
+};
 </script>
 
 <style lang="scss" scoped>
@@ -89,7 +92,7 @@
             bottom: 0;
             left: 0;
             right: auto;
-            top: 0;  
+            top: 0;
             margin: auto;
             height: 100%;
             @include rem(width, 50px);

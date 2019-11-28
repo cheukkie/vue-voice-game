@@ -11,7 +11,7 @@ import AddPlayers from '@/views/AddPlayers.vue';
 import Playing from '@/views/Playing.vue';
 import Winner from '@/views/Winner.vue';
 
-Vue.use(Router)
+Vue.use(Router);
 
 const appRouter = new Router({
   // mode: 'history',
@@ -56,6 +56,6 @@ const appRouter = new Router({
       name: 'Winner',
       component: Winner,
     },
-  ]
+  ],
 });
 export default appRouter;

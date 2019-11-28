@@ -1,22 +1,24 @@
 <template>
-    <div class="modal">
-        <div class="container">
-            <div class="panel">
-                <a class="btn modal-close" title="Close modal" @click.prevent="$router.replace({'query': null});">
-                    <span class="svg-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z"/></svg>
-                    </span>
-                </a>
-                <slot></slot>
-            </div>
-        </div>
+  <div class="modal">
+    <div class="container">
+      <div class="panel">
+        <!-- eslint-disable-next-line vue/max-attributes-per-line -->
+        <a class="btn modal-close" title="Close modal" @click.prevent="$router.replace({'query': null});">
+          <span class="svg-icon">
+            <!-- eslint-disable-next-line vue/max-attributes-per-line -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z" /></svg>
+          </span>
+        </a>
+        <slot />
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 export default {
-    name: 'ModalContainer'
-}
+  name: 'ModalContainer',
+};
 </script>
 <style lang="scss" scoped>
     .modal{
@@ -40,7 +42,7 @@ export default {
             &:hover{
                 svg path{
                     fill: #fff;
-                }   
+                }
             }
         }
     }

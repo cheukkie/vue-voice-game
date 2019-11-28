@@ -1,13 +1,13 @@
 <template>
-    <footer>
-        <a href="mailto:hello@cheuk.online">Suggestions or feedback?</a>
-    </footer>
+  <footer>
+    <a href="mailto:hello@cheuk.online">Suggestions or feedback?</a>
+  </footer>
 </template>
 
 <script>
 export default {
 
-}
+};
 </script>
 
 <style lang="scss" scoped>
