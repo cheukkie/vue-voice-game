@@ -14,7 +14,11 @@ export default {
   props: {
     value: {
       type: Number,
+<<<<<<< HEAD
       default: 0,
+=======
+      default: this.min,
+>>>>>>> 8afea748fbe263e6d5426cc038fcd7e5eb50b6a3
     },
     label: {
       type: String,
