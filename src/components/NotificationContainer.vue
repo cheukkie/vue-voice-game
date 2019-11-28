@@ -1,81 +1,126 @@
 <template>
-    <div class="notification" :pos-x="posX" :pos-y="posY" :type="type" :auto-hide-after="autoHideAfter" :role="role" :visible="visible">
-        <span class="notification-icon" v-if="role === 'warning' || role === 'success' || role === 'error'">
-            <span class="svg-icon" v-if="role === 'warning'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M12 5.177l8.631 15.823h-17.262l8.631-15.823zm0-4.177l-12 22h24l-12-22zm-1 9h2v6h-2v-6zm1 9.75c-.689 0-1.25-.56-1.25-1.25s.561-1.25 1.25-1.25 1.25.56 1.25 1.25-.561 1.25-1.25 1.25z"/></svg>
-            </span>
-            <span class="svg-icon" v-if="role === 'error'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1 6h2v8h-2v-8zm1 12.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z"/></svg>
-            </span>
-            <span class="svg-icon" v-if="role === 'success'">
-                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z"/></svg>
-            </span>
-        </span>
-        <span class="notification-msg">
-            <h2 v-if="title">{{ title }}</h2>
-            <p v-if="msg">{{ msg }}</p>
-            <slot></slot>
-        </span>
-        <button class="notification-close" @click="onHide" v-if="autoHideAfter === 0">
-            <span class="svg-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z"/></svg>
-            </span>
-        </button>
-    </div>
+  <div
+    class="notification"
+    :pos-x="posX"
+    :pos-y="posY"
+    :type="type"
+    :auto-hide-after="autoHideAfter"
+    :role="role"
+    :visible="visible">
+    <span
+      v-if="role === 'warning' || role === 'success' || role === 'error'"
+      class="notification-icon">
+      <span
+        v-if="role === 'warning'"
+        class="svg-icon">
+        <!-- eslint-disable-next-line vue/max-attributes-per-line -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M12 5.177l8.631 15.823h-17.262l8.631-15.823zm0-4.177l-12 22h24l-12-22zm-1 9h2v6h-2v-6zm1 9.75c-.689 0-1.25-.56-1.25-1.25s.561-1.25 1.25-1.25 1.25.56 1.25 1.25-.561 1.25-1.25 1.25z" /></svg>
+      </span>
+      <span
+        v-if="role === 'error'"
+        class="svg-icon">
+        <!-- eslint-disable-next-line vue/max-attributes-per-line -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-1 6h2v8h-2v-8zm1 12.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z" /></svg>
+      </span>
+      <span
+        v-if="role === 'success'"
+        class="svg-icon">
+        <!-- eslint-disable-next-line vue/max-attributes-per-line -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M12 2c5.514 0 10 4.486 10 10s-4.486 10-10 10-10-4.486-10-10 4.486-10 10-10zm0-2c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm6.25 8.891l-1.421-1.409-6.105 6.218-3.078-2.937-1.396 1.436 4.5 4.319 7.5-7.627z" /></svg>
+      </span>
+    </span>
+    <span class="notification-msg">
+      <h2 v-if="title">{{ title }}</h2>
+      <p v-if="msg">{{ msg }}</p>
+      <slot />
+    </span>
+    <button
+      v-if="autoHideAfter === 0"
+      class="notification-close"
+      @click="onHide">
+      <span class="svg-icon">
+        <!-- eslint-disable-next-line vue/max-attributes-per-line -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 24 24"><path d="M23.954 21.03l-9.184-9.095 9.092-9.174-2.832-2.807-9.09 9.179-9.176-9.088-2.81 2.81 9.186 9.105-9.095 9.184 2.81 2.81 9.112-9.192 9.18 9.1z" /></svg>
+      </span>
+    </button>
+  </div>
 </template>
 
 <script>
 import { createNamespacedHelpers } from 'vuex';
+
 const {
-    mapActions: mapNotificationActions,
+  mapActions: mapNotificationActions,
 } = createNamespacedHelpers('notification');
 
 
 export default {
-    props:{
-        autoHideAfter: Number,
-        posX: String,
-        posY: String,
-        type: String,
-        role: String,
-        title: String,
-        msg: String,
+  props: {
+    autoHideAfter: {
+      type: Number,
+      default: 0,
     },
-    data: function(){
-        return {
-            visible: false,
+    posX: {
+      type: String,
+      default: 'center',
+    },
+    posY: {
+      type: String,
+      default: 'center',
+    },
+    type: {
+      type: String,
+      default: 'modal',
+    },
+    role: {
+      type: String,
+      default: 'default',
+    },
+    title: {
+      type: String,
+      default: null,
+    },
+    msg: {
+      type: String,
+      default: null,
+    },
+  },
+  data() {
+    return {
+      visible: false,
+    };
+  },
+  watch: {
+    visible() {
+      const vm = this;
+      this.$nextTick(() => {
+        if (vm.autoHideAfter !== 0 && vm.visible === true) {
+          setTimeout(() => {
+            vm.onHide();
+          }, vm.autoHideAfter * 1000);
         }
+      });
     },
-    mounted: function(){
-        const vm = this;
-        vm.visible = false;
-        this.$nextTick(() => {
-            vm.visible = true;
-        });
+  },
+  mounted() {
+    const vm = this;
+    vm.visible = false;
+    this.$nextTick(() => {
+      vm.visible = true;
+    });
+  },
+  methods: {
+    ...mapNotificationActions(['hideNotification']),
+    onHide() {
+      this.visible = false;
+      // Mutate global store
+      setTimeout(() => {
+        this.hideNotification();
+      }, 250);
     },
-    methods:{
-        ...mapNotificationActions(['hideNotification']),
-        onHide(){
-            this.visible = false;
-            //Mutate global store
-            setTimeout(()=>{
-                this.hideNotification();
-            },250);
-        },
-    },
-    watch:{
-        visible: function(){
-            const vm = this;
-            this.$nextTick(() => {
-                if( vm.autoHideAfter !== 0 && vm.visible === true ){
-                    setTimeout(()=>{
-                        vm.onHide();
-                    },vm.autoHideAfter*1000);
-                }
-            });
-        }
-    }
-}
+  },
+
+};
 </script>
 
 <style lang="scss" scoped>
@@ -95,26 +140,26 @@ export default {
         width: calc(100% - 3rem);
         background-color: $color4;
         @include rem(border-radius, 5px);
-        
+
         text-align: left;
         color: #fff;
 
         visibility: hidden;
         opacity: 0;
         transition: all .5s ease-in-out;
-        
-        &[visible]{ 
+
+        &[visible]{
             transform: translate3d(0, 0, 0) !important;
             visibility: visible;
             opacity: 1;
         }
-        &[role="warning"]{ 
-            background-color: $color1; 
+        &[role="warning"]{
+            background-color: $color1;
         }
-        &[role="error"]{ 
-            background-color: $color2; 
+        &[role="error"]{
+            background-color: $color2;
         }
-        &[role="success"]{ 
+        &[role="success"]{
             background-color: $color3;
         }
 
@@ -205,7 +250,7 @@ export default {
             top: 0;
             left: 0;
             right: 0;
-            
+
             #{$gp}-icon{
                 @include rem(width, 40px);
                 @include rem(height, 40px);

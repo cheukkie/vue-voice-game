@@ -1,37 +1,64 @@
 <template>
-    <div class="selectHolder">
-        <select class="btn is-block" @change="select" v-model="selectValue" :disabled="disabled">
-            <option disabled value="">{{placeholder}}</option>
-            <option v-for="(option,index) in options" :value="option.value" :key="index">
-                {{ option.label }}
-            </option>
-        </select>
-        <div class="icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24"><path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg>
-        </div>
+  <div class="selectHolder">
+    <select
+      v-model="selectValue"
+      class="btn is-block"
+      :disabled="disabled"
+      @change="select">
+      <option
+        disabled
+        value="">
+        {{ placeholder }}
+      </option>
+      <option
+        v-for="(option,index) in options"
+        :key="index"
+        :value="option.value">
+        {{ option.label }}
+      </option>
+    </select>
+    <div class="icon">
+      <!-- eslint-disable-next-line vue/max-attributes-per-line -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24">
+        <path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z" />
+      </svg>
     </div>
+  </div>
 </template>
 
 <script>
-    export default {
-        name: 'FormInputSelect',
-        props: {
-            disabled: Boolean,
-            value: [Number,String],
-            placeholder: String,
-            options: Array
+export default {
+  name: 'FormInputSelect',
+  props: {
+    disabled: Boolean,
+    placeholder: {
+      type: String,
+      default: '',
+    },
+    options: {
+      type: Array,
+      default: () => [
+        {
+          value: 'value1',
+          label: 'label1',
         },
-        data: function () {
-            return {
-                selectValue: ''
-            }
-        },
-        methods:{
-            select(){
-                this.$emit('input', this.selectValue);
-            }
-        },
-    }
+        {
+          value: 'value2',
+          label: 'label2',
+        }],
+    },
+  },
+  data() {
+    return {
+      selectValue: '',
+    };
+  },
+  methods: {
+    select() {
+      this.$emit('input', this.selectValue);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -65,5 +92,5 @@
             fill: rgba(0, 0, 0, 0.15);
         }
     }
-    
+
 </style>
