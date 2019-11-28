@@ -15,7 +15,6 @@ export default {
     value: {
       type: Number,
       default: 0,
-
     },
     label: {
       type: String,
