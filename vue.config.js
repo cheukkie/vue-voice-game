@@ -2,14 +2,15 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        prependData: 
+        prependData:
           `
           @import "@/styles/setup/_typography.scss";
           @import "@/styles/setup/_variables.scss";
           @import "@/styles/setup/_mixins.scss";
-          `
-      }
-    }
+          `,
+      },
+    },
   },
-  publicPath: '/lab/voice-game'
-}
+  lintOnSave: false,
+  publicPath: '/lab/voice-game',
+};
